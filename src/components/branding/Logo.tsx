@@ -11,8 +11,8 @@ export function Logo() {
       <Image
         src="/assets/logo/logo.png"
         alt="ZicoFranco official logo"
-        width={44}
-        height={44}
+        width={300}
+        height={300}
         priority
       />
       <span className="text-white font-semibold tracking-wide">ZicoFranco</span>
