@@ -1,9 +1,6 @@
-/**
- * prisma/schema.prisma
- * Base de datos inicial para ZicoFranco:
- * - Leads del formulario de booking
- */
-
+// prisma/schema.prisma
+// Database schema for ZicoFranco (Leads first)
+// Note: Prisma schema supports // comments (not /* */)
 generator client {
   provider = "prisma-client-js"
 }
