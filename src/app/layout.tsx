@@ -1,17 +1,3 @@
-/**
- * src/app/layout.tsx
- * Layout global de la aplicación.
- *
- * Qué hace:
- * - Define el HTML base (<html> y <body>)
- * - Aplica estilos generales
- * - Muestra Header y Footer en todas las páginas
- *
- * Dónde se cambia:
- * - Header: src/components/layout/Header.tsx
- * - Footer: src/components/layout/Footer.tsx
- */
-
 import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
