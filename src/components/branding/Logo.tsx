@@ -5,17 +5,24 @@
  */
 import Image from "next/image";
 
-export function Logo() {
+type LogoProps = {
+  size?: "header" | "hero";
+};
+
+export function Logo({ size = "header" }: LogoProps) {
+  const sizeClass =
+    size === "hero" ? "h-24 md:h-32 w-auto" : "h-14 w-auto";
+
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center">
       <Image
         src="/assets/logo/logo.png"
         alt="ZicoFranco official logo"
-        width={300}
-        height={300}
+        width={500}
+        height={500}
         priority
+        className={`${sizeClass} logo-glow`}
       />
-      <span className="text-white font-semibold tracking-wide">ZicoFranco</span>
     </div>
   );
 }

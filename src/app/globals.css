@@ -1,3 +1,252 @@
+/* src/app/globals.css
+   ZicoFranco — Vintage Rock Theme
+*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ---------- Theme tokens ---------- */
+:root {
+  /* Backgrounds */
+  --bg: #0b0b0c;
+  --bg-2: #111113;
+  --panel: rgba(18, 18, 20, 0.75);
+  --border: rgba(255, 255, 255, 0.09);
+
+  /* Text */
+  --text: #f2efe9;
+  --muted: rgba(242, 239, 233, 0.65);
+
+  /* Accents */
+  --gold: #d6b25e;
+  --oxblood: #7a1c1c;
+
+  /* Effects */
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  --glow-gold: 0 0 32px rgba(214, 178, 94, 0.28);
+  --glow-red: 0 0 28px rgba(122, 28, 28, 0.28);
+
+  --radius: 16px;
+}
+
+/* ---------- Base ---------- */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(
+      1400px 700px at 15% 5%,
+      rgba(214, 178, 94, 0.11),
+      transparent 55%
+    ),
+    radial-gradient(
+      1000px 700px at 85% 20%,
+      rgba(122, 28, 28, 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 50% 95%,
+      rgba(214, 178, 94, 0.08),
+      transparent 55%
+    ),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  font-feature-settings:
+    "liga" 1,
+    "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(214, 178, 94, 0.28);
+}
+
+/* Scoped link defaults — only bare <a> without utility classes */
+a:not([class]) {
+  color: var(--gold);
+  text-decoration: none;
+}
+a:not([class]):hover {
+  color: var(--text);
+}
+
+/* ---------- Layout ---------- */
+/* Note: layout.tsx already provides max-w-6xl mx-auto px-6 on <main>.
+   vintage-container is a semantic wrapper inside those pages — no extra padding. */
+.vintage-container {
+  width: 100%;
+}
+
+/* ---------- Navigation ---------- */
+.nav-link {
+  color: var(--muted);
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  transition: color 140ms ease;
+}
+.nav-link:hover {
+  color: var(--text);
+}
+
+/* ---------- Logo Glow ---------- */
+.logo-glow {
+  position: relative;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
+}
+
+.logo-glow::after {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(214, 178, 94, 0.22),
+    rgba(122, 28, 28, 0.1) 45%,
+    transparent 70%
+  );
+  filter: blur(12px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ---------- Hero ---------- */
+.hero-title {
+  letter-spacing: -0.03em;
+  text-shadow:
+    0 0 40px rgba(214, 178, 94, 0.15),
+    0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.vintage-muted {
+  color: var(--muted);
+}
+
+.vintage-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(214, 178, 94, 0.25),
+    transparent
+  );
+}
+
+/* ---------- Cards ---------- */
+.vintage-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.vintage-card:hover {
+  border-color: rgba(214, 178, 94, 0.2);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
+}
+
+
+/* ---------- Buttons ---------- */
+.btn-gold,
+.btn-oxblood,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-gold {
+  background: linear-gradient(
+    180deg,
+    rgba(214, 178, 94, 0.95),
+    rgba(185, 151, 68, 0.95)
+  );
+  color: #1b1408;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: var(--glow-gold);
+  transition: filter 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+.btn-gold:hover {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+  box-shadow: 0 0 36px rgba(214, 178, 94, 0.32);
+}
+
+.btn-oxblood {
+  background: linear-gradient(
+    180deg,
+    rgba(122, 28, 28, 0.95),
+    rgba(95, 20, 20, 0.95)
+  );
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: var(--glow-red);
+  transition: filter 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+.btn-oxblood:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 0 34px rgba(122, 28, 28, 0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(214, 178, 94, 0.3);
+  border-radius: 12px;
+  transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+.btn-outline:hover {
+  background: rgba(214, 178, 94, 0.08);
+  border-color: rgba(214, 178, 94, 0.5);
+  transform: translateY(-1px);
+}
+
+/* ---------- Pills ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(214, 178, 94, 0.2);
+  color: var(--text);
+  border-radius: 999px;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.pill:hover {
+  background: rgba(214, 178, 94, 0.09);
+  border-color: rgba(214, 178, 94, 0.42);
+}
+
+/* ---------- Platform list links ---------- */
+.platform-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 0.875rem;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+.platform-link:hover {
+  background: rgba(214, 178, 94, 0.07);
+  border-color: rgba(214, 178, 94, 0.28);
+  color: var(--text);
+  transform: translateX(3px);
+}
