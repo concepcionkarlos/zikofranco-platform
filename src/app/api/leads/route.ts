@@ -50,8 +50,9 @@ export async function POST(req: Request) {
       },
     });
 
-    // Send email notification — fire and forget (don't fail the request if email fails)
+    // Send emails — fire and forget (don't fail the request if email fails)
     if (process.env.RESEND_API_KEY) {
+      // 1. Notify Ziko
       resend.emails
         .send({
           from: "ZikoFranco Booking <booking@zikofranco.com>",
@@ -70,7 +71,32 @@ export async function POST(req: Request) {
             lead.message ?? "—",
           ].join("\n"),
         })
-        .catch((err) => console.error("Email send error:", err));
+        .catch((err) => console.error("Notification email error:", err));
+
+      // 2. Auto-reply to client
+      resend.emails
+        .send({
+          from: "ZikoFranco <booking@zikofranco.com>",
+          to: lead.email,
+          subject: "We got your booking request — ZikoFranco",
+          text: [
+            `Hi ${lead.fullName},`,
+            ``,
+            `Thanks for reaching out! We received your booking request and will get back to you within 24–48 hours.`,
+            ``,
+            `Here's a summary of what you sent:`,
+            `  Event type: ${lead.eventType}`,
+            `  Budget:     ${lead.budgetRange ?? "—"}`,
+            ``,
+            `In the meantime, listen to our music:`,
+            `  Spotify → https://open.spotify.com/artist/zikofranco`,
+            `  Instagram → https://www.instagram.com/zikofranco`,
+            ``,
+            `— Ziko & the team`,
+            `zikofranco.com`,
+          ].join("\n"),
+        })
+        .catch((err) => console.error("Auto-reply email error:", err));
     }
 
     return NextResponse.json({
