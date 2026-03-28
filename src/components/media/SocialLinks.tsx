@@ -2,20 +2,12 @@
  * src/components/media/SocialLinks.tsx
  * Muestra los links oficiales desde src/content/links.ts
  */
-import { links } from "@/content/links";
-
-const items = [
-  { label: "Spotify", href: links.spotify },
-  { label: "Apple Music", href: links.appleMusic },
-  { label: "YouTube", href: links.youtube },
-  { label: "SoundCloud", href: links.soundcloud },
-  { label: "Instagram", href: links.instagram },
-] as const;
+import { platformLinks } from "@/content/links";
 
 export function SocialLinks() {
   return (
     <div className="flex flex-wrap gap-3">
-      {items.map((item) => (
+      {platformLinks.map((item) => (
         <a
           key={item.label}
           href={item.href}

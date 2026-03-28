@@ -9,3 +9,11 @@ export const links = {
   soundcloud: "https://on.soundcloud.com/JtML242w1RrNaqUWBO",
   instagram: "https://www.instagram.com/zikopoly?igsh=OTc1ZnlkNDZwdDk=",
 } as const;
+
+export const platformLinks = [
+  { label: "Spotify", href: links.spotify },
+  { label: "Apple Music", href: links.appleMusic },
+  { label: "YouTube", href: links.youtube },
+  { label: "SoundCloud", href: links.soundcloud },
+  { label: "Instagram", href: links.instagram },
+] as const;

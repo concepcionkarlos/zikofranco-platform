@@ -1,7 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  // Deja el config mínimo y estable.
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
