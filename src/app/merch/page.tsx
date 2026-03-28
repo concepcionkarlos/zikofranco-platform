@@ -1,365 +1,203 @@
 import Link from "next/link";
+import Image from "next/image";
 
-/* ── SVG Mockups ─────────────────────────────────────────────── */
+const LOGO_BLACK = "/assets/logo/zf-logo-black.jpeg";
+const LOGO_BAND  = "/assets/logo/zf-logo-band.jpeg";
 
-function LogoBrand({ x = 110, y = 90, scale = 1 }: { x?: number; y?: number; scale?: number }) {
-  const s = scale;
+/* ── Product mockup cards ────────────────────────────────────── */
+
+function TeeMockup() {
   return (
-    <g transform={`translate(${x}, ${y}) scale(${s})`}>
-      {/* outer ring */}
-      <circle cx="0" cy="0" r="28" fill="none" stroke="#d6b25e" strokeWidth="1" opacity="0.6"/>
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#d6b25e" strokeWidth="0.4" opacity="0.3"/>
-      {/* Z mark */}
-      <text textAnchor="middle" dominantBaseline="central" fill="#d6b25e" fontSize="22" fontWeight="900" fontFamily="Georgia, serif" letterSpacing="-1">Z</text>
-      {/* wordmark below */}
-      <text y="40" textAnchor="middle" fill="#d6b25e" fontSize="7.5" fontWeight="700" letterSpacing="5" fontFamily="system-ui, sans-serif">ZIKOFRANCO</text>
-      <text y="51" textAnchor="middle" fill="rgba(214,178,94,0.4)" fontSize="5" fontWeight="500" letterSpacing="4" fontFamily="system-ui, sans-serif">MIAMI · EST. 2024</text>
-    </g>
-  );
-}
-
-function TeePreview() {
-  return (
-    <svg viewBox="0 0 240 220" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-lg">
-      <defs>
-        <linearGradient id="tee-body" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#232328"/>
-          <stop offset="100%" stopColor="#1a1a1e"/>
-        </linearGradient>
-        <linearGradient id="tee-sleeve-l" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#1e1e22"/>
-          <stop offset="100%" stopColor="#181820"/>
-        </linearGradient>
-        <filter id="tee-shadow">
-          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="rgba(0,0,0,0.5)"/>
-        </filter>
-      </defs>
-
-      {/* shirt body + sleeves combined */}
-      <g filter="url(#tee-shadow)">
+    <div className="w-full h-full relative flex items-center justify-center">
+      {/* shirt shape */}
+      <svg viewBox="0 0 260 240" className="absolute inset-0 w-full h-full" fill="none">
+        <defs>
+          <linearGradient id="tee-g" x1="0" y1="0" x2="0.2" y2="1">
+            <stop offset="0%" stopColor="#1e1e22"/>
+            <stop offset="100%" stopColor="#141418"/>
+          </linearGradient>
+        </defs>
         {/* left sleeve */}
-        <path d="M 72 38 L 30 68 L 52 80 L 68 62 Z" fill="url(#tee-sleeve-l)" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8"/>
+        <path d="M76 40 L32 72 L58 84 L76 66 Z" fill="#191920"/>
         {/* right sleeve */}
-        <path d="M 168 38 L 210 68 L 188 80 L 172 62 Z" fill="url(#tee-sleeve-l)" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8"/>
+        <path d="M184 40 L228 72 L202 84 L184 66 Z" fill="#191920"/>
         {/* body */}
-        <path d="M 72 38 Q 90 52 120 52 Q 150 52 168 38 L 188 80 L 188 185 L 52 185 L 52 80 Z"
-          fill="url(#tee-body)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.8"/>
+        <path d="M76 40 Q96 56 130 56 Q164 56 184 40 L202 84 L202 200 L58 200 L58 84 Z" fill="url(#tee-g)" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
         {/* collar */}
-        <path d="M 72 38 Q 90 28 120 26 Q 150 28 168 38 Q 152 48 120 50 Q 88 48 72 38 Z"
-          fill="#1e1e24" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
-        {/* subtle chest shadow for depth */}
-        <path d="M 52 80 Q 120 96 188 80 L 188 120 Q 120 108 52 120 Z"
-          fill="rgba(0,0,0,0.12)"/>
-      </g>
-
-      {/* design on chest */}
-      <LogoBrand x={120} y={118} scale={1.05}/>
-    </svg>
+        <path d="M76 40 Q96 28 130 26 Q164 28 184 40 Q166 52 130 54 Q94 52 76 40Z" fill="#17171c" stroke="rgba(255,255,255,0.08)" strokeWidth="0.8"/>
+      </svg>
+      {/* logo overlaid via screen blend */}
+      <div className="relative z-10 w-[52%] aspect-square" style={{ mixBlendMode: "screen" }}>
+        <Image src={LOGO_BLACK} alt="ZikoFranco" fill className="object-contain" sizes="200px"/>
+      </div>
+    </div>
   );
 }
 
-function HoodiePreview() {
+function HoodieMockup() {
   return (
-    <svg viewBox="0 0 240 220" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-lg">
-      <defs>
-        <linearGradient id="hood-body" x1="0" y1="0" x2="0.2" y2="1">
-          <stop offset="0%" stopColor="#252528"/>
-          <stop offset="100%" stopColor="#1b1b1f"/>
-        </linearGradient>
-        <linearGradient id="hood-cap" x1="0" y1="0" x2="0.5" y2="1">
-          <stop offset="0%" stopColor="#2c2c32"/>
-          <stop offset="100%" stopColor="#1f1f24"/>
-        </linearGradient>
-        <filter id="hood-shadow">
-          <feDropShadow dx="0" dy="4" stdDeviation="7" floodColor="rgba(0,0,0,0.55)"/>
-        </filter>
-      </defs>
-
-      <g filter="url(#hood-shadow)">
+    <div className="w-full h-full relative flex items-center justify-center">
+      <svg viewBox="0 0 260 240" className="absolute inset-0 w-full h-full" fill="none">
+        <defs>
+          <linearGradient id="hood-g" x1="0" y1="0" x2="0.3" y2="1">
+            <stop offset="0%" stopColor="#252528"/>
+            <stop offset="100%" stopColor="#18181c"/>
+          </linearGradient>
+        </defs>
         {/* left sleeve */}
-        <path d="M 68 62 L 28 90 L 52 100 L 68 84 Z" fill="#202024" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8"/>
+        <path d="M72 68 L30 96 L56 108 L72 92 Z" fill="#202026"/>
         {/* right sleeve */}
-        <path d="M 172 62 L 212 90 L 188 100 L 172 84 Z" fill="#202024" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8"/>
+        <path d="M188 68 L230 96 L204 108 L188 92 Z" fill="#202026"/>
         {/* body */}
-        <path d="M 68 62 L 68 84 L 52 100 L 52 188 L 188 188 L 188 100 L 172 84 L 172 62 Q 152 44 120 40 Q 88 44 68 62 Z"
-          fill="url(#hood-body)" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8"/>
+        <path d="M72 68 L72 92 L56 108 L56 200 L204 200 L204 108 L188 92 L188 68 Q168 50 130 46 Q92 50 72 68Z" fill="url(#hood-g)" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
         {/* hood */}
-        <path d="M 68 62 Q 88 44 120 40 Q 152 44 172 62 Q 158 36 140 28 L 140 46 Q 130 54 120 54 Q 110 54 100 46 L 100 28 Q 82 36 68 62 Z"
-          fill="url(#hood-cap)" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+        <path d="M72 68 Q92 50 130 46 Q168 50 188 68 Q172 42 154 34 L154 52 Q142 60 130 60 Q118 60 106 52 L106 34 Q88 42 72 68Z" fill="#2a2a30" stroke="rgba(255,255,255,0.09)" strokeWidth="0.8"/>
         {/* hood opening */}
-        <path d="M 100 28 Q 110 22 120 22 Q 130 22 140 28 L 140 46 Q 130 54 120 54 Q 110 54 100 46 Z"
-          fill="#16161a" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5"/>
+        <path d="M106 34 Q118 26 130 26 Q142 26 154 34 L154 52 Q142 60 130 60 Q118 60 106 52Z" fill="#111116" stroke="rgba(255,255,255,0.12)" strokeWidth="0.6"/>
         {/* drawstrings */}
-        <line x1="112" y1="54" x2="108" y2="80" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" strokeLinecap="round"/>
-        <line x1="128" y1="54" x2="132" y2="80" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" strokeLinecap="round"/>
-        {/* front pocket */}
-        <rect x="82" y="140" width="76" height="38" rx="5" fill="rgba(0,0,0,0.2)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8"/>
-        {/* pocket seam */}
-        <line x1="120" y1="140" x2="120" y2="178" stroke="rgba(255,255,255,0.05)" strokeWidth="0.8"/>
-      </g>
-
-      <LogoBrand x={120} y={114} scale={0.95}/>
-    </svg>
+        <line x1="122" y1="60" x2="118" y2="90" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" strokeLinecap="round"/>
+        <line x1="138" y1="60" x2="142" y2="90" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" strokeLinecap="round"/>
+        {/* pocket */}
+        <rect x="88" y="150" width="84" height="42" rx="6" fill="rgba(0,0,0,0.18)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.8"/>
+        <line x1="130" y1="150" x2="130" y2="192" stroke="rgba(255,255,255,0.04)" strokeWidth="0.8"/>
+      </svg>
+      <div className="relative z-10 w-[46%] aspect-square" style={{ mixBlendMode: "screen" }}>
+        <Image src={LOGO_BLACK} alt="ZikoFranco" fill className="object-contain" sizes="180px"/>
+      </div>
+    </div>
   );
 }
 
-function CapPreview() {
+function CapMockup() {
   return (
-    <svg viewBox="0 0 240 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-lg">
-      <defs>
-        <linearGradient id="cap-body" x1="0" y1="0" x2="0.3" y2="1">
-          <stop offset="0%" stopColor="#282830"/>
-          <stop offset="100%" stopColor="#1a1a22"/>
-        </linearGradient>
-        <linearGradient id="cap-brim" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1e1e26"/>
-          <stop offset="100%" stopColor="#141418"/>
-        </linearGradient>
-        <filter id="cap-shadow">
-          <feDropShadow dx="0" dy="5" stdDeviation="8" floodColor="rgba(0,0,0,0.6)"/>
-        </filter>
-      </defs>
-
-      <g filter="url(#cap-shadow)">
+    <div className="w-full h-full relative flex items-center justify-center">
+      <svg viewBox="0 0 260 220" className="absolute inset-0 w-full h-full" fill="none">
+        <defs>
+          <linearGradient id="cap-g" x1="0" y1="0" x2="0.4" y2="1">
+            <stop offset="0%" stopColor="#26262e"/>
+            <stop offset="100%" stopColor="#18181e"/>
+          </linearGradient>
+        </defs>
         {/* cap body */}
-        <path d="M 46 128 Q 46 54 120 48 Q 194 54 194 128 Z"
-          fill="url(#cap-body)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.8"/>
+        <path d="M 50 138 Q 50 58 130 52 Q 210 58 210 138 Z" fill="url(#cap-g)" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8"/>
         {/* panel seams */}
-        <path d="M 120 48 L 120 128" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8"/>
-        <path d="M 83 54 Q 78 90 80 128" stroke="rgba(255,255,255,0.04)" strokeWidth="0.8"/>
-        <path d="M 157 54 Q 162 90 160 128" stroke="rgba(255,255,255,0.04)" strokeWidth="0.8"/>
+        <line x1="130" y1="52" x2="130" y2="138" stroke="rgba(255,255,255,0.05)" strokeWidth="0.8"/>
+        <path d="M 90 58 Q 86 98 88 138" stroke="rgba(255,255,255,0.03)" strokeWidth="0.8"/>
+        <path d="M 170 58 Q 174 98 172 138" stroke="rgba(255,255,255,0.03)" strokeWidth="0.8"/>
         {/* sweatband */}
-        <path d="M 46 128 Q 120 138 194 128" stroke="rgba(255,255,255,0.12)" strokeWidth="2.5" fill="none"/>
-        {/* brim top */}
-        <path d="M 46 128 Q 120 138 194 128 Q 190 152 120 158 Q 50 152 46 128 Z"
-          fill="url(#cap-brim)" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8"/>
-        {/* brim bottom shadow */}
-        <path d="M 50 146 Q 120 156 190 146 Q 188 160 120 162 Q 52 160 50 146 Z"
-          fill="rgba(0,0,0,0.3)"/>
-        {/* button on top */}
-        <circle cx="120" cy="50" r="5" fill="#222228" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
-      </g>
-
-      {/* logo on front panel */}
-      <g transform="translate(120, 90)">
-        <circle cx="0" cy="0" r="24" fill="none" stroke="#d6b25e" strokeWidth="0.8" opacity="0.5"/>
-        <text textAnchor="middle" dominantBaseline="central" fill="#d6b25e" fontSize="20" fontWeight="900" fontFamily="Georgia, serif">Z</text>
-        <text y="32" textAnchor="middle" fill="rgba(214,178,94,0.6)" fontSize="6" fontWeight="700" letterSpacing="4" fontFamily="system-ui">ZIKOFRANCO</text>
-      </g>
-    </svg>
+        <path d="M 50 138 Q 130 148 210 138" stroke="rgba(255,255,255,0.1)" strokeWidth="2.5" fill="none"/>
+        {/* brim */}
+        <path d="M 50 138 Q 130 148 210 138 Q 206 164 130 170 Q 54 164 50 138Z" fill="#16161c" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8"/>
+        {/* brim underside */}
+        <path d="M 55 152 Q 130 162 205 152 Q 202 168 130 172 Q 58 168 55 152Z" fill="rgba(0,0,0,0.3)"/>
+        {/* button */}
+        <circle cx="130" cy="54" r="5" fill="#20202a" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"/>
+      </svg>
+      {/* logo on front panel — positioned on the cap face */}
+      <div className="relative z-10 w-[38%] aspect-square mb-10" style={{ mixBlendMode: "screen" }}>
+        <Image src={LOGO_BLACK} alt="ZikoFranco" fill className="object-contain" sizes="160px"/>
+      </div>
+    </div>
   );
 }
 
-function TotePreview() {
+function ToteMockup() {
   return (
-    <svg viewBox="0 0 240 220" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-lg">
-      <defs>
-        <linearGradient id="tote-body" x1="0.1" y1="0" x2="0.9" y2="1">
-          <stop offset="0%" stopColor="#d4c5a0"/>
-          <stop offset="100%" stopColor="#b8a880"/>
-        </linearGradient>
-        <linearGradient id="tote-side" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#a89670"/>
-          <stop offset="100%" stopColor="#b8a880"/>
-        </linearGradient>
-        <filter id="tote-shadow">
-          <feDropShadow dx="0" dy="5" stdDeviation="7" floodColor="rgba(0,0,0,0.55)"/>
-        </filter>
-      </defs>
-
-      <g filter="url(#tote-shadow)">
+    <div className="w-full h-full relative flex items-center justify-center">
+      <svg viewBox="0 0 260 240" className="absolute inset-0 w-full h-full" fill="none">
+        <defs>
+          <linearGradient id="tote-g" x1="0.1" y1="0" x2="0.9" y2="1">
+            <stop offset="0%" stopColor="#ddd0b0"/>
+            <stop offset="100%" stopColor="#c8b890"/>
+          </linearGradient>
+        </defs>
         {/* handles */}
-        <path d="M 85 60 Q 84 28 104 24 Q 120 20 120 58" stroke="#8a7a58" strokeWidth="9" fill="none" strokeLinecap="round"/>
-        <path d="M 120 58 Q 120 24 138 24 Q 158 24 158 60" stroke="#8a7a58" strokeWidth="9" fill="none" strokeLinecap="round"/>
-        {/* handle inner highlight */}
-        <path d="M 86 60 Q 86 32 104 28 Q 118 26 118 58" stroke="rgba(255,255,255,0.1)" strokeWidth="4" fill="none" strokeLinecap="round"/>
-        <path d="M 122 58 Q 122 28 138 28 Q 156 28 156 60" stroke="rgba(255,255,255,0.1)" strokeWidth="4" fill="none" strokeLinecap="round"/>
+        <path d="M92 68 Q90 34 110 30 Q126 26 126 66" stroke="#9a8860" strokeWidth="10" fill="none" strokeLinecap="round"/>
+        <path d="M134 66 Q134 30 152 30 Q172 30 170 68" stroke="#9a8860" strokeWidth="10" fill="none" strokeLinecap="round"/>
+        {/* inner handle highlight */}
+        <path d="M93 68 Q92 38 110 34 Q124 30 124 66" stroke="rgba(255,255,255,0.12)" strokeWidth="4" fill="none" strokeLinecap="round"/>
+        <path d="M136 66 Q136 34 152 34 Q170 34 168 68" stroke="rgba(255,255,255,0.12)" strokeWidth="4" fill="none" strokeLinecap="round"/>
         {/* bag body */}
-        <path d="M 44 62 L 50 185 L 190 185 L 196 62 Z"
-          fill="url(#tote-body)" stroke="rgba(0,0,0,0.2)" strokeWidth="0.8"/>
+        <path d="M 48 70 L 54 196 L 206 196 L 212 70 Z" fill="url(#tote-g)" stroke="rgba(0,0,0,0.15)" strokeWidth="0.8"/>
         {/* side shading */}
-        <path d="M 44 62 L 50 185 L 72 185 L 68 62 Z" fill="rgba(0,0,0,0.1)"/>
-        <path d="M 196 62 L 190 185 L 168 185 L 172 62 Z" fill="rgba(0,0,0,0.08)"/>
-        {/* bottom fold */}
-        <path d="M 50 185 L 190 185 L 186 192 L 54 192 Z" fill="#a89670" stroke="rgba(0,0,0,0.15)" strokeWidth="0.8"/>
-        {/* top fold */}
-        <path d="M 44 62 L 68 62 L 69 70 L 44 68 Z" fill="rgba(0,0,0,0.06)"/>
-        <path d="M 196 62 L 172 62 L 171 70 L 196 68 Z" fill="rgba(0,0,0,0.06)"/>
-      </g>
-
-      {/* design printed on tote — black on natural canvas */}
-      <g transform="translate(120, 118)">
-        <circle cx="0" cy="0" r="34" fill="none" stroke="rgba(0,0,0,0.3)" strokeWidth="1.2"/>
-        <circle cx="0" cy="0" r="28" fill="none" stroke="rgba(0,0,0,0.15)" strokeWidth="0.5"/>
-        <text textAnchor="middle" dominantBaseline="central" fill="rgba(0,0,0,0.75)" fontSize="28" fontWeight="900" fontFamily="Georgia, serif">Z</text>
-        <text y="42" textAnchor="middle" fill="rgba(0,0,0,0.55)" fontSize="7.5" fontWeight="700" letterSpacing="5" fontFamily="system-ui">ZIKOFRANCO</text>
-        <text y="53" textAnchor="middle" fill="rgba(0,0,0,0.35)" fontSize="5.5" fontWeight="500" letterSpacing="3" fontFamily="system-ui">MIAMI · ROCK</text>
-      </g>
-    </svg>
+        <path d="M 48 70 L 54 196 L 76 196 L 72 70 Z" fill="rgba(0,0,0,0.08)"/>
+        <path d="M 212 70 L 206 196 L 184 196 L 188 70 Z" fill="rgba(0,0,0,0.06)"/>
+        {/* bottom */}
+        <path d="M 54 196 L 206 196 L 202 204 L 58 204 Z" fill="#b0a070" stroke="rgba(0,0,0,0.12)" strokeWidth="0.8"/>
+      </svg>
+      {/* logo multiply-blended on canvas — drops the white bg */}
+      <div className="relative z-10 w-[50%] aspect-square mt-8" style={{ mixBlendMode: "multiply" }}>
+        <Image src={LOGO_BLACK} alt="ZikoFranco" fill className="object-contain" sizes="200px"/>
+      </div>
+    </div>
   );
 }
 
-function StickerPreview() {
+function StickerMockup() {
   return (
-    <svg viewBox="0 0 240 220" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-lg">
-      <defs>
-        <filter id="sticker-shadow">
-          <feDropShadow dx="2" dy="3" stdDeviation="4" floodColor="rgba(0,0,0,0.5)"/>
-        </filter>
-        <filter id="sticker-glow">
-          <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="rgba(214,178,94,0.3)"/>
-        </filter>
-      </defs>
-
-      {/* sticker 4 — square, back-left */}
-      <g filter="url(#sticker-shadow)" transform="rotate(-18, 80, 130)">
-        <rect x="52" y="100" width="60" height="60" rx="8" fill="#1a1a1e" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-        <text x="82" y="134" textAnchor="middle" fill="rgba(214,178,94,0.4)" fontSize="10" fontWeight="700" letterSpacing="2" fontFamily="system-ui">ZF</text>
-        <text x="82" y="147" textAnchor="middle" fill="rgba(255,255,255,0.15)" fontSize="5" letterSpacing="2" fontFamily="system-ui">MIAMI</text>
-      </g>
-
-      {/* sticker 3 — rectangle, back-right */}
-      <g filter="url(#sticker-shadow)" transform="rotate(12, 168, 120)">
-        <rect x="138" y="88" width="68" height="50" rx="8" fill="#16161a" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-        <text x="172" y="117" textAnchor="middle" fill="rgba(214,178,94,0.35)" fontSize="7" fontWeight="700" letterSpacing="3" fontFamily="system-ui">ZIKOFRANCO</text>
-      </g>
-
-      {/* sticker 2 — circle, mid */}
-      <g filter="url(#sticker-shadow)" transform="rotate(-6, 148, 155)">
-        <circle cx="148" cy="155" r="30" fill="#1c1c22" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-        <circle cx="148" cy="155" r="24" fill="none" stroke="rgba(214,178,94,0.2)" strokeWidth="0.5"/>
-        <text x="148" y="159" textAnchor="middle" dominantBaseline="central" fill="rgba(214,178,94,0.6)" fontSize="16" fontWeight="900" fontFamily="Georgia, serif">Z</text>
-      </g>
-
-      {/* sticker 1 — main circle, front-center */}
-      <g filter="url(#sticker-glow)">
-        <circle cx="110" cy="112" r="54" fill="#0f0f13" stroke="#d6b25e" strokeWidth="1.5"/>
-        <circle cx="110" cy="112" r="46" fill="none" stroke="rgba(214,178,94,0.25)" strokeWidth="0.6"/>
-        <circle cx="110" cy="112" r="38" fill="none" stroke="rgba(214,178,94,0.12)" strokeWidth="0.4"/>
-
-        {/* Z mark */}
-        <text x="110" y="106" textAnchor="middle" dominantBaseline="central" fill="#d6b25e" fontSize="34" fontWeight="900" fontFamily="Georgia, serif">Z</text>
-
-        {/* arc text top */}
-        <path id="arc-top" d="M 66 112 A 44 44 0 0 1 154 112" fill="none"/>
-        <text fontSize="7" fontWeight="700" letterSpacing="4" fill="rgba(214,178,94,0.7)" fontFamily="system-ui">
-          <textPath href="#arc-top" startOffset="10%">· ZIKOFRANCO ·</textPath>
-        </text>
-
-        {/* arc text bottom */}
-        <path id="arc-bot" d="M 66 112 A 44 44 0 0 0 154 112" fill="none"/>
-        <text fontSize="6" fontWeight="500" letterSpacing="3" fill="rgba(214,178,94,0.4)" fontFamily="system-ui">
-          <textPath href="#arc-bot" startOffset="12%">MIAMI · ROCK · FUNK</textPath>
-        </text>
-      </g>
-    </svg>
+    <div className="w-full h-full relative flex items-center justify-center bg-[#0e0e12]">
+      {/* scattered sticker backgrounds */}
+      <svg viewBox="0 0 260 240" className="absolute inset-0 w-full h-full" fill="none">
+        {/* back stickers */}
+        <rect x="88" y="92" width="80" height="60" rx="10" fill="#18181e" stroke="rgba(214,178,94,0.12)" strokeWidth="1.2" transform="rotate(-14 128 122)"/>
+        <rect x="80" y="80" width="86" height="86" rx="52" fill="#141418" stroke="rgba(214,178,94,0.15)" strokeWidth="1.2" transform="rotate(8 123 123)"/>
+        {/* main circle sticker */}
+        <circle cx="130" cy="120" r="62" fill="#0c0c10" stroke="#d6b25e" strokeWidth="1.4"/>
+        <circle cx="130" cy="120" r="54" fill="none" stroke="rgba(214,178,94,0.2)" strokeWidth="0.5"/>
+      </svg>
+      {/* logo screen-blended on dark circle */}
+      <div className="relative z-10 w-[52%] aspect-square" style={{ mixBlendMode: "screen" }}>
+        <Image src={LOGO_BLACK} alt="ZikoFranco" fill className="object-contain" sizes="200px"/>
+      </div>
+    </div>
   );
 }
 
-function PosterPreview() {
+function PosterMockup() {
   return (
-    <svg viewBox="0 0 240 220" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-lg">
-      <defs>
-        <radialGradient id="poster-bg" cx="50%" cy="35%" r="65%">
-          <stop offset="0%" stopColor="rgba(214,178,94,0.14)"/>
-          <stop offset="50%" stopColor="rgba(122,28,28,0.08)"/>
-          <stop offset="100%" stopColor="rgba(0,0,0,0)"/>
-        </radialGradient>
-        <linearGradient id="poster-frame" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#2a2a20"/>
-          <stop offset="100%" stopColor="#1a1a14"/>
-        </linearGradient>
-        <filter id="poster-shadow">
-          <feDropShadow dx="3" dy="5" stdDeviation="8" floodColor="rgba(0,0,0,0.6)"/>
-        </filter>
-      </defs>
-
-      <g filter="url(#poster-shadow)">
-        {/* frame */}
-        <rect x="36" y="14" width="168" height="196" rx="3" fill="url(#poster-frame)"/>
-        {/* mat border */}
-        <rect x="42" y="20" width="156" height="184" rx="2" fill="#111110"/>
-        {/* poster area */}
-        <rect x="50" y="28" width="140" height="168" fill="#0d0d0b"/>
-        <rect x="50" y="28" width="140" height="168" fill="url(#poster-bg)"/>
-
-        {/* decorative lines */}
-        <line x1="62" y1="42" x2="178" y2="42" stroke="rgba(214,178,94,0.15)" strokeWidth="0.5"/>
-        <line x1="62" y1="188" x2="178" y2="188" stroke="rgba(214,178,94,0.15)" strokeWidth="0.5"/>
-        <line x1="62" y1="42" x2="62" y2="188" stroke="rgba(214,178,94,0.08)" strokeWidth="0.5"/>
-        <line x1="178" y1="42" x2="178" y2="188" stroke="rgba(214,178,94,0.08)" strokeWidth="0.5"/>
-      </g>
-
-      {/* poster content */}
-      {/* large Z */}
-      <text x="120" y="116" textAnchor="middle" dominantBaseline="central" fill="#d6b25e" fontSize="68" fontWeight="900" fontFamily="Georgia, serif" opacity="0.9">Z</text>
-
-      {/* glow behind Z */}
-      <circle cx="120" cy="114" r="40" fill="rgba(214,178,94,0.05)"/>
-
-      {/* title */}
-      <text x="120" y="155" textAnchor="middle" fill="#d6b25e" fontSize="10" fontWeight="700" letterSpacing="6" fontFamily="system-ui">ZIKOFRANCO</text>
-
-      {/* rule */}
-      <line x1="80" y1="163" x2="160" y2="163" stroke="rgba(214,178,94,0.3)" strokeWidth="0.6"/>
-
-      {/* subtitle */}
-      <text x="120" y="173" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="6" letterSpacing="4" fontFamily="system-ui">MIAMI · ROCK · FUNK</text>
-
-      {/* date placeholder */}
-      <text x="120" y="52" textAnchor="middle" fill="rgba(214,178,94,0.3)" fontSize="6.5" letterSpacing="3" fontFamily="system-ui">LIVE IN CONCERT · 2025</text>
-
-      {/* signed */}
-      <text x="152" y="184" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="Georgia, serif" fontStyle="italic">Ziko</text>
-    </svg>
+    <div className="w-full h-full relative flex items-center justify-center">
+      {/* frame */}
+      <svg viewBox="0 0 260 240" className="absolute inset-0 w-full h-full" fill="none">
+        <defs>
+          <radialGradient id="poster-glow" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stopColor="rgba(214,178,94,0.12)"/>
+            <stop offset="60%" stopColor="rgba(122,28,28,0.06)"/>
+            <stop offset="100%" stopColor="rgba(0,0,0,0)"/>
+          </radialGradient>
+        </defs>
+        {/* outer frame shadow */}
+        <rect x="34" y="16" width="196" height="216" rx="3" fill="rgba(0,0,0,0.5)"/>
+        {/* frame wood */}
+        <rect x="30" y="12" width="196" height="216" rx="3" fill="#1e1c14" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        {/* mat */}
+        <rect x="38" y="20" width="180" height="200" rx="2" fill="#0e0e0c"/>
+        {/* poster */}
+        <rect x="48" y="30" width="160" height="180" fill="#0b0b09"/>
+        <rect x="48" y="30" width="160" height="180" fill="url(#poster-glow)"/>
+        {/* decorative border lines */}
+        <rect x="56" y="38" width="144" height="164" rx="1" fill="none" stroke="rgba(214,178,94,0.12)" strokeWidth="0.6"/>
+        {/* bottom text area */}
+        <rect x="48" y="178" width="160" height="32" fill="rgba(0,0,0,0.4)"/>
+        <text x="128" y="192" textAnchor="middle" fill="rgba(214,178,94,0.7)" fontSize="8.5" fontWeight="700" letterSpacing="5" fontFamily="system-ui">ZIKO FRANCO BAND</text>
+        <text x="128" y="203" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="6" letterSpacing="4" fontFamily="system-ui">MIAMI · LIVE IN CONCERT</text>
+      </svg>
+      {/* logo screen-blended on poster */}
+      <div className="relative z-10 w-[54%] aspect-square mb-10" style={{ mixBlendMode: "screen" }}>
+        <Image src={LOGO_BLACK} alt="ZikoFranco" fill className="object-contain" sizes="200px"/>
+      </div>
+    </div>
   );
 }
 
 /* ── Data ─────────────────────────────────────────────────────── */
 
 const products = [
-  {
-    id: "tee",
-    name: "Classic Tee",
-    subtitle: "Heavyweight cotton — Black",
-    tag: "Drop 01",
-    Preview: TeePreview,
-  },
-  {
-    id: "hoodie",
-    name: "Vintage Hoodie",
-    subtitle: "Washed fleece — Oversized fit",
-    tag: "Drop 01",
-    Preview: HoodiePreview,
-  },
-  {
-    id: "cap",
-    name: "Snapback Cap",
-    subtitle: "Structured 6-panel — Embroidered",
-    tag: "Drop 01",
-    Preview: CapPreview,
-  },
-  {
-    id: "tote",
-    name: "Canvas Tote Bag",
-    subtitle: "Natural canvas — Screen print",
-    tag: "Drop 01",
-    Preview: TotePreview,
-  },
-  {
-    id: "sticker",
-    name: "Sticker Pack",
-    subtitle: "5 die-cut vinyl — Waterproof",
-    tag: "Drop 01",
-    Preview: StickerPreview,
-  },
-  {
-    id: "poster",
-    name: "Signed Poster",
-    subtitle: '18×24" giclée — Numbered edition',
-    tag: "Drop 01",
-    Preview: PosterPreview,
-  },
+  { id: "tee",     name: "Classic Tee",      subtitle: "Heavyweight cotton — Black",          Mockup: TeeMockup },
+  { id: "hoodie",  name: "Vintage Hoodie",   subtitle: "Washed fleece — Oversized",           Mockup: HoodieMockup },
+  { id: "cap",     name: "Snapback Cap",     subtitle: "Structured — Embroidered logo",       Mockup: CapMockup },
+  { id: "tote",    name: "Canvas Tote Bag",  subtitle: "Natural canvas — Screen print",       Mockup: ToteMockup },
+  { id: "sticker", name: "Sticker Pack",     subtitle: "5 die-cut vinyl — Waterproof",        Mockup: StickerMockup },
+  { id: "poster",  name: "Signed Poster",    subtitle: '18×24" giclée — Numbered edition',   Mockup: PosterMockup },
 ] as const;
 
 /* ── Page ─────────────────────────────────────────────────────── */
@@ -386,41 +224,52 @@ export default function MerchPage() {
         </div>
       </div>
 
-      {/* Grid */}
+      {/* Featured band logo */}
+      <div className="vintage-card overflow-hidden">
+        <div className="relative w-full h-52 sm:h-72 bg-gradient-to-br from-[#0c0f18] to-[#111420] flex items-center justify-center">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,178,94,0.06),transparent_70%)]"/>
+          <div className="relative w-64 sm:w-80 aspect-video">
+            <Image src={LOGO_BAND} alt="Ziko Franco Band" fill className="object-contain" sizes="400px"/>
+          </div>
+        </div>
+        <div className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <p className="text-white font-bold text-base">Official Drop 01</p>
+            <p className="text-white/40 text-xs tracking-wide">Full collection — 6 pieces</p>
+          </div>
+          <span className="text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border border-gold/30 bg-gold/5 text-gold font-semibold">
+            Preview Only
+          </span>
+        </div>
+      </div>
+
+      {/* Product grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {products.map(({ id, name, subtitle, tag, Preview }) => (
+        {products.map(({ id, name, subtitle, Mockup }) => (
           <div key={id} className="vintage-card overflow-hidden group flex flex-col">
-            {/* mockup area */}
-            <div className="relative bg-gradient-to-br from-[#0e0e12] to-[#191920] p-6 aspect-square flex items-center justify-center">
-              {/* ambient glow */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,178,94,0.04),transparent_70%)]"/>
+            {/* mockup */}
+            <div className="relative aspect-square bg-[#0e0e12] overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,178,94,0.03),transparent_70%)]"/>
               <div className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.04]">
-                <Preview />
+                <Mockup />
               </div>
-              {/* tag */}
-              <span className="absolute top-4 left-4 text-[9px] tracking-[0.2em] uppercase px-2.5 py-1 rounded-full bg-black/50 text-gold/70 border border-gold/15 font-semibold backdrop-blur-sm">
-                {tag}
-              </span>
-              {/* coming soon overlay on hover */}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              {/* coming soon hover */}
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <span className="text-xs tracking-[0.25em] uppercase text-white font-semibold">Coming Soon</span>
               </div>
             </div>
-
             {/* info */}
-            <div className="p-5 flex flex-col gap-1">
+            <div className="p-5">
               <p className="text-white font-semibold text-base">{name}</p>
-              <p className="text-white/35 text-xs tracking-wide">{subtitle}</p>
+              <p className="text-white/35 text-xs tracking-wide mt-0.5">{subtitle}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Bottom notify banner */}
+      {/* Bottom notify */}
       <div className="vintage-card p-8 text-center space-y-4">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-gold font-semibold">
-          Be the first to know
-        </p>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-gold font-semibold">Be the first to know</p>
         <h2 className="text-xl font-bold text-white">Want early access?</h2>
         <p className="vintage-muted text-sm max-w-sm mx-auto">
           Follow us on Instagram to get notified the moment the drop goes live.
@@ -434,10 +283,7 @@ export default function MerchPage() {
           >
             Follow on Instagram
           </a>
-          <Link
-            href="/booking"
-            className="btn-outline px-7 py-3 text-sm font-semibold rounded-xl"
-          >
+          <Link href="/booking" className="btn-outline px-7 py-3 text-sm font-semibold rounded-xl">
             Custom Orders
           </Link>
         </div>
