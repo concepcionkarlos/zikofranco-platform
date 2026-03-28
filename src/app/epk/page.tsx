@@ -79,12 +79,12 @@ export default function EPKPage() {
         <div className="grid sm:grid-cols-3 gap-6">
           {[
             {
-              title: "Band Size",
-              items: ["Lead vocals + guitar", "Bass guitar", "Drums / percussion", "Keys (optional)"],
+              title: "Band Format",
+              items: ["Trio, quartet, or full band", "Format based on venue & needs", "Always features rock guitars", "Confirm lineup at booking"],
             },
             {
               title: "Stage Requirements",
-              items: ["Min. 20×16 ft stage", "Full PA system", "4× monitor wedges", "Backline available"],
+              items: ["Min. 20×16 ft stage", "Full PA system required", "Band uses in-ears — no wedges needed", "Backline available"],
             },
             {
               title: "Set Details",
