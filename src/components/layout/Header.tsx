@@ -14,14 +14,20 @@ export function Header() {
         </Link>
 
         <nav className="flex items-center gap-6">
-          <Link href="/booking" className="nav-link">
-            Booking
+          <Link href="/shows" className="nav-link">
+            Shows
           </Link>
           <Link href="/media" className="nav-link">
             Media
           </Link>
           <Link href="/merch" className="nav-link">
             Merch
+          </Link>
+          <Link href="/epk" className="nav-link">
+            EPK
+          </Link>
+          <Link href="/booking" className="btn-oxblood px-4 py-2 text-xs font-semibold rounded-xl">
+            Book Now
           </Link>
         </nav>
       </div>
