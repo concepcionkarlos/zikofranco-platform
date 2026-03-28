@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     if (process.env.RESEND_API_KEY) {
       resend.emails
         .send({
-          from: "ZikoFranco Booking <onboarding@resend.dev>",
+          from: "ZikoFranco Booking <booking@zikofranco.com>",
           to: "Zikofranco@gmail.com",
           subject: `New Booking Request — ${lead.eventType}`,
           text: [
