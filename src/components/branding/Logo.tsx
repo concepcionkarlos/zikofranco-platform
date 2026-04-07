@@ -17,7 +17,7 @@ export function Logo({ size = "header" }: LogoProps) {
     <div className="flex items-center">
       <Image
         src="/assets/logo/logo.png"
-        alt="ZicoFranco official logo"
+        alt="ZikoFranco official logo"
         width={500}
         height={500}
         priority

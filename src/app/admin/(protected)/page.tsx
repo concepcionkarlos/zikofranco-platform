@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 
-async function getDashboardData() {
+async function getData() {
   const [
     newCount,
     contactedCount,
+    qualifiedCount,
     confirmedCount,
     archivedCount,
     upcomingShows,
@@ -13,6 +14,7 @@ async function getDashboardData() {
   ] = await Promise.all([
     prisma.lead.count({ where: { status: "NEW" } }),
     prisma.lead.count({ where: { status: "CONTACTED" } }),
+    prisma.lead.count({ where: { status: "QUALIFIED" } }),
     prisma.lead.count({ where: { status: "CONFIRMED" } }),
     prisma.lead.count({ where: { status: "ARCHIVED" } }),
     prisma.show.count({
@@ -25,12 +27,13 @@ async function getDashboardData() {
     prisma.merchItem.count({ where: { isArchived: false, isVisible: true } }),
     prisma.lead.findMany({
       orderBy: { createdAt: "desc" },
-      take: 5,
+      take: 6,
       select: {
         id: true,
         fullName: true,
         email: true,
         eventType: true,
+        budgetRange: true,
         status: true,
         createdAt: true,
       },
@@ -40,6 +43,7 @@ async function getDashboardData() {
   return {
     newCount,
     contactedCount,
+    qualifiedCount,
     confirmedCount,
     archivedCount,
     upcomingShows,
@@ -49,52 +53,92 @@ async function getDashboardData() {
 }
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
-  NEW: { bg: "rgba(59,130,246,0.15)", color: "#60a5fa" },
-  CONTACTED: { bg: "rgba(234,179,8,0.15)", color: "#facc15" },
-  QUALIFIED: { bg: "rgba(168,85,247,0.15)", color: "#c084fc" },
-  NEGOTIATING: { bg: "rgba(249,115,22,0.15)", color: "#fb923c" },
-  CONFIRMED: { bg: "rgba(34,197,94,0.15)", color: "#4ade80" },
-  REJECTED: { bg: "rgba(239,68,68,0.15)", color: "#f87171" },
-  ARCHIVED: { bg: "rgba(255,255,255,0.05)", color: "rgba(242,239,233,0.4)" },
+  NEW: { bg: "rgba(59,130,246,0.12)", color: "#60a5fa" },
+  CONTACTED: { bg: "rgba(234,179,8,0.12)", color: "#facc15" },
+  QUALIFIED: { bg: "rgba(168,85,247,0.12)", color: "#c084fc" },
+  NEGOTIATING: { bg: "rgba(249,115,22,0.12)", color: "#fb923c" },
+  CONFIRMED: { bg: "rgba(34,197,94,0.12)", color: "#4ade80" },
+  REJECTED: { bg: "rgba(239,68,68,0.12)", color: "#f87171" },
+  ARCHIVED: { bg: "rgba(255,255,255,0.04)", color: "rgba(242,239,233,0.35)" },
 };
 
-export default async function AdminDashboard() {
-  const data = await getDashboardData();
+function StatusBadge({ status }: { status: string }) {
+  const s = STATUS_COLORS[status] ?? STATUS_COLORS.NEW;
+  return (
+    <span
+      className="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium"
+      style={{ background: s.bg, color: s.color }}
+    >
+      {status.charAt(0) + status.slice(1).toLowerCase()}
+    </span>
+  );
+}
 
-  const cards = [
-    { label: "New Requests", value: data.newCount, color: "#60a5fa", href: "/admin/requests?status=NEW" },
-    { label: "Contacted", value: data.contactedCount, color: "#facc15", href: "/admin/requests?status=CONTACTED" },
-    { label: "Confirmed", value: data.confirmedCount, color: "#4ade80", href: "/admin/requests?status=CONFIRMED" },
-    { label: "Archived", value: data.archivedCount, color: "rgba(242,239,233,0.35)", href: "/admin/requests?status=ARCHIVED" },
-    { label: "Upcoming Shows", value: data.upcomingShows, color: "#d6b25e", href: "/admin/shows" },
-    { label: "Active Merch", value: data.activeMerch, color: "#a78bfa", href: "/admin/merch" },
+export default async function AdminDashboard() {
+  const d = await getData();
+
+  const statCards = [
+    { label: "New", value: d.newCount, color: "#60a5fa", href: "/admin/requests?status=NEW", urgent: d.newCount > 0 },
+    { label: "Contacted", value: d.contactedCount, color: "#facc15", href: "/admin/requests?status=CONTACTED", urgent: false },
+    { label: "Qualified", value: d.qualifiedCount, color: "#c084fc", href: "/admin/requests?status=QUALIFIED", urgent: false },
+    { label: "Confirmed", value: d.confirmedCount, color: "#4ade80", href: "/admin/requests?status=CONFIRMED", urgent: false },
+    { label: "Shows upcoming", value: d.upcomingShows, color: "#d6b25e", href: "/admin/shows", urgent: false },
+    { label: "Merch active", value: d.activeMerch, color: "#a78bfa", href: "/admin/merch", urgent: false },
   ];
 
   return (
-    <div className="space-y-8 max-w-5xl">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-sm mt-1" style={{ color: "rgba(242,239,233,0.45)" }}>
-          ZikoFranco platform overview
-        </p>
+    <div className="space-y-10 max-w-5xl">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-xs mt-0.5" style={{ color: "rgba(242,239,233,0.4)" }}>
+            {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+          </p>
+        </div>
+        {d.newCount > 0 && (
+          <Link
+            href="/admin/requests?status=NEW"
+            className="flex items-center gap-2 text-xs px-4 py-2 rounded-xl font-semibold"
+            style={{
+              background: "rgba(59,130,246,0.1)",
+              border: "1px solid rgba(59,130,246,0.2)",
+              color: "#60a5fa",
+            }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: "#60a5fa" }}
+            />
+            {d.newCount} new request{d.newCount !== 1 ? "s" : ""}
+          </Link>
+        )}
       </div>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        {cards.map(({ label, value, color, href }) => (
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        {statCards.map(({ label, value, color, href, urgent }) => (
           <Link
             key={label}
             href={href}
-            className="rounded-2xl p-5 transition-all hover:scale-[1.02]"
+            className="rounded-2xl p-5 transition-all hover:scale-[1.015] group"
             style={{
-              background: "rgba(18,18,20,0.85)",
-              border: "1px solid rgba(255,255,255,0.07)",
+              background: urgent
+                ? "rgba(59,130,246,0.05)"
+                : "rgba(18,18,20,0.8)",
+              border: `1px solid ${urgent ? "rgba(59,130,246,0.15)" : "rgba(255,255,255,0.06)"}`,
             }}
           >
-            <div className="text-3xl font-bold" style={{ color }}>
+            <div
+              className="text-3xl font-bold tabular-nums"
+              style={{ color }}
+            >
               {value}
             </div>
-            <div className="text-xs mt-1 font-medium" style={{ color: "rgba(242,239,233,0.5)" }}>
+            <div
+              className="text-xs mt-1.5 font-medium"
+              style={{ color: "rgba(242,239,233,0.4)" }}
+            >
               {label}
             </div>
           </Link>
@@ -104,31 +148,48 @@ export default async function AdminDashboard() {
       {/* Recent requests */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold tracking-wide uppercase" style={{ color: "rgba(242,239,233,0.4)", letterSpacing: "0.08em" }}>
+          <h2
+            className="text-[10px] font-semibold tracking-[0.15em] uppercase"
+            style={{ color: "rgba(242,239,233,0.35)" }}
+          >
             Recent Requests
           </h2>
-          <Link href="/admin/requests" className="text-xs" style={{ color: "#d6b25e" }}>
+          <Link
+            href="/admin/requests"
+            className="text-xs transition-opacity hover:opacity-60"
+            style={{ color: "#d6b25e" }}
+          >
             View all →
           </Link>
         </div>
 
         <div
           className="rounded-2xl overflow-hidden"
-          style={{ border: "1px solid rgba(255,255,255,0.07)" }}
+          style={{ border: "1px solid rgba(255,255,255,0.06)" }}
         >
-          {data.recentRequests.length === 0 ? (
-            <div className="text-center py-12 text-sm" style={{ color: "rgba(242,239,233,0.35)" }}>
-              No requests yet.
+          {d.recentRequests.length === 0 ? (
+            <div className="py-14 text-center">
+              <p className="text-sm" style={{ color: "rgba(242,239,233,0.3)" }}>
+                No requests yet.
+              </p>
+              <p className="text-xs mt-1" style={{ color: "rgba(242,239,233,0.18)" }}>
+                New bookings will appear here.
+              </p>
             </div>
           ) : (
             <table className="w-full text-sm">
               <thead>
-                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(0,0,0,0.2)" }}>
-                  {["Name", "Event", "Status", "Date"].map((h) => (
+                <tr
+                  style={{
+                    borderBottom: "1px solid rgba(255,255,255,0.05)",
+                    background: "rgba(0,0,0,0.18)",
+                  }}
+                >
+                  {["Client", "Event", "Budget", "Status", "Date", ""].map((h, i) => (
                     <th
-                      key={h}
-                      className="text-left px-5 py-3 text-xs font-semibold tracking-wide"
-                      style={{ color: "rgba(242,239,233,0.4)" }}
+                      key={i}
+                      className="text-left px-5 py-3 text-[11px] font-semibold tracking-wide"
+                      style={{ color: "rgba(242,239,233,0.3)" }}
                     >
                       {h}
                     </th>
@@ -136,45 +197,94 @@ export default async function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {data.recentRequests.map((req, i) => {
-                  const sc = STATUS_COLORS[req.status] ?? STATUS_COLORS.NEW;
-                  return (
-                    <tr
-                      key={req.id}
-                      style={{
-                        borderBottom: i < data.recentRequests.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
-                        background: "rgba(13,13,15,0.6)",
-                      }}
+                {d.recentRequests.map((req, i) => (
+                  <tr
+                    key={req.id}
+                    style={{
+                      borderBottom:
+                        i < d.recentRequests.length - 1
+                          ? "1px solid rgba(255,255,255,0.04)"
+                          : "none",
+                      background: "rgba(11,11,13,0.5)",
+                    }}
+                  >
+                    <td className="px-5 py-3.5">
+                      <div className="font-medium text-sm" style={{ color: "#f2efe9" }}>
+                        {req.fullName}
+                      </div>
+                      <div className="text-xs mt-0.5" style={{ color: "rgba(242,239,233,0.35)" }}>
+                        {req.email}
+                      </div>
+                    </td>
+                    <td
+                      className="px-5 py-3.5 text-sm"
+                      style={{ color: "rgba(242,239,233,0.6)" }}
                     >
-                      <td className="px-5 py-3">
-                        <Link href={`/admin/requests/${req.id}`} className="font-medium hover:underline" style={{ color: "#f2efe9" }}>
-                          {req.fullName}
-                        </Link>
-                        <div className="text-xs mt-0.5" style={{ color: "rgba(242,239,233,0.4)" }}>
-                          {req.email}
-                        </div>
-                      </td>
-                      <td className="px-5 py-3" style={{ color: "rgba(242,239,233,0.65)" }}>
-                        {req.eventType}
-                      </td>
-                      <td className="px-5 py-3">
-                        <span
-                          className="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium"
-                          style={{ background: sc.bg, color: sc.color }}
-                        >
-                          {req.status.charAt(0) + req.status.slice(1).toLowerCase()}
-                        </span>
-                      </td>
-                      <td className="px-5 py-3 text-xs" style={{ color: "rgba(242,239,233,0.4)" }}>
-                        {new Date(req.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                      </td>
-                    </tr>
-                  );
-                })}
+                      {req.eventType}
+                    </td>
+                    <td
+                      className="px-5 py-3.5 text-xs"
+                      style={{ color: "rgba(242,239,233,0.4)" }}
+                    >
+                      {req.budgetRange ?? "—"}
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <StatusBadge status={req.status} />
+                    </td>
+                    <td
+                      className="px-5 py-3.5 text-xs whitespace-nowrap"
+                      style={{ color: "rgba(242,239,233,0.35)" }}
+                    >
+                      {new Date(req.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <Link
+                        href={`/admin/requests/${req.id}`}
+                        className="text-xs px-3 py-1.5 rounded-lg font-medium transition"
+                        style={{
+                          background: "rgba(214,178,94,0.08)",
+                          color: "#d6b25e",
+                          border: "1px solid rgba(214,178,94,0.15)",
+                        }}
+                      >
+                        Open
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           )}
         </div>
+      </div>
+
+      {/* Quick links */}
+      <div className="grid grid-cols-2 gap-3">
+        <Link
+          href="/admin/shows/new"
+          className="flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-medium transition hover:opacity-80"
+          style={{
+            background: "rgba(18,18,20,0.8)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            color: "rgba(242,239,233,0.55)",
+          }}
+        >
+          <span style={{ color: "#d6b25e" }}>+</span> Add Show
+        </Link>
+        <Link
+          href="/admin/merch/new"
+          className="flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-medium transition hover:opacity-80"
+          style={{
+            background: "rgba(18,18,20,0.8)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            color: "rgba(242,239,233,0.55)",
+          }}
+        >
+          <span style={{ color: "#d6b25e" }}>+</span> Add Merch Item
+        </Link>
       </div>
     </div>
   );
