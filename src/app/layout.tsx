@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
@@ -51,9 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen bg-[#0B0B0F] text-white">
-        <Header />
-        <main className="mx-auto max-w-6xl px-6 py-10">{children}</main>
-        <Footer />
+        {children}
         <Analytics />
       </body>
     </html>

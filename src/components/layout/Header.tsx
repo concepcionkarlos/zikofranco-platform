@@ -30,6 +30,14 @@ export function Header() {
             Book Now
           </Link>
         </nav>
+
+        <Link
+          href="/admin"
+          title="Admin"
+          className="ml-4 text-white/20 hover:text-white/50 transition-colors text-xs"
+        >
+          ⚙
+        </Link>
       </div>
     </header>
   );
