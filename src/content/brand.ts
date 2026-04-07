@@ -4,7 +4,7 @@
  * Cambia aquí para modificar el estilo del sitio.
  */
 export const brand = {
-  name: "ZicoFranco",
+  name: "ZikoFranco",
   colors: {
     background: "#0B0B0F",
     surface: "#141821",
