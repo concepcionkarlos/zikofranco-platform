@@ -35,6 +35,9 @@ model Lead {
   activities LeadActivity[]
   emailLogs  EmailLog[]
 
+  contactedAt     DateTime? // first time an email was sent from admin
+  lastContactedAt DateTime? // most recent admin email sent
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
