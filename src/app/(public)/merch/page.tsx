@@ -1,25 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
+import { prisma } from "@/lib/db";
 
-/* ─── image paths ─────────────────────────────────────────── */
-const COLLECTION = "/assets/photos/07BFABBD-A564-4226-9FF8-F3A3ED575DDE.PNG";
-const HOODIE_1   = "/assets/photos/861918D7-FA86-4F24-96CA-49B41DC8E6BB.PNG";
-const TEE        = "/assets/photos/D15BE316-3B84-41C7-855D-22A9BD44498E.PNG";
-const GRID_4     = "/assets/photos/C2E47BD4-839A-470C-9C7E-0A8A52D4BBB5.PNG";
-const HOODIE_2   = "/assets/photos/77BFBC0D-0A88-43E6-8F4B-B32DA3CC2CC8.PNG";
-const POSTER_IMG = "/assets/photos/IMG_4962.PNG";
+export const dynamic = "force-dynamic";
 
-/* ─── shared label pill ──────────────────────────────────── */
-function Tag({ text }: { text: string }) {
-  return (
-    <span className="absolute top-4 left-4 z-20 text-[9px] tracking-[0.22em] uppercase px-2.5 py-1 rounded-full bg-black/60 text-gold border border-gold/20 font-semibold backdrop-blur-sm">
-      {text}
-    </span>
-  );
+const COLLECTION_BANNER = "/assets/photos/07BFABBD-A564-4226-9FF8-F3A3ED575DDE.PNG";
+
+async function getMerchItems() {
+  return prisma.merchItem.findMany({
+    where: { isArchived: false, isVisible: true },
+    orderBy: { createdAt: "asc" },
+  });
 }
 
-/* ─── Page ───────────────────────────────────────────────── */
-export default function MerchPage() {
+export default async function MerchPage() {
+  const items = await getMerchItems();
+
   return (
     <section className="space-y-5">
 
@@ -39,10 +35,10 @@ export default function MerchPage() {
         </p>
       </div>
 
-      {/* ── COLLECTION BANNER (full flat lay) ── */}
+      {/* ── COLLECTION BANNER ── */}
       <div className="relative rounded-2xl overflow-hidden h-[420px] md:h-[540px] group">
         <Image
-          src={COLLECTION}
+          src={COLLECTION_BANNER}
           alt="ZikoFranco Drop 01 — Full Collection"
           fill
           className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
@@ -60,118 +56,21 @@ export default function MerchPage() {
         </div>
       </div>
 
-      {/* ── ROW 1: Hoodie hero (3/5) + Tee (2/5) ── */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
-
-        {/* Hoodie – large card */}
-        <div className="md:col-span-3 relative rounded-2xl overflow-hidden group h-[500px] md:h-[600px] bg-black">
-          <Tag text="ZF Shadow Hoodie" />
-          <Image
-            src={HOODIE_1}
-            alt="ZikoFranco Shadow Hoodie"
-            fill
-            className="object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]"
-            sizes="(max-width: 768px) 100vw, 60vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-white font-bold text-xl leading-tight">Shadow Hoodie</p>
-                <p className="text-white/40 text-xs tracking-wide mt-0.5">Washed fleece · Oversized · Black</p>
-              </div>
-              <p className="text-gold font-bold text-2xl">$75</p>
-            </div>
-          </div>
+      {/* ── PRODUCTS FROM DB ── */}
+      {items.length === 0 ? (
+        <div
+          className="rounded-2xl py-16 text-center"
+          style={{ background: "rgba(18,18,20,0.7)", border: "1px solid rgba(255,255,255,0.06)" }}
+        >
+          <p className="text-[10px] tracking-[0.25em] uppercase text-gold font-semibold mb-2">Coming Soon</p>
+          <p className="text-white font-bold text-lg">Products dropping soon</p>
+          <p className="vintage-muted text-sm mt-2 max-w-xs mx-auto">
+            Follow on Instagram to be first when the drop goes live.
+          </p>
         </div>
-
-        {/* Tee */}
-        <div className="md:col-span-2 relative rounded-2xl overflow-hidden group h-[420px] md:h-[600px] bg-black">
-          <Tag text="ZF Icon Tee" />
-          <Image
-            src={TEE}
-            alt="ZikoFranco Icon Tee"
-            fill
-            className="object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]"
-            sizes="(max-width: 768px) 100vw, 40vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-white font-bold text-lg leading-tight">Icon Tee</p>
-                <p className="text-white/40 text-xs tracking-wide mt-0.5">Heavyweight cotton · Black</p>
-              </div>
-              <p className="text-gold font-bold text-xl">$35</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── 4-PRODUCT GRID OVERVIEW ── */}
-      <div className="relative rounded-2xl overflow-hidden group h-[360px] md:h-[480px] bg-black">
-        <Image
-          src={GRID_4}
-          alt="ZikoFranco — All Products Overview"
-          fill
-          className="object-contain object-center transition-transform duration-700 group-hover:scale-[1.02]"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <div className="absolute bottom-6 left-6">
-          <p className="text-[9px] tracking-[0.3em] uppercase text-gold font-semibold mb-1">Full Lineup</p>
-          <p className="text-white font-bold text-lg">Everything in Drop 01</p>
-          <p className="text-white/40 text-xs mt-0.5">Tee · Hoodie · Cap · Band Tee</p>
-        </div>
-      </div>
-
-      {/* ── ROW 2: Hoodie variant + Poster/Wallpaper ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-        {/* Hoodie v2 */}
-        <div className="relative rounded-2xl overflow-hidden group h-[460px] bg-black">
-          <Tag text="ZF Shadow Hoodie — Alt" />
-          <Image
-            src={HOODIE_2}
-            alt="ZikoFranco Shadow Hoodie alternate"
-            fill
-            className="object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]"
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-white font-bold text-lg leading-tight">Shadow Hoodie</p>
-                <p className="text-white/40 text-xs tracking-wide mt-0.5">Night edition · Glow print</p>
-              </div>
-              <p className="text-gold font-bold text-xl">$75</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Poster / wallpaper artwork */}
-        <div className="relative rounded-2xl overflow-hidden group h-[460px] bg-black">
-          <Tag text="ZF Signature Poster" />
-          <Image
-            src={POSTER_IMG}
-            alt="ZikoFranco Signature Poster"
-            fill
-            className="object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]"
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-white font-bold text-lg leading-tight">Signature Poster</p>
-                <p className="text-white/40 text-xs tracking-wide mt-0.5">18×24" giclée · Numbered · Signed</p>
-              </div>
-              <p className="text-gold font-bold text-xl">$55</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      ) : (
+        <ProductGrid items={items} />
+      )}
 
       {/* ── FOOTER CTA ── */}
       <div className="vintage-card p-6 sm:p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
@@ -198,5 +97,108 @@ export default function MerchPage() {
       </div>
 
     </section>
+  );
+}
+
+/* ─── Product grid — editorial layout adapts to count ─── */
+type MerchItem = Awaited<ReturnType<typeof getMerchItems>>[number];
+
+function ProductGrid({ items }: { items: MerchItem[] }) {
+  // First two items get the 3/5 + 2/5 hero row
+  const [hero, second, ...rest] = items;
+
+  return (
+    <div className="space-y-5">
+      {/* Hero row */}
+      {hero && (
+        <div className={`grid gap-5 ${second ? "grid-cols-1 md:grid-cols-5" : "grid-cols-1"}`}>
+          <ProductCard
+            item={hero}
+            className={second ? "md:col-span-3 h-[500px] md:h-[600px]" : "h-[500px]"}
+            titleSize="xl"
+          />
+          {second && (
+            <ProductCard
+              item={second}
+              className="md:col-span-2 h-[420px] md:h-[600px]"
+              titleSize="lg"
+            />
+          )}
+        </div>
+      )}
+
+      {/* Remaining items — 2 column grid */}
+      {rest.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {rest.map((item) => (
+            <ProductCard key={item.id} item={item} className="h-[460px]" titleSize="lg" />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProductCard({
+  item,
+  className = "",
+  titleSize = "lg",
+}: {
+  item: MerchItem;
+  className?: string;
+  titleSize?: "xl" | "lg";
+}) {
+  return (
+    <div className={`relative rounded-2xl overflow-hidden group bg-black ${className}`}>
+      {/* Product tag */}
+      <span className="absolute top-4 left-4 z-20 text-[9px] tracking-[0.22em] uppercase px-2.5 py-1 rounded-full bg-black/60 text-gold border border-gold/20 font-semibold backdrop-blur-sm">
+        {item.category ? `ZF ${item.category}` : "ZF Drop 01"}
+      </span>
+
+      {/* Stock badge */}
+      {!item.inStock && (
+        <span className="absolute top-4 right-4 z-20 text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full bg-black/70 text-white/40 border border-white/10 font-semibold backdrop-blur-sm">
+          Sold Out
+        </span>
+      )}
+
+      {/* Image */}
+      {item.image ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={item.image}
+          alt={item.name}
+          className="absolute inset-0 w-full h-full object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-5xl text-white/10">◎</span>
+        </div>
+      )}
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+
+      {/* Info bar */}
+      <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
+        <div className="flex items-end justify-between">
+          <div>
+            <p
+              className={`text-white font-bold leading-tight ${
+                titleSize === "xl" ? "text-xl" : "text-lg"
+              }`}
+            >
+              {item.name}
+            </p>
+            {item.description && (
+              <p className="text-white/40 text-xs tracking-wide mt-0.5">{item.description}</p>
+            )}
+          </div>
+          <p className={`text-gold font-bold tabular-nums ${titleSize === "xl" ? "text-2xl" : "text-xl"}`}>
+            ${item.price % 1 === 0 ? item.price.toFixed(0) : item.price.toFixed(2)}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
