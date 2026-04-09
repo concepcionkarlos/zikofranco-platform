@@ -1,14 +1,78 @@
 import Link from "next/link";
-import Image from "next/image";
 import { links } from "@/content/links";
+import { prisma } from "@/lib/db";
 
-export default function EPKPage() {
+export const revalidate = 60; // revalidate every minute
+
+const DEFAULTS: Record<string, string> = {
+  epk_bio:
+    "ZikoFranco is the live rock band project fronted by Zikopoly — a high-energy Miami-based artist with a voice built for arenas and a stage presence that commands attention from the first note.\n\nThe band's signature sound fuses modern rock power with funk-forward groove and a Santana-inspired Latin edge. Their sets blend electrifying cover reimaginings with original material — a formula that keeps dance floors moving and audiences coming back.\n\nBased in Miami, FL. Available for private events, corporate shows, festivals, venue residencies, and weddings throughout the US and internationally.",
+  epk_genre: "Rock / Funk",
+  epk_origin: "Miami, FL",
+  epk_languages: "EN / ES",
+  epk_press_photo: "/assets/photos/7058E651-F966-492A-B4CB-7CC9ABF47D72.jpeg",
+  epk_press_photo_caption: "Press Photo — Hi-res available on request",
+  epk_band_format:
+    "Trio, quartet, or full band\nFormat based on venue & needs\nAlways features rock guitars\nConfirm lineup at booking",
+  epk_stage_req:
+    "Min. 20×16 ft stage\nFull PA system required\nBand uses in-ears — no wedges needed\nBackline available",
+  epk_set_details:
+    "30 / 60 / 90 min sets\nFull setlist on request\nSoundcheck: 60 min\nLoad-in: 90 min",
+  epk_contact_email: "Zikofranco@gmail.com",
+};
+
+async function getEPKContent(): Promise<Record<string, string>> {
+  try {
+    const rows = await prisma.siteContent.findMany({
+      where: { key: { startsWith: "epk_" } },
+    });
+    const stored = Object.fromEntries(rows.map((r) => [r.key, r.value]));
+    return { ...DEFAULTS, ...stored };
+  } catch {
+    return DEFAULTS;
+  }
+}
+
+function parseLines(text: string): string[] {
+  return text
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+}
+
+function parseParagraphs(text: string): string[] {
+  return text
+    .split(/\n\n+/)
+    .map((p) => p.replace(/\n/g, " ").trim())
+    .filter(Boolean);
+}
+
+export default async function EPKPage() {
+  const c = await getEPKContent();
+
+  const bioParagraphs = parseParagraphs(c.epk_bio);
+  const bandFormat = parseLines(c.epk_band_format);
+  const stageReq = parseLines(c.epk_stage_req);
+  const setDetails = parseLines(c.epk_set_details);
+
+  const stats = [
+    { label: "Genre", value: c.epk_genre },
+    { label: "Origin", value: c.epk_origin },
+    { label: "Languages", value: c.epk_languages },
+  ];
+
+  const riderSections = [
+    { title: "Band Format", items: bandFormat },
+    { title: "Stage Requirements", items: stageReq },
+    { title: "Set Details", items: setDetails },
+  ];
+
   return (
     <section className="space-y-12">
       {/* Header */}
       <div className="space-y-1">
         <p className="text-[10px] tracking-[0.2em] uppercase text-gold font-semibold">
-          Press & Promoters
+          Press &amp; Promoters
         </p>
         <h1 className="text-3xl font-extrabold tracking-tight text-white">
           Electronic Press Kit
@@ -26,27 +90,13 @@ export default function EPKPage() {
           </p>
           <h2 className="text-lg font-bold text-white">ZikoFranco</h2>
           <div className="space-y-3 vintage-muted text-sm leading-relaxed">
-            <p>
-              ZikoFranco is the live rock band project fronted by <em>Zikopoly</em> — a high-energy Miami-based
-              artist with a voice built for arenas and a stage presence that commands attention from the first note.
-            </p>
-            <p>
-              The band's signature sound fuses modern rock power with funk-forward groove and a
-              Santana-inspired Latin edge. Their sets blend electrifying cover reimaginings with
-              original material — a formula that keeps dance floors moving and audiences coming back.
-            </p>
-            <p>
-              Based in Miami, FL. Available for private events, corporate shows, festivals,
-              venue residencies, and weddings throughout the US and internationally.
-            </p>
+            {bioParagraphs.map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
           </div>
           <div className="vintage-divider" />
           <div className="grid grid-cols-3 gap-4 text-center">
-            {[
-              { label: "Genre", value: "Rock / Funk" },
-              { label: "Origin", value: "Miami, FL" },
-              { label: "Languages", value: "EN / ES" },
-            ].map(({ label, value }) => (
+            {stats.map(({ label, value }) => (
               <div key={label}>
                 <p className="text-[10px] tracking-widest uppercase text-white/30">{label}</p>
                 <p className="text-white font-semibold text-sm mt-0.5">{value}</p>
@@ -55,46 +105,35 @@ export default function EPKPage() {
           </div>
         </div>
 
-        <div className="md:col-span-2 relative rounded-2xl overflow-hidden min-h-[320px]">
-          <Image
-            src="/assets/photos/7058E651-F966-492A-B4CB-7CC9ABF47D72.jpeg"
+        {/* Press photo */}
+        <div className="md:col-span-2 relative rounded-2xl overflow-hidden min-h-[320px] bg-black/30">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={c.epk_press_photo}
             alt="ZikoFranco press photo"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 40vw"
+            className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          <p className="absolute bottom-4 left-4 text-[10px] tracking-widest uppercase text-white/50">
-            Press Photo — Hi-res available on request
-          </p>
+          {c.epk_press_photo_caption && (
+            <p className="absolute bottom-4 left-4 text-[10px] tracking-widest uppercase text-white/50">
+              {c.epk_press_photo_caption}
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Tech rider */}
+      {/* Technical Rider */}
       <div className="vintage-card p-7 space-y-4">
         <p className="text-[10px] tracking-[0.18em] uppercase text-gold font-semibold">
           Technical Rider
         </p>
         <div className="grid sm:grid-cols-3 gap-6">
-          {[
-            {
-              title: "Band Format",
-              items: ["Trio, quartet, or full band", "Format based on venue & needs", "Always features rock guitars", "Confirm lineup at booking"],
-            },
-            {
-              title: "Stage Requirements",
-              items: ["Min. 20×16 ft stage", "Full PA system required", "Band uses in-ears — no wedges needed", "Backline available"],
-            },
-            {
-              title: "Set Details",
-              items: ["30 / 60 / 90 min sets", "Full setlist on request", "Soundcheck: 60 min", "Load-in: 90 min"],
-            },
-          ].map(({ title, items }) => (
+          {riderSections.map(({ title, items }) => (
             <div key={title} className="space-y-2">
               <p className="text-white font-semibold text-sm">{title}</p>
               <ul className="space-y-1">
-                {items.map((item) => (
-                  <li key={item} className="vintage-muted text-sm flex items-start gap-2">
+                {items.map((item, i) => (
+                  <li key={i} className="vintage-muted text-sm flex items-start gap-2">
                     <span className="text-gold mt-0.5">·</span>
                     {item}
                   </li>
@@ -105,7 +144,7 @@ export default function EPKPage() {
         </div>
       </div>
 
-      {/* Streaming + Social stats */}
+      {/* Streaming + Social */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { platform: "Spotify", handle: "@zikofranco", href: links.spotify },
@@ -129,7 +168,7 @@ export default function EPKPage() {
       {/* Contact / Download CTA */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="vintage-card p-6 space-y-3">
-          <p className="text-white font-semibold">Booking & Press Inquiries</p>
+          <p className="text-white font-semibold">Booking &amp; Press Inquiries</p>
           <p className="vintage-muted text-sm">
             For booking requests, interviews, and press features — use the form or email directly.
           </p>
@@ -141,12 +180,12 @@ export default function EPKPage() {
           </Link>
         </div>
         <div className="vintage-card p-6 space-y-3">
-          <p className="text-white font-semibold">Hi-Res Photos & Logos</p>
+          <p className="text-white font-semibold">Hi-Res Photos &amp; Logos</p>
           <p className="vintage-muted text-sm">
             Press photos, logos in SVG/PNG, and band artwork available upon request.
           </p>
           <a
-            href="mailto:Zikofranco@gmail.com"
+            href={`mailto:${c.epk_contact_email}`}
             className="btn-outline inline-flex px-6 py-2.5 text-sm font-semibold rounded-xl"
           >
             Request Press Pack
