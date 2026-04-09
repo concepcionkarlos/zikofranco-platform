@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { MediaToggleButton } from "@/components/admin/MediaToggleButton";
 import { MediaDeleteButton } from "@/components/admin/MediaDeleteButton";
+import { MediaImagePreview } from "@/components/admin/MediaImagePreview";
 
 export const dynamic = "force-dynamic";
 
@@ -102,15 +103,7 @@ export default async function MediaPage({ searchParams }: PageProps) {
                     </span>
                   </div>
                 ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.url}
-                    alt={item.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
-                  />
+                  <MediaImagePreview src={item.url} alt={item.title} />
                 )}
                 {item.isFeatured && (
                   <span
