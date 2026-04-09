@@ -6,12 +6,14 @@
 import Image from "next/image";
 
 type LogoProps = {
-  size?: "header" | "hero";
+  size?: "hero" | "nav" | "header";
 };
 
-export function Logo({ size = "header" }: LogoProps) {
+export function Logo({ size = "nav" }: LogoProps) {
   const sizeClass =
-    size === "hero" ? "h-24 md:h-32 w-auto" : "h-14 w-auto";
+    size === "hero" ? "h-24 md:h-32 w-auto" :
+    size === "nav"  ? "h-9 w-auto" :
+                      "h-14 w-auto";
 
   return (
     <div className="flex items-center">

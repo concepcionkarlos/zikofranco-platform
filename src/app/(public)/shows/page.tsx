@@ -1,6 +1,17 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
+const PAST_STAGES = [
+  { venue: "Ball & Chain", city: "Little Havana, Miami" },
+  { venue: "Gramps", city: "Wynwood, Miami" },
+  { venue: "The Ground Club", city: "Downtown Miami" },
+  { venue: "Bayfront Park", city: "Miami, FL" },
+  { venue: "Hard Rock Live", city: "Hollywood, FL" },
+  { venue: "Gibson Park", city: "Miami, FL" },
+];
+
 const STATUS_BADGE: Record<string, { text: string; style: React.CSSProperties }> = {
   UPCOMING: {
     text: "Upcoming",
@@ -164,6 +175,38 @@ export default async function ShowsPage() {
           Interested in booking ZikoFranco?
         </Link>
       </p>
+
+      {/* Past Stages */}
+      <div className="space-y-5">
+        <div>
+          <p
+            className="text-[10px] tracking-[0.2em] uppercase font-semibold"
+            style={{ color: "#d6b25e" }}
+          >
+            Past Stages
+          </p>
+          <h2 className="text-lg font-bold mt-1">Where we've played</h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {PAST_STAGES.map(({ venue, city }) => (
+            <div
+              key={venue}
+              className="rounded-xl px-5 py-4"
+              style={{
+                background: "rgba(255,255,255,0.02)",
+                border: "1px solid rgba(255,255,255,0.055)",
+              }}
+            >
+              <p className="text-sm font-semibold" style={{ color: "#f2efe9" }}>
+                {venue}
+              </p>
+              <p className="text-xs mt-0.5" style={{ color: "rgba(242,239,233,0.35)" }}>
+                {city}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Booking CTA */}
       <div
