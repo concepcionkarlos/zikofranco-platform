@@ -1,6 +1,7 @@
 /**
  * GET    /api/admin/requests/[id]  — full lead detail
  * PATCH  /api/admin/requests/[id]  — update status or internalNotes
+ * DELETE /api/admin/requests/[id]  — permanently delete request
  */
 
 import { NextResponse } from "next/server";
@@ -102,5 +103,23 @@ export async function PATCH(
       { ok: false, error: "Server error" },
       { status: 500 },
     );
+  }
+}
+
+export async function DELETE(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { id } = await params;
+    const existing = await prisma.lead.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
+    }
+    await prisma.lead.delete({ where: { id } });
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("Request delete error:", err);
+    return NextResponse.json({ ok: false, error: "Server error" }, { status: 500 });
   }
 }

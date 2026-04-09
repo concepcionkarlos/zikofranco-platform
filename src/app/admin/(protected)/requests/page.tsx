@@ -66,11 +66,23 @@ export default async function RequestsPage({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-6 max-w-6xl">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Booking Requests</h1>
-        <p className="text-sm mt-1" style={{ color: "rgba(242,239,233,0.45)" }}>
-          {total} total request{total !== 1 ? "s" : ""}
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Booking Requests</h1>
+          <p className="text-sm mt-1" style={{ color: "rgba(242,239,233,0.45)" }}>
+            {total} total request{total !== 1 ? "s" : ""}
+          </p>
+        </div>
+        <Link
+          href="/admin/requests/new"
+          className="text-sm px-4 py-2 rounded-xl font-semibold"
+          style={{
+            background: "linear-gradient(180deg, rgba(214,178,94,0.95), rgba(185,151,68,0.95))",
+            color: "#1b1408",
+          }}
+        >
+          + New Request
+        </Link>
       </div>
 
       <RequestsFilterBar statuses={STATUSES} currentStatus={status} currentSearch={search} currentSort={sort} />

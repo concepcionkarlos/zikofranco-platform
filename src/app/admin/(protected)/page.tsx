@@ -12,6 +12,7 @@ async function getData() {
     archivedCount,
     upcomingShows,
     activeMerch,
+    activeMedia,
     recentRequests,
   ] = await Promise.all([
     prisma.lead.count({ where: { status: "NEW" } }),
@@ -27,6 +28,7 @@ async function getData() {
       },
     }),
     prisma.merchItem.count({ where: { isArchived: false, isVisible: true } }),
+    prisma.mediaItem.count({ where: { isVisible: true } }),
     prisma.lead.findMany({
       orderBy: { createdAt: "desc" },
       take: 6,
@@ -50,6 +52,7 @@ async function getData() {
     archivedCount,
     upcomingShows,
     activeMerch,
+    activeMedia,
     recentRequests,
   };
 }
@@ -86,6 +89,7 @@ export default async function AdminDashboard() {
     { label: "Confirmed", value: d.confirmedCount, color: "#4ade80", href: "/admin/requests?status=CONFIRMED", urgent: false },
     { label: "Shows upcoming", value: d.upcomingShows, color: "#d6b25e", href: "/admin/shows", urgent: false },
     { label: "Merch active", value: d.activeMerch, color: "#a78bfa", href: "/admin/merch", urgent: false },
+    { label: "Media visible", value: d.activeMedia, color: "#34d399", href: "/admin/media", urgent: false },
   ];
 
   return (
@@ -118,7 +122,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {statCards.map(({ label, value, color, href, urgent }) => (
           <Link
             key={label}
@@ -264,29 +268,26 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Quick links */}
-      <div className="grid grid-cols-2 gap-3">
-        <Link
-          href="/admin/shows/new"
-          className="flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-medium transition hover:opacity-80"
-          style={{
-            background: "rgba(18,18,20,0.8)",
-            border: "1px solid rgba(255,255,255,0.06)",
-            color: "rgba(242,239,233,0.55)",
-          }}
-        >
-          <span style={{ color: "#d6b25e" }}>+</span> Add Show
-        </Link>
-        <Link
-          href="/admin/merch/new"
-          className="flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-medium transition hover:opacity-80"
-          style={{
-            background: "rgba(18,18,20,0.8)",
-            border: "1px solid rgba(255,255,255,0.06)",
-            color: "rgba(242,239,233,0.55)",
-          }}
-        >
-          <span style={{ color: "#d6b25e" }}>+</span> Add Merch Item
-        </Link>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { href: "/admin/shows/new", label: "Add Show" },
+          { href: "/admin/merch/new", label: "Add Merch" },
+          { href: "/admin/media/new", label: "Add Media" },
+          { href: "/admin/content", label: "Site Content" },
+        ].map(({ href, label }) => (
+          <Link
+            key={href}
+            href={href}
+            className="flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-medium transition hover:opacity-80"
+            style={{
+              background: "rgba(18,18,20,0.8)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              color: "rgba(242,239,233,0.55)",
+            }}
+          >
+            <span style={{ color: "#d6b25e" }}>+</span> {label}
+          </Link>
+        ))}
       </div>
     </div>
   );

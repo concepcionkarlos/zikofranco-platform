@@ -3,6 +3,10 @@ import { Logo } from "@/components/branding/Logo";
 import { BrandName } from "@/components/branding/BrandName";
 import { links, platformLinks } from "@/content/links";
 import { Reveal } from "@/components/ui/Reveal";
+import { prisma } from "@/lib/db";
+
+const DEFAULT_SPOTIFY_EMBED =
+  "https://open.spotify.com/embed/artist/0xyaYBhWaHUExO14cfrdqL?utm_source=generator&theme=0";
 
 const testimonials = [
   {
@@ -32,7 +36,21 @@ const stats = [
   { value: "Miami", label: "Based in" },
 ];
 
-export default function Home() {
+export const revalidate = 300; // revalidate every 5 min
+
+async function getSpotifyEmbedUrl(): Promise<string> {
+  try {
+    const row = await prisma.siteContent.findUnique({
+      where: { key: "spotify_embed_url" },
+    });
+    return row?.value || DEFAULT_SPOTIFY_EMBED;
+  } catch {
+    return DEFAULT_SPOTIFY_EMBED;
+  }
+}
+
+export default async function Home() {
+  const spotifyEmbedUrl = await getSpotifyEmbedUrl();
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────── */}
@@ -229,7 +247,7 @@ export default function Home() {
 
           {/* Embed */}
           <iframe
-            src="https://open.spotify.com/embed/artist/0xyaYBhWaHUExO14cfrdqL?utm_source=generator&theme=0"
+            src={spotifyEmbedUrl}
             width="100%"
             height="352"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"

@@ -12,7 +12,7 @@ type LogoProps = {
 export function Logo({ size = "nav" }: LogoProps) {
   const sizeClass =
     size === "hero" ? "h-24 md:h-32 w-auto" :
-    size === "nav"  ? "h-9 w-auto" :
+    size === "nav"  ? "h-10 w-auto" :
                       "h-14 w-auto";
 
   return (

@@ -2,7 +2,7 @@
   "name": "zikofranco-platform",
   "version": "1.0.0",
   "private": true,
-  "description": "ZicoFranco official platform (Next.js + Prisma + Neon + Vercel)",
+  "description": "ZikoFranco official platform (Next.js + Prisma + Neon + Vercel)",
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",

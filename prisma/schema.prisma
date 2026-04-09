@@ -110,3 +110,27 @@ model MerchItem {
 
   @@index([isArchived, isVisible])
 }
+
+// ─── Media ───────────────────────────────────────────────────────────────────
+
+model MediaItem {
+  id         String  @id @default(cuid())
+  title      String
+  type       String  @default("PHOTO") // PHOTO | VIDEO
+  url        String
+  isVisible  Boolean @default(true)
+  isFeatured Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isVisible, isFeatured])
+}
+
+// ─── Site Content (editable key/value settings) ───────────────────────────────
+
+model SiteContent {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
