@@ -155,22 +155,6 @@ export default function NewMediaPage() {
         </div>
       </form>
 
-      <style jsx global>{`
-        .admin-input {
-          width: 100%;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 10px;
-          padding: 9px 12px;
-          font-size: 0.875rem;
-          color: #f2efe9;
-          outline: none;
-          transition: border-color 140ms ease;
-        }
-        .admin-input:focus { border-color: rgba(214,178,94,0.4); }
-        .admin-input option { background: #111113; }
-        .accent-gold { accent-color: #d6b25e; }
-      `}</style>
     </div>
   );
 }
