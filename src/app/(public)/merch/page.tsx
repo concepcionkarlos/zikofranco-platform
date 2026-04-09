@@ -50,7 +50,7 @@ export default function MerchPage() {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-        <div className="absolute bottom-7 left-7 right-7 flex items-end justify-between">
+        <div className="absolute bottom-5 left-5 right-5 sm:bottom-7 sm:left-7 sm:right-7 flex items-end justify-between">
           <div>
             <p className="text-[9px] tracking-[0.3em] uppercase text-gold font-semibold mb-1">Drop 01</p>
             <h2 className="text-white font-extrabold text-2xl md:text-3xl leading-tight">Full Collection Preview</h2>
@@ -174,7 +174,7 @@ export default function MerchPage() {
       </div>
 
       {/* ── FOOTER CTA ── */}
-      <div className="vintage-card p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+      <div className="vintage-card p-6 sm:p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
         <div className="flex-1 space-y-2">
           <p className="text-[10px] tracking-[0.28em] uppercase text-gold font-semibold">Early Access</p>
           <h2 className="text-xl font-bold text-white">Be first when the drop goes live</h2>
@@ -182,7 +182,7 @@ export default function MerchPage() {
             Follow on Instagram and DM to reserve yours before the public release. Limited quantities.
           </p>
         </div>
-        <div className="flex gap-3 flex-wrap justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center">
           <a
             href="https://www.instagram.com/zikopoly"
             target="_blank"

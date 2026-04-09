@@ -205,26 +205,45 @@ export default function BookingPage() {
               </Field>
 
               <Field label="Event Type" required>
-                <select
-                  name="eventType"
-                  value={form.eventType}
-                  onChange={onChange}
-                  onFocus={() => setFocused("eventType")}
-                  onBlur={() => setFocused(null)}
-                  required
-                  style={{
-                    ...getInputStyle("eventType"),
-                    appearance: "none" as const,
-                  }}
-                >
-                  <option value="" style={{ background: "#0c0c0e" }}>Select one</option>
-                  <option value="Private Event" style={{ background: "#0c0c0e" }}>Private Event</option>
-                  <option value="Corporate Event" style={{ background: "#0c0c0e" }}>Corporate Event</option>
-                  <option value="Festival" style={{ background: "#0c0c0e" }}>Festival</option>
-                  <option value="Venue Show" style={{ background: "#0c0c0e" }}>Venue Show</option>
-                  <option value="Wedding" style={{ background: "#0c0c0e" }}>Wedding</option>
-                  <option value="Other" style={{ background: "#0c0c0e" }}>Other</option>
-                </select>
+                <div className="relative">
+                  <select
+                    name="eventType"
+                    value={form.eventType}
+                    onChange={onChange}
+                    onFocus={() => setFocused("eventType")}
+                    onBlur={() => setFocused(null)}
+                    required
+                    style={{
+                      ...getInputStyle("eventType"),
+                      appearance: "none" as const,
+                      paddingRight: "36px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <option value="" style={{ background: "#0c0c0e" }}>Select one</option>
+                    <option value="Private Event" style={{ background: "#0c0c0e" }}>Private Event</option>
+                    <option value="Corporate Event" style={{ background: "#0c0c0e" }}>Corporate Event</option>
+                    <option value="Festival" style={{ background: "#0c0c0e" }}>Festival</option>
+                    <option value="Venue Show" style={{ background: "#0c0c0e" }}>Venue Show</option>
+                    <option value="Wedding" style={{ background: "#0c0c0e" }}>Wedding</option>
+                    <option value="Other" style={{ background: "#0c0c0e" }}>Other</option>
+                  </select>
+                  {/* Dropdown chevron */}
+                  <svg
+                    className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="rgba(242,239,233,0.3)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </div>
               </Field>
 
               <Field label="Budget Range">
