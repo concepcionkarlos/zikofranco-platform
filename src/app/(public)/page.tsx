@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────── */}
-      <section className="vintage-container pt-12 pb-20 text-center relative">
+      <section className="vintage-container pt-16 pb-24 text-center relative">
         <div
           className="absolute left-1/2 -translate-x-1/2 top-0 w-[500px] h-64 pointer-events-none"
           style={{
@@ -53,16 +53,16 @@ export default function Home() {
           <BrandName />
         </h1>
 
-        <p className="mt-4 text-[10px] tracking-[0.28em] uppercase vintage-muted">
+        <p className="mt-5 text-[10px] tracking-[0.3em] uppercase vintage-muted">
           Miami, FL &nbsp;·&nbsp; Rock &nbsp;·&nbsp; Funk &nbsp;·&nbsp; Live Shows
         </p>
 
-        <p className="mt-6 vintage-muted max-w-md mx-auto text-sm leading-relaxed">
+        <p className="mt-5 vintage-muted max-w-sm mx-auto text-sm leading-relaxed">
           Modern rock power fused with funk-forward groove and a Santana-inspired
           edge — built for big stages and unforgettable nights.
         </p>
 
-        <div className="mt-9 flex justify-center gap-3 flex-wrap">
+        <div className="mt-10 flex justify-center gap-3 flex-wrap">
           <Link
             href="/booking"
             className="btn-oxblood px-8 py-3 font-semibold text-sm tracking-wide rounded-xl"
@@ -83,25 +83,25 @@ export default function Home() {
       </section>
 
       {/* ── STATS ─────────────────────────────────────────────────────── */}
-      <section className="vintage-container pb-16">
+      <section className="vintage-container pb-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {stats.map(({ value, label }) => (
             <div
               key={label}
-              className="text-center py-6 rounded-2xl"
+              className="text-center py-7 rounded-2xl"
               style={{
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.055)",
+                background: "rgba(255,255,255,0.025)",
+                border: "1px solid rgba(255,255,255,0.06)",
               }}
             >
               <div
-                className="text-2xl font-extrabold tracking-tight"
+                className="text-3xl font-extrabold tracking-tight tabular-nums"
                 style={{ color: "#d6b25e" }}
               >
                 {value}
               </div>
               <div
-                className="text-[10px] mt-1.5 uppercase tracking-widest"
+                className="text-[10px] mt-2 uppercase tracking-widest"
                 style={{ color: "rgba(242,239,233,0.35)" }}
               >
                 {label}
@@ -112,7 +112,7 @@ export default function Home() {
       </section>
 
       {/* ── BIO + LISTEN ──────────────────────────────────────────────── */}
-      <section className="vintage-container pb-16 grid md:grid-cols-5 gap-5">
+      <section className="vintage-container pb-20 grid md:grid-cols-5 gap-5">
         {/* Bio */}
         <div className="vintage-card p-8 md:col-span-3 flex flex-col gap-5">
           <p
@@ -182,7 +182,7 @@ export default function Home() {
       </section>
 
       {/* ── MUSIC ─────────────────────────────────────────────────────── */}
-      <section className="vintage-container pb-16">
+      <section className="vintage-container pb-20">
         <div
           className="rounded-2xl overflow-hidden"
           style={{
@@ -258,7 +258,7 @@ export default function Home() {
       </section>
 
       {/* ── TESTIMONIALS ──────────────────────────────────────────────── */}
-      <section className="vintage-container pb-16">
+      <section className="vintage-container pb-20">
         <div className="space-y-8">
           <div className="flex items-end justify-between">
             <div>
