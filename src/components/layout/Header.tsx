@@ -14,23 +14,45 @@ const NAV_LINKS = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
   // Close drawer on navigation
   useEffect(() => { setOpen(false); }, [pathname]);
 
+  // Scroll shadow
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 12);
+    handler(); // run on mount
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
   return (
-    <header className="w-full sticky top-0 z-40 border-b border-white/[0.07] backdrop-blur-md bg-[#0b0b0c]/80">
+    <header
+      className="w-full sticky top-0 z-40 border-b backdrop-blur-md"
+      style={{
+        borderColor: "rgba(255,255,255,0.07)",
+        background: scrolled ? "rgba(11,11,12,0.92)" : "rgba(11,11,12,0.80)",
+        boxShadow: scrolled ? "0 4px 32px rgba(0,0,0,0.45)" : "none",
+        transition: "background 200ms ease, box-shadow 200ms ease",
+      }}
+    >
       <div className="mx-auto max-w-6xl px-6 py-3 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="no-underline shrink-0" aria-label="ZikoFranco — home">
+        <Link href="/" className="no-underline shrink-0 logo-nav" aria-label="ZikoFranco — home">
           <Logo size="nav" />
         </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-5">
           {NAV_LINKS.map(({ href, label }) => (
-            <Link key={href} href={href} className="nav-link">
+            <Link
+              key={href}
+              href={href}
+              className="nav-link"
+              aria-current={pathname === href ? "page" : undefined}
+            >
               {label}
             </Link>
           ))}
@@ -41,54 +63,59 @@ export function Header() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 rounded-lg transition-colors"
+          className="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-[5px] rounded-lg transition-colors"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
+          aria-controls="mobile-nav"
         >
           <span
-            className="block w-5 h-px transition-all duration-200 origin-center"
+            className="block w-[22px] h-px"
             style={{
-              background: "rgba(242,239,233,0.7)",
-              transform: open ? "translateY(4px) rotate(45deg)" : undefined,
+              background: "rgba(242,239,233,0.75)",
+              transition: "transform 230ms cubic-bezier(0.22,1,0.36,1), opacity 180ms ease",
+              transform: open ? "translateY(5.5px) rotate(45deg)" : undefined,
             }}
           />
           <span
-            className="block w-5 h-px transition-all duration-200"
+            className="block w-[22px] h-px"
             style={{
-              background: "rgba(242,239,233,0.7)",
+              background: "rgba(242,239,233,0.75)",
+              transition: "opacity 180ms ease",
               opacity: open ? 0 : 1,
             }}
           />
           <span
-            className="block w-5 h-px transition-all duration-200 origin-center"
+            className="block w-[22px] h-px"
             style={{
-              background: "rgba(242,239,233,0.7)",
-              transform: open ? "translateY(-4px) rotate(-45deg)" : undefined,
+              background: "rgba(242,239,233,0.75)",
+              transition: "transform 230ms cubic-bezier(0.22,1,0.36,1), opacity 180ms ease",
+              transform: open ? "translateY(-5.5px) rotate(-45deg)" : undefined,
             }}
           />
         </button>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — animated slide + fade */}
       {open && (
         <nav
-          className="md:hidden border-t"
+          id="mobile-nav"
+          className="mobile-drawer md:hidden border-t"
           style={{
             borderColor: "rgba(255,255,255,0.06)",
-            background: "rgba(11,11,15,0.97)",
+            background: "rgba(10,10,12,0.97)",
             backdropFilter: "blur(20px)",
           }}
         >
-          <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1">
+          <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-0.5">
             {NAV_LINKS.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
-                className="py-3 text-sm font-medium transition-colors"
+                className="py-3.5 text-sm font-medium transition-colors"
                 style={{
-                  color: "rgba(242,239,233,0.65)",
-                  borderBottom: "1px solid rgba(255,255,255,0.05)",
+                  color: pathname === href ? "#d6b25e" : "rgba(242,239,233,0.65)",
+                  borderBottom: "1px solid rgba(255,255,255,0.045)",
                 }}
               >
                 {label}
@@ -96,7 +123,7 @@ export function Header() {
             ))}
             <Link
               href="/booking"
-              className="mt-3 btn-oxblood px-5 py-3 text-sm font-semibold rounded-xl text-center"
+              className="mt-4 btn-oxblood px-5 py-3.5 text-sm font-semibold rounded-xl text-center"
             >
               Book Now
             </Link>

@@ -27,9 +27,8 @@ export default function EPKPage() {
           <h2 className="text-lg font-bold text-white">ZikoFranco</h2>
           <div className="space-y-3 vintage-muted text-sm leading-relaxed">
             <p>
-              ZikoFranco is a Miami-based rock project led by Ziko — a high-energy frontman with
-              a voice built for arenas and a stage presence that commands attention from the first
-              note.
+              ZikoFranco is the live rock band project fronted by <em>Zikopoly</em> — a high-energy Miami-based
+              artist with a voice built for arenas and a stage presence that commands attention from the first note.
             </p>
             <p>
               The band's signature sound fuses modern rock power with funk-forward groove and a
