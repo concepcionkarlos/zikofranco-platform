@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -17,6 +17,7 @@ export function MediaEditForm({ item }: { item: MediaItem }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     title: item.title,
@@ -25,9 +26,36 @@ export function MediaEditForm({ item }: { item: MediaItem }) {
     isVisible: item.isVisible,
     isFeatured: item.isFeatured,
   });
+  const [preview, setPreview] = useState(item.url);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   function set<K extends keyof typeof form>(field: K, value: (typeof form)[K]) {
     setForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setPreview(URL.createObjectURL(file));
+    setUploading(true);
+    setError("");
+
+    const fd = new FormData();
+    fd.append("file", file);
+
+    const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+    const data = (await res.json()) as { ok: boolean; url?: string; error?: string };
+
+    if (!data.ok || !data.url) {
+      setError(data.error ?? "Upload failed.");
+      setUploading(false);
+      return;
+    }
+
+    set("url", data.url);
+    setPreview(data.url);
+    setUploading(false);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -81,10 +109,61 @@ export function MediaEditForm({ item }: { item: MediaItem }) {
           </select>
         </Field>
 
-        <Field label="URL *">
+        {/* File upload — only for photos */}
+        {form.type === "PHOTO" && (
+          <Field label="Photo">
+            <div
+              className="relative rounded-xl overflow-hidden cursor-pointer"
+              style={{ height: 200, background: "rgba(0,0,0,0.3)" }}
+              onClick={() => fileRef.current?.click()}
+            >
+              {preview ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={preview}
+                  alt={form.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { (e.target as HTMLImageElement).style.opacity = "0.2"; }}
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <span style={{ color: "rgba(242,239,233,0.3)" }}>No image</span>
+                </div>
+              )}
+              <div
+                className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition"
+                style={{ background: "rgba(0,0,0,0.55)" }}
+              >
+                <span className="text-sm font-medium" style={{ color: "#f2efe9" }}>
+                  {uploading ? "Uploading…" : "Change photo"}
+                </span>
+              </div>
+              {uploading && (
+                <div
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{ background: "rgba(0,0,0,0.6)" }}
+                >
+                  <span className="text-sm" style={{ color: "#d6b25e" }}>Uploading…</span>
+                </div>
+              )}
+            </div>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </Field>
+        )}
+
+        <Field label={form.type === "VIDEO" ? "Embed URL *" : "Image URL"}>
           <input
             value={form.url}
-            onChange={(e) => set("url", e.target.value)}
+            onChange={(e) => {
+              set("url", e.target.value);
+              if (form.type === "PHOTO") setPreview(e.target.value);
+            }}
             required
             className="admin-input"
           />
@@ -121,7 +200,7 @@ export function MediaEditForm({ item }: { item: MediaItem }) {
       <div className="flex items-center gap-3">
         <button
           type="submit"
-          disabled={saving}
+          disabled={saving || uploading}
           className="px-6 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60"
           style={{
             background: saved
@@ -145,7 +224,6 @@ export function MediaEditForm({ item }: { item: MediaItem }) {
           Cancel
         </Link>
       </div>
-
     </form>
   );
 }
