@@ -1,6 +1,6 @@
 /**
- * GET /api/admin/requests
- * Returns paginated, filtered, sorted lead list.
+ * GET  /api/admin/requests — paginated, filtered, sorted lead list
+ * POST /api/admin/requests — create a manual booking request from admin
  */
 
 import { NextResponse } from "next/server";
@@ -67,6 +67,54 @@ export async function GET(req: Request) {
     });
   } catch (err) {
     console.error("Requests list error:", err);
+    return NextResponse.json(
+      { ok: false, error: "Server error" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function POST(req: Request) {
+  try {
+    const body = (await req.json()) as {
+      fullName: string;
+      email: string;
+      phone?: string;
+      eventType: string;
+      budgetRange?: string;
+      message?: string;
+      internalNotes?: string;
+    };
+
+    if (!body.fullName?.trim() || !body.email?.trim() || !body.eventType?.trim()) {
+      return NextResponse.json(
+        { ok: false, error: "fullName, email, and eventType are required" },
+        { status: 400 },
+      );
+    }
+
+    const lead = await prisma.lead.create({
+      data: {
+        fullName: body.fullName.trim(),
+        email: body.email.trim().toLowerCase(),
+        phone: body.phone?.trim() || null,
+        eventType: body.eventType.trim(),
+        budgetRange: body.budgetRange?.trim() || null,
+        message: body.message?.trim() || null,
+        internalNotes: body.internalNotes?.trim() || null,
+        status: "NEW",
+        activities: {
+          create: {
+            type: "CREATED",
+            content: "Request created manually from admin",
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({ ok: true, data: lead }, { status: 201 });
+  } catch (err) {
+    console.error("Create request error:", err);
     return NextResponse.json(
       { ok: false, error: "Server error" },
       { status: 500 },

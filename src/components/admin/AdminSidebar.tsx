@@ -42,6 +42,27 @@ const NAV = [
       </svg>
     ),
   },
+  {
+    href: "/admin/media",
+    label: "Media",
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+        <circle cx="8.5" cy="8.5" r="1.5" />
+        <polyline points="21 15 16 10 5 21" />
+      </svg>
+    ),
+  },
+  {
+    href: "/admin/content",
+    label: "Content",
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="10" x2="14" y2="10" />
+        <line x1="4" y1="14" x2="20" y2="14" /><line x1="4" y1="18" x2="14" y2="18" />
+      </svg>
+    ),
+  },
 ];
 
 export function AdminSidebar() {

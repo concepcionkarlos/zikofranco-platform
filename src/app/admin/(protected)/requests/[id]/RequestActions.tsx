@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const STATUSES = [
   "NEW", "CONTACTED", "QUALIFIED", "NEGOTIATING", "CONFIRMED", "REJECTED", "ARCHIVED",
@@ -34,6 +35,7 @@ export function RequestActions({ lead }: Props) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   async function saveWith(overrides: { status?: Status; internalNotes?: string } = {}) {
     setSaving(true);
@@ -66,6 +68,23 @@ export function RequestActions({ lead }: Props) {
       setError(e instanceof Error ? e.message : "Save failed");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleDelete() {
+    const confirmed = window.confirm(
+      "Permanently delete this request? This cannot be undone.\n\nType OK to confirm.",
+    );
+    if (!confirmed) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/requests/${lead.id}`, { method: "DELETE" });
+      const data = (await res.json()) as { ok: boolean };
+      if (data.ok) {
+        router.push("/admin/requests");
+      }
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -179,6 +198,22 @@ export function RequestActions({ lead }: Props) {
           Archive Request
         </button>
       )}
+
+      {/* Permanent delete */}
+      <div className="pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <button
+          onClick={handleDelete}
+          disabled={deleting || saving}
+          className="w-full py-2 rounded-xl text-xs font-medium transition disabled:opacity-40"
+          style={{
+            background: "transparent",
+            border: "1px solid rgba(239,68,68,0.1)",
+            color: "rgba(248,113,113,0.35)",
+          }}
+        >
+          {deleting ? "Deleting…" : "Delete Permanently"}
+        </button>
+      </div>
     </div>
   );
 }
