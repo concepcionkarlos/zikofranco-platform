@@ -145,14 +145,15 @@ export default async function Home() {
             </p>
             <div>
               <h2 className="text-lg sm:text-xl font-bold leading-snug tracking-tight">
-                A Miami rock project built for big stages
+                A Miami rock band built for big stages
               </h2>
             </div>
             <p className="vintage-muted leading-relaxed text-sm flex-1">
-              ZikoFranco is led by Ziko as the main figure, backed by a tight
-              band with a signature sound. Modern rock power meets funk-forward
-              groove and a Santana-inspired flavor — reimagining covers with a
-              unique identity while progressively introducing original songs.
+              ZikoFranco is the live rock band project fronted by{" "}
+              <span style={{ color: "rgba(214,178,94,0.85)", fontStyle: "italic" }}>Zikopoly</span>
+              {" "}— the Miami-based artist and creative force behind the sound.
+              Modern rock power meets funk-forward groove and a Santana-inspired
+              edge, reimagining covers with a unique identity while building toward original music.
             </p>
             <div className="vintage-divider" />
             <div className="flex items-center justify-between">

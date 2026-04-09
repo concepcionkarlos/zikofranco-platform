@@ -21,10 +21,18 @@ export default async function MediaPage({ searchParams }: PageProps) {
         ? { isFeatured: true }
         : {};
 
-  const items = await prisma.mediaItem.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-  });
+  let items: Awaited<ReturnType<typeof prisma.mediaItem.findMany>> = [];
+  let dbError = "";
+
+  try {
+    items = await prisma.mediaItem.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (err) {
+    console.error("Media page DB error:", err);
+    dbError = "Could not load media items. The database table may not be initialized yet.";
+  }
 
   const filters = [
     { key: "all", label: "All" },
@@ -72,7 +80,21 @@ export default async function MediaPage({ searchParams }: PageProps) {
         ))}
       </div>
 
-      {items.length === 0 ? (
+      {dbError && (
+        <div
+          className="rounded-xl px-5 py-4 text-sm"
+          style={{
+            background: "rgba(239,68,68,0.08)",
+            border: "1px solid rgba(239,68,68,0.18)",
+            color: "#f87171",
+          }}
+        >
+          {dbError}{" "}
+          <a href="/api/admin/seed" className="underline opacity-70">Run seed →</a>
+        </div>
+      )}
+
+      {!dbError && items.length === 0 ? (
         <div
           className="rounded-2xl py-20 text-center"
           style={{ border: "1px solid rgba(255,255,255,0.07)", color: "rgba(242,239,233,0.35)" }}
@@ -82,7 +104,7 @@ export default async function MediaPage({ searchParams }: PageProps) {
             Add photos or video links to manage your public media library.
           </p>
         </div>
-      ) : (
+      ) : !dbError ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item) => (
             <div
@@ -164,7 +186,7 @@ export default async function MediaPage({ searchParams }: PageProps) {
             </div>
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

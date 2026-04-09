@@ -328,6 +328,35 @@ a:not([class]):hover {
   background: #111113;
 }
 
+/* ---------- Logo nav hover ---------- */
+.logo-nav {
+  display: inline-flex;
+  transition: filter 220ms ease, transform 220ms ease;
+}
+.logo-nav:hover {
+  filter: brightness(1.1) drop-shadow(0 0 12px rgba(214, 178, 94, 0.18));
+  transform: scale(1.025);
+}
+.logo-nav:active {
+  transform: scale(0.98);
+  filter: brightness(0.95);
+}
+
+/* ---------- Mobile drawer animation ---------- */
+@keyframes drawerIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.mobile-drawer {
+  animation: drawerIn 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -342,6 +371,12 @@ a:not([class]):hover {
   }
   .logo-hero-animate {
     animation: none;
+  }
+  .mobile-drawer {
+    animation: none;
+  }
+  .logo-nav {
+    transition: none;
   }
   .btn-gold,
   .btn-oxblood,
