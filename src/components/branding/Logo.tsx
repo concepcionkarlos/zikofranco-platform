@@ -23,7 +23,7 @@ export function Logo({ size = "nav" }: LogoProps) {
         width={500}
         height={500}
         priority
-        className={`${sizeClass} logo-glow`}
+        className={`${sizeClass} logo-glow${size === "hero" ? " logo-hero-animate" : ""}`}
       />
     </div>
   );
