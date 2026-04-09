@@ -127,7 +127,12 @@ export default async function RequestDetailPage({ params }: PageProps) {
           </div>
 
           {/* Email reply form */}
-          <EmailForm leadId={lead.id} clientEmail={lead.email} clientName={lead.fullName} />
+          <EmailForm
+            leadId={lead.id}
+            clientEmail={lead.email}
+            clientName={lead.fullName}
+            currentStatus={lead.status}
+          />
 
           {/* Sent emails log */}
           {lead.emailLogs.length > 0 && (
