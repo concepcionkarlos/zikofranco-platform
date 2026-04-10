@@ -100,7 +100,7 @@ export default async function RequestsPage({ searchParams }: PageProps) {
           {/* Mobile: cards */}
           <div
             className="sm:hidden rounded-2xl overflow-hidden divide-y"
-            style={{ border: "1px solid rgba(255,255,255,0.07)", borderColor: "rgba(255,255,255,0.07)", divideColor: "rgba(255,255,255,0.04)" }}
+            style={{ border: "1px solid rgba(255,255,255,0.07)" }}
           >
             {leads.map((lead) => {
               const sc = STATUS_COLORS[lead.status] ?? STATUS_COLORS.NEW;
