@@ -41,7 +41,6 @@ export function EPKForm({ values }: Props) {
     setError("");
     setSaved(false);
 
-    // Only save EPK keys
     const EPK_KEYS = [
       "epk_bio", "epk_genre", "epk_origin", "epk_languages",
       "epk_press_photo", "epk_press_photo_caption",
@@ -67,6 +66,14 @@ export function EPKForm({ values }: Props) {
   }
 
   const photoPreview = form.epk_press_photo;
+  const saveLabel = saving ? "Saving…" : saved ? "Saved ✓" : "Save EPK";
+  const saveStyle = {
+    background: saved
+      ? "rgba(34,197,94,0.15)"
+      : "linear-gradient(180deg, rgba(214,178,94,0.95), rgba(185,151,68,0.95))",
+    color: saved ? "#4ade80" : "#1b1408",
+    border: saved ? "1px solid rgba(34,197,94,0.2)" : "none",
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -78,19 +85,35 @@ export function EPKForm({ values }: Props) {
             value={form.epk_bio ?? ""}
             onChange={(e) => set("epk_bio", e.target.value)}
             rows={8}
-            className="admin-input resize-y"
+            className="admin-input resize-y w-full"
           />
         </Field>
 
-        <div className="grid grid-cols-3 gap-4">
+        {/* Genre / Origin / Languages — stack on mobile */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Field label="Genre">
-            <input value={form.epk_genre ?? ""} onChange={(e) => set("epk_genre", e.target.value)} className="admin-input" placeholder="Rock / Funk" />
+            <input
+              value={form.epk_genre ?? ""}
+              onChange={(e) => set("epk_genre", e.target.value)}
+              className="admin-input w-full"
+              placeholder="Rock / Funk"
+            />
           </Field>
           <Field label="Origin">
-            <input value={form.epk_origin ?? ""} onChange={(e) => set("epk_origin", e.target.value)} className="admin-input" placeholder="Miami, FL" />
+            <input
+              value={form.epk_origin ?? ""}
+              onChange={(e) => set("epk_origin", e.target.value)}
+              className="admin-input w-full"
+              placeholder="Miami, FL"
+            />
           </Field>
           <Field label="Languages">
-            <input value={form.epk_languages ?? ""} onChange={(e) => set("epk_languages", e.target.value)} className="admin-input" placeholder="EN / ES" />
+            <input
+              value={form.epk_languages ?? ""}
+              onChange={(e) => set("epk_languages", e.target.value)}
+              className="admin-input w-full"
+              placeholder="EN / ES"
+            />
           </Field>
         </div>
       </Section>
@@ -101,19 +124,19 @@ export function EPKForm({ values }: Props) {
           <input
             value={form.epk_press_photo ?? ""}
             onChange={(e) => set("epk_press_photo", e.target.value)}
-            className="admin-input"
+            className="admin-input w-full"
             placeholder="/assets/photos/..."
           />
         </Field>
 
-        {/* Upload + preview row */}
-        <div className="flex gap-4 items-start">
+        {/* Upload + preview — stack on mobile */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:items-start">
           <div>
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
               disabled={uploading}
-              className="text-xs px-4 py-2 rounded-xl font-semibold transition disabled:opacity-50"
+              className="text-sm px-4 py-2.5 rounded-xl font-semibold transition disabled:opacity-50"
               style={{
                 background: "rgba(214,178,94,0.1)",
                 border: "1px solid rgba(214,178,94,0.22)",
@@ -129,7 +152,10 @@ export function EPKForm({ values }: Props) {
           </div>
 
           {photoPreview && (
-            <div className="rounded-xl overflow-hidden shrink-0" style={{ width: 120, height: 80, background: "rgba(0,0,0,0.3)" }}>
+            <div
+              className="rounded-xl overflow-hidden shrink-0 self-start"
+              style={{ width: 140, height: 94, background: "rgba(0,0,0,0.3)" }}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={photoPreview} alt="EPK photo preview" className="w-full h-full object-cover" />
             </div>
@@ -140,7 +166,7 @@ export function EPKForm({ values }: Props) {
           <input
             value={form.epk_press_photo_caption ?? ""}
             onChange={(e) => set("epk_press_photo_caption", e.target.value)}
-            className="admin-input"
+            className="admin-input w-full"
             placeholder="Press Photo — Hi-res available on request"
           />
         </Field>
@@ -148,13 +174,13 @@ export function EPKForm({ values }: Props) {
 
       {/* ── Technical Rider ── */}
       <Section title="Technical Rider" hint="One item per line. Each line becomes a bullet point.">
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Field label="Band Format">
             <textarea
               value={form.epk_band_format ?? ""}
               onChange={(e) => set("epk_band_format", e.target.value)}
               rows={5}
-              className="admin-input resize-none"
+              className="admin-input resize-none w-full"
               placeholder={"Trio, quartet, or full band\nFormat based on venue & needs"}
             />
           </Field>
@@ -163,7 +189,7 @@ export function EPKForm({ values }: Props) {
               value={form.epk_stage_req ?? ""}
               onChange={(e) => set("epk_stage_req", e.target.value)}
               rows={5}
-              className="admin-input resize-none"
+              className="admin-input resize-none w-full"
               placeholder={"Min. 20×16 ft stage\nFull PA system required"}
             />
           </Field>
@@ -172,7 +198,7 @@ export function EPKForm({ values }: Props) {
               value={form.epk_set_details ?? ""}
               onChange={(e) => set("epk_set_details", e.target.value)}
               rows={5}
-              className="admin-input resize-none"
+              className="admin-input resize-none w-full"
               placeholder={"30 / 60 / 90 min sets\nSoundcheck: 60 min"}
             />
           </Field>
@@ -186,7 +212,7 @@ export function EPKForm({ values }: Props) {
             value={form.epk_contact_email ?? ""}
             onChange={(e) => set("epk_contact_email", e.target.value)}
             type="email"
-            className="admin-input"
+            className="admin-input w-full"
             placeholder="band@example.com"
           />
         </Field>
@@ -194,20 +220,38 @@ export function EPKForm({ values }: Props) {
 
       {error && <p className="text-sm" style={{ color: "#f87171" }}>{error}</p>}
 
+      {/* Desktop save button */}
       <button
         type="submit"
         disabled={saving || uploading}
-        className="px-6 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60"
+        className="hidden sm:block px-6 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60"
+        style={saveStyle}
+      >
+        {saveLabel}
+      </button>
+
+      {/* Mobile: spacer so last section isn't hidden by sticky bar */}
+      <div className="h-20 sm:hidden" />
+
+      {/* Mobile sticky save bar */}
+      <div
+        className="fixed bottom-0 left-0 right-0 z-20 p-3 sm:hidden"
         style={{
-          background: saved
-            ? "rgba(34,197,94,0.15)"
-            : "linear-gradient(180deg, rgba(214,178,94,0.95), rgba(185,151,68,0.95))",
-          color: saved ? "#4ade80" : "#1b1408",
-          border: saved ? "1px solid rgba(34,197,94,0.2)" : "none",
+          background: "rgba(11,11,12,0.96)",
+          borderTop: "1px solid rgba(255,255,255,0.07)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
         }}
       >
-        {saving ? "Saving…" : saved ? "Saved ✓" : "Save EPK"}
-      </button>
+        <button
+          type="submit"
+          disabled={saving || uploading}
+          className="w-full py-3 rounded-xl text-sm font-semibold disabled:opacity-60"
+          style={saveStyle}
+        >
+          {saveLabel}
+        </button>
+      </div>
     </form>
   );
 }
@@ -215,7 +259,7 @@ export function EPKForm({ values }: Props) {
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
     <div
-      className="rounded-2xl p-6 space-y-5"
+      className="rounded-2xl p-5 sm:p-6 space-y-5"
       style={{ background: "rgba(18,18,20,0.85)", border: "1px solid rgba(255,255,255,0.07)" }}
     >
       <div>

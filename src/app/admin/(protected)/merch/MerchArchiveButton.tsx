@@ -23,14 +23,14 @@ export function MerchArchiveButton({ id, isArchived }: { id: string; isArchived:
     <button
       onClick={toggle}
       disabled={loading}
-      className="text-xs px-3 py-1.5 rounded-lg transition disabled:opacity-50"
+      className="text-xs px-3 py-3 rounded-lg transition disabled:opacity-50 whitespace-nowrap"
       style={{
         background: "rgba(255,255,255,0.04)",
         color: "rgba(242,239,233,0.4)",
         border: "1px solid rgba(255,255,255,0.07)",
       }}
     >
-      {loading ? "…" : isArchived ? "Restore" : "Archive"}
+      {loading ? "…" : isArchived ? "Restaurar" : "Archivar"}
     </button>
   );
 }

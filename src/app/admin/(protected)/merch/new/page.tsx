@@ -11,7 +11,7 @@ export default function NewMerchPage() {
         <h1 className="text-2xl font-bold tracking-tight">Add Merch Item</h1>
       </div>
       <div
-        className="rounded-2xl p-6"
+        className="rounded-2xl p-4 sm:p-6"
         style={{ background: "rgba(18,18,20,0.85)", border: "1px solid rgba(255,255,255,0.07)" }}
       >
         <MerchForm mode="create" />

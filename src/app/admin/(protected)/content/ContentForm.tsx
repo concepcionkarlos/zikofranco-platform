@@ -29,6 +29,14 @@ const FIELDS = [
   },
 ] as const;
 
+const saveButtonStyle = (saved: boolean) => ({
+  background: saved
+    ? "rgba(34,197,94,0.15)"
+    : "linear-gradient(180deg, rgba(214,178,94,0.95), rgba(185,151,68,0.95))",
+  color: saved ? "#4ade80" : "#1b1408",
+  border: saved ? "1px solid rgba(34,197,94,0.2)" : "none",
+});
+
 export function ContentForm({ values }: Props) {
   const [form, setForm] = useState<Record<string, string>>({ ...values });
   const [saving, setSaving] = useState(false);
@@ -62,10 +70,12 @@ export function ContentForm({ values }: Props) {
     setTimeout(() => setSaved(false), 2500);
   }
 
+  const saveLabel = saving ? "Saving…" : saved ? "Saved ✓" : "Save Settings";
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div
-        className="rounded-2xl p-6 space-y-6"
+        className="rounded-2xl p-5 sm:p-6 space-y-6"
         style={{ background: "rgba(18,18,20,0.85)", border: "1px solid rgba(255,255,255,0.07)" }}
       >
         {FIELDS.map((field) => (
@@ -78,13 +88,13 @@ export function ContentForm({ values }: Props) {
                 value={form[field.key] ?? ""}
                 onChange={(e) => set(field.key, e.target.value)}
                 rows={field.rows}
-                className="admin-input resize-none"
+                className="admin-input resize-none w-full"
               />
             ) : (
               <input
                 value={form[field.key] ?? ""}
                 onChange={(e) => set(field.key, e.target.value)}
-                className="admin-input"
+                className="admin-input w-full"
               />
             )}
             {field.hint && (
@@ -126,21 +136,38 @@ export function ContentForm({ values }: Props) {
 
       {error && <p className="text-sm" style={{ color: "#f87171" }}>{error}</p>}
 
+      {/* Desktop save button */}
       <button
         type="submit"
         disabled={saving}
-        className="px-6 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60"
-        style={{
-          background: saved
-            ? "rgba(34,197,94,0.15)"
-            : "linear-gradient(180deg, rgba(214,178,94,0.95), rgba(185,151,68,0.95))",
-          color: saved ? "#4ade80" : "#1b1408",
-          border: saved ? "1px solid rgba(34,197,94,0.2)" : "none",
-        }}
+        className="hidden sm:block px-6 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60"
+        style={saveButtonStyle(saved)}
       >
-        {saving ? "Saving…" : saved ? "Saved ✓" : "Save Settings"}
+        {saveLabel}
       </button>
 
+      {/* Mobile: spacer so content isn't hidden behind sticky bar */}
+      <div className="h-20 sm:hidden" />
+
+      {/* Mobile sticky save bar */}
+      <div
+        className="fixed bottom-0 left-0 right-0 z-20 p-3 sm:hidden"
+        style={{
+          background: "rgba(11,11,12,0.96)",
+          borderTop: "1px solid rgba(255,255,255,0.07)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+        }}
+      >
+        <button
+          type="submit"
+          disabled={saving}
+          className="w-full py-3 rounded-xl text-sm font-semibold disabled:opacity-60"
+          style={saveButtonStyle(saved)}
+        >
+          {saveLabel}
+        </button>
+      </div>
     </form>
   );
 }

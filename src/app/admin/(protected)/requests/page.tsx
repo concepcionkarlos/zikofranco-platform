@@ -65,101 +65,145 @@ export default async function RequestsPage({ searchParams }: PageProps) {
   const totalPages = Math.ceil(total / pageSize);
 
   return (
-    <div className="space-y-6 max-w-6xl">
-      <div className="flex items-center justify-between">
-        <div>
+    <div className="space-y-5 w-full max-w-6xl">
+      {/* Header */}
+      <div>
+        <div className="flex items-start justify-between gap-2 mb-1">
           <h1 className="text-2xl font-bold tracking-tight">Booking Requests</h1>
-          <p className="text-sm mt-1" style={{ color: "rgba(242,239,233,0.45)" }}>
-            {total} total request{total !== 1 ? "s" : ""}
-          </p>
+          <Link
+            href="/admin/requests/new"
+            className="shrink-0 text-sm px-4 py-2 rounded-xl font-semibold whitespace-nowrap"
+            style={{
+              background: "linear-gradient(180deg, rgba(214,178,94,0.95), rgba(185,151,68,0.95))",
+              color: "#1b1408",
+            }}
+          >
+            + New Request
+          </Link>
         </div>
-        <Link
-          href="/admin/requests/new"
-          className="text-sm px-4 py-2 rounded-xl font-semibold"
-          style={{
-            background: "linear-gradient(180deg, rgba(214,178,94,0.95), rgba(185,151,68,0.95))",
-            color: "#1b1408",
-          }}
-        >
-          + New Request
-        </Link>
+        <p className="text-sm" style={{ color: "rgba(242,239,233,0.45)" }}>
+          {total} total request{total !== 1 ? "s" : ""}
+        </p>
       </div>
 
       <RequestsFilterBar statuses={STATUSES} currentStatus={status} currentSearch={search} currentSort={sort} />
 
-      <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.07)" }}>
-        {leads.length === 0 ? (
-          <div className="text-center py-16 text-sm" style={{ color: "rgba(242,239,233,0.35)" }}>
-            No requests match your filters.
-          </div>
-        ) : (
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(0,0,0,0.25)" }}>
-                {["Name", "Event", "Budget", "Status", "Date", ""].map((h, i) => (
-                  <th
-                    key={i}
-                    className="text-left px-5 py-3 text-xs font-semibold tracking-wide"
-                    style={{ color: "rgba(242,239,233,0.4)" }}
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {leads.map((lead, i) => {
-                const sc = STATUS_COLORS[lead.status] ?? STATUS_COLORS.NEW;
-                return (
-                  <tr
-                    key={lead.id}
-                    style={{
-                      borderBottom: i < leads.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
-                      background: "rgba(13,13,15,0.6)",
-                    }}
-                  >
-                    <td className="px-5 py-3.5">
-                      <div className="font-medium" style={{ color: "#f2efe9" }}>{lead.fullName}</div>
-                      <div className="text-xs mt-0.5" style={{ color: "rgba(242,239,233,0.4)" }}>{lead.email}</div>
-                      {lead.phone && (
-                        <div className="text-xs" style={{ color: "rgba(242,239,233,0.3)" }}>{lead.phone}</div>
-                      )}
-                    </td>
-                    <td className="px-5 py-3.5" style={{ color: "rgba(242,239,233,0.65)" }}>{lead.eventType}</td>
-                    <td className="px-5 py-3.5 text-xs" style={{ color: "rgba(242,239,233,0.5)" }}>
-                      {lead.budgetRange ?? "—"}
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <span
-                        className="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium"
-                        style={{ background: sc.bg, color: sc.color }}
-                      >
-                        {lead.status.charAt(0) + lead.status.slice(1).toLowerCase()}
+      {leads.length === 0 ? (
+        <div
+          className="rounded-2xl text-center py-16 text-sm"
+          style={{ border: "1px solid rgba(255,255,255,0.07)", color: "rgba(242,239,233,0.35)" }}
+        >
+          No requests match your filters.
+        </div>
+      ) : (
+        <>
+          {/* Mobile: cards */}
+          <div
+            className="sm:hidden rounded-2xl overflow-hidden divide-y"
+            style={{ border: "1px solid rgba(255,255,255,0.07)", borderColor: "rgba(255,255,255,0.07)", divideColor: "rgba(255,255,255,0.04)" }}
+          >
+            {leads.map((lead) => {
+              const sc = STATUS_COLORS[lead.status] ?? STATUS_COLORS.NEW;
+              return (
+                <Link
+                  key={lead.id}
+                  href={`/admin/requests/${lead.id}`}
+                  className="flex items-start justify-between gap-3 px-4 py-4 active:opacity-70"
+                  style={{ background: "rgba(13,13,15,0.7)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-sm truncate" style={{ color: "#f2efe9" }}>
+                      {lead.fullName}
+                    </div>
+                    <div className="text-xs mt-0.5 truncate" style={{ color: "rgba(242,239,233,0.42)" }}>
+                      {lead.email}
+                    </div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1.5 text-xs" style={{ color: "rgba(242,239,233,0.4)" }}>
+                      <span>{lead.eventType}</span>
+                      {lead.budgetRange && <span>{lead.budgetRange}</span>}
+                      <span>
+                        {new Date(lead.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                       </span>
-                    </td>
-                    <td className="px-5 py-3.5 text-xs whitespace-nowrap" style={{ color: "rgba(242,239,233,0.4)" }}>
-                      {new Date(lead.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <Link
-                        href={`/admin/requests/${lead.id}`}
-                        className="text-xs font-medium px-3 py-1.5 rounded-lg transition"
-                        style={{
-                          background: "rgba(214,178,94,0.1)",
-                          color: "#d6b25e",
-                          border: "1px solid rgba(214,178,94,0.2)",
-                        }}
-                      >
-                        View
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-      </div>
+                    </div>
+                  </div>
+                  <div className="shrink-0 flex flex-col items-end gap-1.5 pt-0.5">
+                    <span
+                      className="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap"
+                      style={{ background: sc.bg, color: sc.color }}
+                    >
+                      {lead.status.charAt(0) + lead.status.slice(1).toLowerCase()}
+                    </span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "rgba(242,239,233,0.25)" }}>
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Desktop: table */}
+          <div className="hidden sm:block rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.07)" }}>
+            <table className="w-full text-sm">
+              <thead>
+                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(0,0,0,0.25)" }}>
+                  {["Name", "Event", "Budget", "Status", "Date", ""].map((h, i) => (
+                    <th key={i} className="text-left px-5 py-3 text-xs font-semibold tracking-wide" style={{ color: "rgba(242,239,233,0.4)" }}>
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {leads.map((lead, i) => {
+                  const sc = STATUS_COLORS[lead.status] ?? STATUS_COLORS.NEW;
+                  return (
+                    <tr
+                      key={lead.id}
+                      style={{
+                        borderBottom: i < leads.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                        background: "rgba(13,13,15,0.6)",
+                      }}
+                    >
+                      <td className="px-5 py-3.5">
+                        <div className="font-medium" style={{ color: "#f2efe9" }}>{lead.fullName}</div>
+                        <div className="text-xs mt-0.5" style={{ color: "rgba(242,239,233,0.4)" }}>{lead.email}</div>
+                        {lead.phone && (
+                          <div className="text-xs" style={{ color: "rgba(242,239,233,0.3)" }}>{lead.phone}</div>
+                        )}
+                      </td>
+                      <td className="px-5 py-3.5" style={{ color: "rgba(242,239,233,0.65)" }}>{lead.eventType}</td>
+                      <td className="px-5 py-3.5 text-xs" style={{ color: "rgba(242,239,233,0.5)" }}>
+                        {lead.budgetRange ?? "—"}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span
+                          className="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium"
+                          style={{ background: sc.bg, color: sc.color }}
+                        >
+                          {lead.status.charAt(0) + lead.status.slice(1).toLowerCase()}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5 text-xs whitespace-nowrap" style={{ color: "rgba(242,239,233,0.4)" }}>
+                        {new Date(lead.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <Link
+                          href={`/admin/requests/${lead.id}`}
+                          className="text-xs font-medium px-3 py-2 rounded-lg transition"
+                          style={{ background: "rgba(214,178,94,0.1)", color: "#d6b25e", border: "1px solid rgba(214,178,94,0.2)" }}
+                        >
+                          View
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
 
       {/* Pagination */}
       {totalPages > 1 && (
@@ -171,7 +215,7 @@ export default async function RequestsPage({ searchParams }: PageProps) {
             {page > 1 && (
               <Link
                 href={`?search=${search}&status=${status}&sort=${sort}&page=${page - 1}`}
-                className="px-4 py-1.5 rounded-lg text-xs transition"
+                className="px-4 py-2 rounded-lg text-xs transition"
                 style={{ background: "rgba(255,255,255,0.06)", color: "#f2efe9" }}
               >
                 ← Prev
@@ -180,7 +224,7 @@ export default async function RequestsPage({ searchParams }: PageProps) {
             {page < totalPages && (
               <Link
                 href={`?search=${search}&status=${status}&sort=${sort}&page=${page + 1}`}
-                className="px-4 py-1.5 rounded-lg text-xs transition"
+                className="px-4 py-2 rounded-lg text-xs transition"
                 style={{ background: "rgba(255,255,255,0.06)", color: "#f2efe9" }}
               >
                 Next →

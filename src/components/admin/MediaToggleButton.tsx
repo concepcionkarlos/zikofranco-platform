@@ -36,7 +36,7 @@ export function MediaToggleButton({ id, field, value, labels }: Props) {
     <button
       onClick={toggle}
       disabled={loading}
-      className="text-xs px-2.5 py-1 rounded-full font-medium transition disabled:opacity-50"
+      className="text-xs px-3 py-2.5 rounded-full font-medium transition disabled:opacity-50 whitespace-nowrap"
       style={{
         background: current ? "rgba(59,130,246,0.12)" : "rgba(255,255,255,0.04)",
         color: current ? "#60a5fa" : "rgba(242,239,233,0.35)",

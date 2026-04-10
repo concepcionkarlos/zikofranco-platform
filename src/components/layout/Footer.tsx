@@ -1,11 +1,13 @@
-/**
- * src/components/layout/Footer.tsx
- */
 import Link from "next/link";
 import { BrandName } from "@/components/branding/BrandName";
 import { SocialLinks } from "@/components/media/SocialLinks";
+import { getLocale, getMessages, createT } from "@/lib/i18n";
 
-export function Footer() {
+export async function Footer() {
+  const locale = await getLocale();
+  const messages = await getMessages(locale);
+  const t = createT(messages, "footer");
+
   return (
     <footer className="border-t border-white/[0.07] mt-20">
       <div className="mx-auto max-w-6xl px-6 py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -22,7 +24,7 @@ export function Footer() {
 
         <div className="flex flex-col items-end gap-1">
           <p className="text-white/30 text-xs">
-            © {new Date().getFullYear()} ZikoFranco. All rights reserved.
+            © {new Date().getFullYear()} ZikoFranco. {t("rights")}
           </p>
           <Link
             href="/admin"

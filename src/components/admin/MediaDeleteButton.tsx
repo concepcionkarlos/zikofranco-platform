@@ -20,7 +20,7 @@ export function MediaDeleteButton({ id }: { id: string }) {
     <button
       onClick={handleDelete}
       disabled={loading}
-      className="text-xs px-3 py-1.5 rounded-lg transition disabled:opacity-50"
+      className="text-xs px-3 py-2.5 rounded-lg transition disabled:opacity-50"
       style={{
         background: "rgba(239,68,68,0.08)",
         color: "rgba(248,113,113,0.65)",

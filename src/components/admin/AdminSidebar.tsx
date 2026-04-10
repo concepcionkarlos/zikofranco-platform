@@ -65,7 +65,11 @@ const NAV = [
   },
 ];
 
-export function AdminSidebar() {
+interface Props {
+  onClose?: () => void;
+}
+
+export function AdminSidebar({ onClose }: Props = {}) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -81,7 +85,7 @@ export function AdminSidebar() {
 
   return (
     <aside
-      className="flex flex-col h-screen w-52 shrink-0 sticky top-0"
+      className="flex flex-col h-screen w-64 md:w-52 shrink-0 sticky top-0"
       style={{
         background: "#0c0c0e",
         borderRight: "1px solid rgba(255,255,255,0.06)",
@@ -89,12 +93,12 @@ export function AdminSidebar() {
     >
       {/* Brand */}
       <div
-        className="px-5 py-5"
+        className="px-5 py-5 flex items-center justify-between"
         style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
       >
         <div className="flex items-center gap-2.5">
           <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black"
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black shrink-0"
             style={{
               background: "linear-gradient(135deg, rgba(214,178,94,0.2), rgba(214,178,94,0.08))",
               border: "1px solid rgba(214,178,94,0.2)",
@@ -115,6 +119,24 @@ export function AdminSidebar() {
             </div>
           </div>
         </div>
+
+        {/* Close button — mobile only */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="flex items-center justify-center w-8 h-8 rounded-lg md:hidden"
+            style={{
+              background: "rgba(255,255,255,0.05)",
+              color: "rgba(242,239,233,0.5)",
+            }}
+            aria-label="Close menu"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Nav */}
@@ -125,14 +147,10 @@ export function AdminSidebar() {
             <Link
               key={href}
               href={href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all"
+              className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all"
               style={{
-                background: active
-                  ? "rgba(214,178,94,0.09)"
-                  : "transparent",
-                color: active
-                  ? "#d6b25e"
-                  : "rgba(242,239,233,0.42)",
+                background: active ? "rgba(214,178,94,0.09)" : "transparent",
+                color: active ? "#d6b25e" : "rgba(242,239,233,0.42)",
                 borderLeft: `2px solid ${active ? "#d6b25e" : "transparent"}`,
               }}
             >

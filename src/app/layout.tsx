@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { getLocale } from "@/lib/i18n";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,16 +25,8 @@ export const metadata: Metadata = {
     url: "https://zikofranco-platform.vercel.app",
     siteName: "ZikoFranco",
     title: "ZikoFranco — Miami Rock Band",
-    description:
-      "Modern rock power fused with funk-forward groove. Based in Miami, FL. Available for events worldwide.",
-    images: [
-      {
-        url: "/assets/photos/7058E651-F966-492A-B4CB-7CC9ABF47D72.jpeg",
-        width: 1200,
-        height: 630,
-        alt: "ZikoFranco — Miami Rock Band",
-      },
-    ],
+    description: "Modern rock power fused with funk-forward groove. Based in Miami, FL. Available for events worldwide.",
+    images: [{ url: "/assets/photos/7058E651-F966-492A-B4CB-7CC9ABF47D72.jpeg", width: 1200, height: 630, alt: "ZikoFranco — Miami Rock Band" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -44,11 +37,11 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang={locale} className={inter.variable}>
       <body className="min-h-screen bg-[#0B0B0F] text-white">
         {children}
         <Analytics />

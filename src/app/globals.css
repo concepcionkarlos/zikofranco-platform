@@ -309,6 +309,18 @@ a:not([class]):hover {
   transform: translateY(0);
 }
 
+/* ---------- Admin sidebar responsive ---------- */
+/* Plain CSS — no Tailwind JIT dependency for this critical rule */
+.admin-desktop-sidebar {
+  display: none;
+  flex-shrink: 0;
+}
+@media (min-width: 768px) {
+  .admin-desktop-sidebar {
+    display: block;
+  }
+}
+
 /* ---------- Admin forms ---------- */
 .admin-input {
   width: 100%;
