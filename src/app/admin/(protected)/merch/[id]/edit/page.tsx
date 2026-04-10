@@ -22,7 +22,7 @@ export default async function EditMerchPage({ params }: PageProps) {
         <p className="text-sm mt-1" style={{ color: "rgba(242,239,233,0.45)" }}>{item.name}</p>
       </div>
       <div
-        className="rounded-2xl p-6"
+        className="rounded-2xl p-4 sm:p-6"
         style={{ background: "rgba(18,18,20,0.85)", border: "1px solid rgba(255,255,255,0.07)" }}
       >
         <MerchForm

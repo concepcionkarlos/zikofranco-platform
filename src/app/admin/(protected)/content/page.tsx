@@ -35,20 +35,35 @@ export default async function ContentPage() {
   const values = { ...DEFAULTS, ...stored };
 
   return (
-    <div className="space-y-10 max-w-3xl">
+    <div className="space-y-10 w-full max-w-3xl">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Site Content</h1>
           <p className="text-sm mt-1" style={{ color: "rgba(242,239,233,0.45)" }}>
             Edit content and settings that appear on the public site.
           </p>
+          {/* Preview EPK — below subtitle on mobile */}
+          <a
+            href="/epk"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sm:hidden inline-block mt-2 text-xs px-3 py-2 rounded-lg"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              color: "rgba(242,239,233,0.4)",
+            }}
+          >
+            Preview EPK ↗
+          </a>
         </div>
+        {/* Preview EPK — top right on desktop */}
         <a
           href="/epk"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs px-3 py-1.5 rounded-lg transition"
+          className="hidden sm:block shrink-0 text-xs px-3 py-2 rounded-lg"
           style={{
             background: "rgba(255,255,255,0.04)",
             border: "1px solid rgba(255,255,255,0.08)",

@@ -77,29 +77,42 @@ export function MerchForm({ initial = {}, mode }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
+    <form onSubmit={handleSubmit} className="space-y-4 w-full">
       {error && (
-        <div className="rounded-lg px-4 py-3 text-sm" style={{ background: "rgba(122,28,28,0.25)", border: "1px solid rgba(122,28,28,0.4)", color: "#f87171" }}>
+        <div
+          className="rounded-lg px-4 py-3 text-sm"
+          style={{
+            background: "rgba(122,28,28,0.25)",
+            border: "1px solid rgba(122,28,28,0.4)",
+            color: "#f87171",
+          }}
+        >
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="col-span-2 space-y-1.5">
-          <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>Item Name *</label>
-          <input
-            type="text"
-            required
-            value={form.name}
-            onChange={(e) => set("name", e.target.value)}
-            placeholder="Shadow Hoodie"
-            className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
-            style={inputStyle}
-          />
-        </div>
+      {/* Name — full width */}
+      <div className="space-y-1.5">
+        <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>
+          Item Name *
+        </label>
+        <input
+          type="text"
+          required
+          value={form.name}
+          onChange={(e) => set("name", e.target.value)}
+          placeholder="Shadow Hoodie"
+          className="w-full rounded-xl px-4 py-3 text-sm outline-none"
+          style={inputStyle}
+        />
+      </div>
 
+      {/* Price + Category — stacked on mobile, side by side on sm+ */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>Price (USD) *</label>
+          <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>
+            Price (USD) *
+          </label>
           <input
             type="number"
             required
@@ -108,17 +121,19 @@ export function MerchForm({ initial = {}, mode }: Props) {
             value={form.price}
             onChange={(e) => set("price", e.target.value)}
             placeholder="75.00"
-            className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+            className="w-full rounded-xl px-4 py-3 text-sm outline-none"
             style={inputStyle}
           />
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>Category</label>
+          <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>
+            Category
+          </label>
           <select
             value={form.category}
             onChange={(e) => set("category", e.target.value)}
-            className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+            className="w-full rounded-xl px-4 py-3 text-sm outline-none"
             style={inputStyle}
           >
             <option value="" style={{ background: "#111113" }}>None</option>
@@ -127,90 +142,97 @@ export function MerchForm({ initial = {}, mode }: Props) {
             ))}
           </select>
         </div>
-
-        <div className="col-span-2 space-y-1.5">
-          <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>Description</label>
-          <textarea
-            value={form.description}
-            onChange={(e) => set("description", e.target.value)}
-            rows={3}
-            placeholder="Short product description…"
-            className="w-full rounded-xl px-4 py-2.5 text-sm outline-none resize-none"
-            style={inputStyle}
-          />
-        </div>
-
-        <div className="col-span-2 space-y-1.5">
-          <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>Image Path or URL</label>
-          <input
-            type="text"
-            value={form.image}
-            onChange={(e) => set("image", e.target.value)}
-            placeholder="/assets/merch/hoodie.png or https://…"
-            className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
-            style={inputStyle}
-          />
-        </div>
-
-        {/* Toggles */}
-        <div className="col-span-2 flex gap-6">
-          <label className="flex items-center gap-3 cursor-pointer">
-            <button
-              type="button"
-              onClick={() => set("inStock", !form.inStock)}
-              className="w-9 h-5 rounded-full transition-colors relative"
-              style={{ background: form.inStock ? "rgba(34,197,94,0.6)" : "rgba(255,255,255,0.1)" }}
-            >
-              <span
-                className="absolute top-0.5 w-4 h-4 rounded-full transition-all"
-                style={{
-                  background: "#fff",
-                  left: form.inStock ? "calc(100% - 18px)" : "2px",
-                }}
-              />
-            </button>
-            <span className="text-sm" style={{ color: "rgba(242,239,233,0.65)" }}>In stock</span>
-          </label>
-
-          <label className="flex items-center gap-3 cursor-pointer">
-            <button
-              type="button"
-              onClick={() => set("isVisible", !form.isVisible)}
-              className="w-9 h-5 rounded-full transition-colors relative"
-              style={{ background: form.isVisible ? "rgba(59,130,246,0.6)" : "rgba(255,255,255,0.1)" }}
-            >
-              <span
-                className="absolute top-0.5 w-4 h-4 rounded-full transition-all"
-                style={{
-                  background: "#fff",
-                  left: form.isVisible ? "calc(100% - 18px)" : "2px",
-                }}
-              />
-            </button>
-            <span className="text-sm" style={{ color: "rgba(242,239,233,0.65)" }}>Visible on site</span>
-          </label>
-        </div>
       </div>
 
-      <div className="flex gap-3 pt-2">
+      {/* Description — full width */}
+      <div className="space-y-1.5">
+        <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>
+          Description
+        </label>
+        <textarea
+          value={form.description}
+          onChange={(e) => set("description", e.target.value)}
+          rows={3}
+          placeholder="Short product description…"
+          className="w-full rounded-xl px-4 py-3 text-sm outline-none resize-none"
+          style={inputStyle}
+        />
+      </div>
+
+      {/* Image — full width */}
+      <div className="space-y-1.5">
+        <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.55)" }}>
+          Image Path or URL
+        </label>
+        <input
+          type="text"
+          value={form.image}
+          onChange={(e) => set("image", e.target.value)}
+          placeholder="/assets/merch/hoodie.png or https://…"
+          className="w-full rounded-xl px-4 py-3 text-sm outline-none"
+          style={inputStyle}
+        />
+      </div>
+
+      {/* Toggles — always horizontal, wrapped */}
+      <div className="flex flex-wrap gap-4 py-1">
+        <label className="flex items-center gap-3 cursor-pointer">
+          <button
+            type="button"
+            onClick={() => set("inStock", !form.inStock)}
+            className="w-10 h-6 rounded-full transition-colors relative shrink-0"
+            style={{ background: form.inStock ? "rgba(34,197,94,0.6)" : "rgba(255,255,255,0.1)" }}
+          >
+            <span
+              className="absolute top-1 w-4 h-4 rounded-full transition-all"
+              style={{
+                background: "#fff",
+                left: form.inStock ? "calc(100% - 18px)" : "4px",
+              }}
+            />
+          </button>
+          <span className="text-sm" style={{ color: "rgba(242,239,233,0.65)" }}>In stock</span>
+        </label>
+
+        <label className="flex items-center gap-3 cursor-pointer">
+          <button
+            type="button"
+            onClick={() => set("isVisible", !form.isVisible)}
+            className="w-10 h-6 rounded-full transition-colors relative shrink-0"
+            style={{ background: form.isVisible ? "rgba(59,130,246,0.6)" : "rgba(255,255,255,0.1)" }}
+          >
+            <span
+              className="absolute top-1 w-4 h-4 rounded-full transition-all"
+              style={{
+                background: "#fff",
+                left: form.isVisible ? "calc(100% - 18px)" : "4px",
+              }}
+            />
+          </button>
+          <span className="text-sm" style={{ color: "rgba(242,239,233,0.65)" }}>Visible on site</span>
+        </label>
+      </div>
+
+      {/* Submit + Cancel */}
+      <div className="flex gap-3 pt-1">
         <button
           type="submit"
           disabled={saving}
-          className="px-6 py-2.5 rounded-xl text-sm font-semibold transition disabled:opacity-60"
+          className="flex-1 sm:flex-none px-6 py-3 rounded-xl text-sm font-semibold transition disabled:opacity-60"
           style={{
             background: "linear-gradient(180deg, rgba(214,178,94,0.95), rgba(185,151,68,0.95))",
             color: "#1b1408",
           }}
         >
-          {saving ? "Saving…" : mode === "edit" ? "Save Changes" : "Create Item"}
+          {saving ? "Guardando…" : mode === "edit" ? "Guardar cambios" : "Crear item"}
         </button>
         <button
           type="button"
           onClick={() => router.push("/admin/merch")}
-          className="px-5 py-2.5 rounded-xl text-sm transition"
+          className="flex-1 sm:flex-none px-5 py-3 rounded-xl text-sm transition"
           style={{ background: "rgba(255,255,255,0.05)", color: "rgba(242,239,233,0.6)" }}
         >
-          Cancel
+          Cancelar
         </button>
       </div>
     </form>

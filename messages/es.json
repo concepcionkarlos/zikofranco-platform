@@ -1,0 +1,170 @@
+{
+  "header": {
+    "shows": "Shows",
+    "media": "Media",
+    "merch": "Merch",
+    "epk": "EPK",
+    "bookNow": "Reservar"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados."
+  },
+  "home": {
+    "tagline": "Miami, FL · Rock · Funk · Shows en Vivo",
+    "heroText": "Potencia del rock moderno fusionada con groove funk y un toque latino inspirado en Santana — hecha para grandes escenarios y noches inolvidables.",
+    "bookShow": "Reservar un Show",
+    "listenSpotify": "Escuchar en Spotify",
+    "stats": {
+      "events": "Eventos",
+      "years": "Años en Escena",
+      "rating": "Calificación",
+      "based": "Con base en"
+    },
+    "about": {
+      "label": "Sobre la Banda",
+      "heading": "Una banda de rock de Miami para grandes escenarios",
+      "body": "ZikoFranco es el proyecto de rock en vivo liderado por Zikopoly — el artista y fuerza creativa detrás del sonido, con base en Miami. Potencia del rock moderno combinada con groove funk y un toque latino inspirado en Santana, reimaginando covers con una identidad única mientras construye hacia música original.",
+      "pressKit": "Press Kit →",
+      "upcoming": "Próximos shows →"
+    },
+    "listenFollow": "Escuchar y Seguir",
+    "music": {
+      "label": "Música",
+      "heading": "En Streaming",
+      "open": "Abrir"
+    },
+    "testimonials": {
+      "label": "Lo que Dicen",
+      "heading": "La elección de organizadores de eventos",
+      "bookNow": "Reservar ahora →",
+      "items": [
+        {
+          "quote": "ZikoFranco transformó por completo nuestra gala corporativa. La energía fue eléctrica — los invitados estuvieron de pie toda la noche.",
+          "name": "Maria V.",
+          "event": "Gala Corporativa · Miami, FL"
+        },
+        {
+          "quote": "Los contratamos para nuestra recepción de bodas y fue la mejor decisión que tomamos. Leyeron perfectamente el ambiente.",
+          "name": "Carlos & Ana",
+          "event": "Recepción de Bodas · Coral Gables, FL"
+        },
+        {
+          "quote": "Presencia escénica increíble. El público enloqueció. Ya estamos planeando el próximo show juntos.",
+          "name": "DJ Renzo",
+          "event": "Show en Vivo · Wynwood, FL"
+        }
+      ]
+    },
+    "cta": {
+      "label": "Reservar a ZikoFranco",
+      "heading": "¿Listo para hacer tu evento inolvidable?",
+      "body": "Eventos privados, shows corporativos, festivales, bodas — ponemos la energía en cada ocasión. Hablemos.",
+      "button": "Solicitar Cotización",
+      "respond": "Respondemos en 24–48 horas"
+    }
+  },
+  "shows": {
+    "label": "Agenda en Vivo",
+    "heading": "Shows",
+    "subtitle": "Ve a ZikoFranco en vivo. Grandes escenarios, noches inolvidables.",
+    "noShows": "No hay shows próximos anunciados aún.",
+    "noShowsLink": "contrátanos para tu evento",
+    "noShowsOr": "Vuelve pronto o",
+    "tickets": "Entradas ↗",
+    "moreDates": "Se están agendando más fechas.",
+    "bookingInterest": "¿Interesado en contratar a ZikoFranco?",
+    "pastLabel": "Escenarios Pasados",
+    "pastHeading": "Dónde hemos tocado",
+    "status": {
+      "UPCOMING": "Próximo",
+      "ANNOUNCED": "Muy Pronto",
+      "SOLD_OUT": "Agotado",
+      "CANCELLED": "Cancelado",
+      "PAST": "Pasado"
+    },
+    "cta": {
+      "label": "Reservar a ZikoFranco",
+      "heading": "¿Nos quieres en tu evento?",
+      "body": "Eventos privados, shows corporativos, festivales, bodas. Envía una solicitud y te responderemos en 24 horas.",
+      "button": "Enviar Solicitud"
+    }
+  },
+  "booking": {
+    "label": "Reservar a ZikoFranco",
+    "heading": "Solicitar Cotización",
+    "subtitle": "Completa el formulario y te contactaremos en 24–48 horas con disponibilidad y precios.",
+    "fields": {
+      "fullName": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "eventType": "Tipo de Evento",
+      "budgetRange": "Rango de Presupuesto",
+      "message": "Mensaje"
+    },
+    "placeholders": {
+      "fullName": "Tu nombre completo",
+      "email": "tu@email.com",
+      "phone": "+1 555 123 4567",
+      "budgetRange": "$2,000 – $5,000",
+      "message": "Cuéntanos la fecha, lugar y lo que necesitas."
+    },
+    "eventTypes": {
+      "select": "Selecciona uno",
+      "private": "Evento Privado",
+      "corporate": "Evento Corporativo",
+      "festival": "Festival",
+      "venue": "Show en Venue",
+      "wedding": "Boda",
+      "other": "Otro"
+    },
+    "submit": "Enviar Solicitud",
+    "sending": "Enviando…",
+    "respond": "Respondemos en 24–48 horas",
+    "success": {
+      "heading": "Solicitud Enviada",
+      "text": "¡Gracias! Tu solicitud fue enviada. Nos pondremos en contacto en 24–48 horas.",
+      "another": "Enviar otra solicitud →"
+    },
+    "errors": {
+      "generic": "Algo salió mal.",
+      "network": "Error de red. Por favor intenta de nuevo."
+    }
+  },
+  "media": {
+    "label": "Galería Visual",
+    "heading": "Media",
+    "subtitle": "Fotos, imágenes de prensa y lanzamientos.",
+    "empty": {
+      "label": "Próximamente",
+      "heading": "Galería actualizándose pronto",
+      "body": "Vuelve pronto para ver fotos, imágenes de prensa y más."
+    },
+    "featured": "Destacado",
+    "video": "Video"
+  },
+  "merch": {
+    "drop": "Drop 01 · Próximamente",
+    "heading1": "La Colección Oficial",
+    "heading2": "ZF Drop",
+    "subtitle": "Primera colección oficial de merch. Cantidades limitadas, sin reposición. Directo desde Miami.",
+    "preview": {
+      "label": "Drop 01",
+      "heading": "Vista Previa de la Colección",
+      "items": "Hoodie · Camiseta · Gorra · Pack de Stickers · Poster",
+      "tag": "Vista Previa"
+    },
+    "empty": {
+      "label": "Próximamente",
+      "heading": "Productos llegando pronto",
+      "body": "Síguenos en Instagram para ser el primero cuando el drop salga."
+    },
+    "soldOut": "Agotado",
+    "cta": {
+      "label": "Acceso Anticipado",
+      "heading": "Sé el primero cuando salga el drop",
+      "body": "Síguenos en Instagram y escríbenos por DM para reservar el tuyo antes del lanzamiento público. Cantidades limitadas.",
+      "instagram": "Seguir @zikopoly",
+      "custom": "Pedidos Personalizados"
+    }
+  }
+}

@@ -4,29 +4,41 @@ import Link from "next/link";
 import { Logo } from "@/components/branding/Logo";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { LocaleSwitcher } from "@/components/ui/LocaleSwitcher";
 
-const NAV_LINKS = [
-  { href: "/shows", label: "Shows" },
-  { href: "/media", label: "Media" },
-  { href: "/merch", label: "Merch" },
-  { href: "/epk", label: "EPK" },
-];
+interface NavLabels {
+  shows: string;
+  media: string;
+  merch: string;
+  epk: string;
+  bookNow: string;
+}
 
-export function Header() {
+interface HeaderProps {
+  locale: string;
+  nav: NavLabels;
+}
+
+export function Header({ locale, nav }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
-  // Close drawer on navigation
   useEffect(() => { setOpen(false); }, [pathname]);
 
-  // Scroll shadow
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 12);
-    handler(); // run on mount
+    handler();
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
+  const NAV_LINKS = [
+    { href: "/shows", label: nav.shows },
+    { href: "/media", label: nav.media },
+    { href: "/merch", label: nav.merch },
+    { href: "/epk", label: nav.epk },
+  ];
 
   return (
     <header
@@ -56,47 +68,51 @@ export function Header() {
               {label}
             </Link>
           ))}
+          <LocaleSwitcher locale={locale} />
           <Link href="/booking" className="btn-oxblood px-4 py-2 text-xs font-semibold rounded-xl">
-            Book Now
+            {nav.bookNow}
           </Link>
         </nav>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-[5px] rounded-lg transition-colors"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-        >
-          <span
-            className="block w-[22px] h-px"
-            style={{
-              background: "rgba(242,239,233,0.75)",
-              transition: "transform 230ms cubic-bezier(0.22,1,0.36,1), opacity 180ms ease",
-              transform: open ? "translateY(5.5px) rotate(45deg)" : undefined,
-            }}
-          />
-          <span
-            className="block w-[22px] h-px"
-            style={{
-              background: "rgba(242,239,233,0.75)",
-              transition: "opacity 180ms ease",
-              opacity: open ? 0 : 1,
-            }}
-          />
-          <span
-            className="block w-[22px] h-px"
-            style={{
-              background: "rgba(242,239,233,0.75)",
-              transition: "transform 230ms cubic-bezier(0.22,1,0.36,1), opacity 180ms ease",
-              transform: open ? "translateY(-5.5px) rotate(-45deg)" : undefined,
-            }}
-          />
-        </button>
+        {/* Mobile: locale switcher + hamburger */}
+        <div className="md:hidden flex items-center gap-3">
+          <LocaleSwitcher locale={locale} />
+          <button
+            className="flex flex-col justify-center items-center w-9 h-9 gap-[5px] rounded-lg transition-colors"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+          >
+            <span
+              className="block w-[22px] h-px"
+              style={{
+                background: "rgba(242,239,233,0.75)",
+                transition: "transform 230ms cubic-bezier(0.22,1,0.36,1), opacity 180ms ease",
+                transform: open ? "translateY(5.5px) rotate(45deg)" : undefined,
+              }}
+            />
+            <span
+              className="block w-[22px] h-px"
+              style={{
+                background: "rgba(242,239,233,0.75)",
+                transition: "opacity 180ms ease",
+                opacity: open ? 0 : 1,
+              }}
+            />
+            <span
+              className="block w-[22px] h-px"
+              style={{
+                background: "rgba(242,239,233,0.75)",
+                transition: "transform 230ms cubic-bezier(0.22,1,0.36,1), opacity 180ms ease",
+                transform: open ? "translateY(-5.5px) rotate(-45deg)" : undefined,
+              }}
+            />
+          </button>
+        </div>
       </div>
 
-      {/* Mobile drawer — animated slide + fade */}
+      {/* Mobile drawer */}
       {open && (
         <nav
           id="mobile-nav"
@@ -125,7 +141,7 @@ export function Header() {
               href="/booking"
               className="mt-4 btn-oxblood px-5 py-3.5 text-sm font-semibold rounded-xl text-center"
             >
-              Book Now
+              {nav.bookNow}
             </Link>
           </div>
         </nav>

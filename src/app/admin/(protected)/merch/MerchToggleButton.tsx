@@ -22,14 +22,14 @@ export function MerchToggleButton({ id, isVisible }: { id: string; isVisible: bo
     <button
       onClick={toggle}
       disabled={loading}
-      className="text-xs px-3 py-1.5 rounded-lg transition disabled:opacity-50"
+      className="text-xs px-3 py-3 rounded-lg transition disabled:opacity-50 whitespace-nowrap"
       style={{
         background: isVisible ? "rgba(59,130,246,0.08)" : "rgba(255,255,255,0.04)",
         color: isVisible ? "#60a5fa" : "rgba(242,239,233,0.4)",
         border: `1px solid ${isVisible ? "rgba(59,130,246,0.2)" : "rgba(255,255,255,0.07)"}`,
       }}
     >
-      {loading ? "…" : isVisible ? "Hide" : "Show"}
+      {loading ? "…" : isVisible ? "Ocultar" : "Mostrar"}
     </button>
   );
 }

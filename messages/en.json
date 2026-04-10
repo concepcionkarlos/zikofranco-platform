@@ -1,0 +1,170 @@
+{
+  "header": {
+    "shows": "Shows",
+    "media": "Media",
+    "merch": "Merch",
+    "epk": "EPK",
+    "bookNow": "Book Now"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  },
+  "home": {
+    "tagline": "Miami, FL · Rock · Funk · Live Shows",
+    "heroText": "Modern rock power fused with funk-forward groove and a Santana-inspired edge — built for big stages and unforgettable nights.",
+    "bookShow": "Book a Show",
+    "listenSpotify": "Listen on Spotify",
+    "stats": {
+      "events": "Events",
+      "years": "Years on Stage",
+      "rating": "Client Rating",
+      "based": "Based in"
+    },
+    "about": {
+      "label": "About the Band",
+      "heading": "A Miami rock band built for big stages",
+      "body": "ZikoFranco is the live rock band project fronted by Zikopoly — the Miami-based artist and creative force behind the sound. Modern rock power meets funk-forward groove and a Santana-inspired edge, reimagining covers with a unique identity while building toward original music.",
+      "pressKit": "Press Kit →",
+      "upcoming": "Upcoming shows →"
+    },
+    "listenFollow": "Listen & Follow",
+    "music": {
+      "label": "Music",
+      "heading": "Now Streaming",
+      "open": "Open"
+    },
+    "testimonials": {
+      "label": "What People Say",
+      "heading": "Trusted by event organizers",
+      "bookNow": "Book now →",
+      "items": [
+        {
+          "quote": "ZikoFranco completely transformed our corporate gala. The energy was electric — guests were on their feet the entire night.",
+          "name": "Maria V.",
+          "event": "Corporate Gala · Miami, FL"
+        },
+        {
+          "quote": "Booked them for our wedding reception and it was the best decision we made. They read the room perfectly.",
+          "name": "Carlos & Ana",
+          "event": "Wedding Reception · Coral Gables, FL"
+        },
+        {
+          "quote": "Incredible stage presence. The crowd went crazy. We're already planning the next show together.",
+          "name": "DJ Renzo",
+          "event": "Venue Show · Wynwood, FL"
+        }
+      ]
+    },
+    "cta": {
+      "label": "Book ZikoFranco",
+      "heading": "Ready to make your event unforgettable?",
+      "body": "Private events, corporate shows, festivals, weddings — we bring the energy every time. Let's talk.",
+      "button": "Request a Quote",
+      "respond": "We respond within 24–48 hours"
+    }
+  },
+  "shows": {
+    "label": "Live Schedule",
+    "heading": "Shows",
+    "subtitle": "Catch ZikoFranco live. Big stages, unforgettable nights.",
+    "noShows": "No upcoming shows announced yet.",
+    "noShowsLink": "book us for your event",
+    "noShowsOr": "Check back soon or",
+    "tickets": "Tickets ↗",
+    "moreDates": "More dates being booked.",
+    "bookingInterest": "Interested in booking ZikoFranco?",
+    "pastLabel": "Past Stages",
+    "pastHeading": "Where we've played",
+    "status": {
+      "UPCOMING": "Upcoming",
+      "ANNOUNCED": "Coming Soon",
+      "SOLD_OUT": "Sold Out",
+      "CANCELLED": "Cancelled",
+      "PAST": "Past"
+    },
+    "cta": {
+      "label": "Book ZikoFranco",
+      "heading": "Want us at your event?",
+      "body": "Private events, corporate shows, festivals, weddings. Send a request and we'll get back within 24 hours.",
+      "button": "Send Booking Request"
+    }
+  },
+  "booking": {
+    "label": "Book ZikoFranco",
+    "heading": "Request a Quote",
+    "subtitle": "Fill out the form and we'll get back to you within 24–48 hours with availability and pricing.",
+    "fields": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "eventType": "Event Type",
+      "budgetRange": "Budget Range",
+      "message": "Message"
+    },
+    "placeholders": {
+      "fullName": "Your full name",
+      "email": "you@email.com",
+      "phone": "+1 555 123 4567",
+      "budgetRange": "$2,000 – $5,000",
+      "message": "Tell us the date, location, and what you need."
+    },
+    "eventTypes": {
+      "select": "Select one",
+      "private": "Private Event",
+      "corporate": "Corporate Event",
+      "festival": "Festival",
+      "venue": "Venue Show",
+      "wedding": "Wedding",
+      "other": "Other"
+    },
+    "submit": "Send Booking Request",
+    "sending": "Sending…",
+    "respond": "We respond within 24–48 hours",
+    "success": {
+      "heading": "Request Sent",
+      "text": "Thanks! Your booking request was sent. We'll be in touch within 24–48 hours.",
+      "another": "Send another request →"
+    },
+    "errors": {
+      "generic": "Something went wrong.",
+      "network": "Network error. Please try again."
+    }
+  },
+  "media": {
+    "label": "Visual Gallery",
+    "heading": "Media",
+    "subtitle": "Photos, press shots and single releases.",
+    "empty": {
+      "label": "Coming Soon",
+      "heading": "Gallery updating soon",
+      "body": "Check back for photos, press shots, and more."
+    },
+    "featured": "Featured",
+    "video": "Video"
+  },
+  "merch": {
+    "drop": "Drop 01 · Coming Soon",
+    "heading1": "The Official",
+    "heading2": "ZF Drop",
+    "subtitle": "First official merch collection. Limited quantities, no restocks. Straight from Miami.",
+    "preview": {
+      "label": "Drop 01",
+      "heading": "Full Collection Preview",
+      "items": "Hoodie · Tee · Cap · Sticker Pack · Poster",
+      "tag": "Preview"
+    },
+    "empty": {
+      "label": "Coming Soon",
+      "heading": "Products dropping soon",
+      "body": "Follow on Instagram to be first when the drop goes live."
+    },
+    "soldOut": "Sold Out",
+    "cta": {
+      "label": "Early Access",
+      "heading": "Be first when the drop goes live",
+      "body": "Follow on Instagram and DM to reserve yours before the public release. Limited quantities.",
+      "instagram": "Follow @zikopoly",
+      "custom": "Custom Orders"
+    }
+  }
+}

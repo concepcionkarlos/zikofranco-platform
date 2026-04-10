@@ -17,6 +17,12 @@ const SORT_OPTIONS = [
   { value: "status_asc", label: "Status" },
 ];
 
+const inputStyle = {
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(255,255,255,0.09)",
+  color: "#f2efe9",
+};
+
 export function RequestsFilterBar({ statuses, currentStatus, currentSearch, currentSort }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -39,56 +45,45 @@ export function RequestsFilterBar({ statuses, currentStatus, currentSearch, curr
   );
 
   return (
-    <div className="flex flex-wrap gap-3 items-center">
-      {/* Search */}
+    <div className="flex flex-col sm:flex-row gap-3">
+      {/* Search — full width on mobile */}
       <input
         type="text"
         defaultValue={currentSearch}
         placeholder="Search name, email, event…"
-        className="rounded-xl px-4 py-2 text-sm outline-none min-w-[220px]"
-        style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.09)",
-          color: "#f2efe9",
-        }}
+        className="w-full sm:flex-1 rounded-xl px-4 py-2.5 text-sm outline-none"
+        style={inputStyle}
         onChange={(e) => updateParams({ search: e.target.value })}
       />
 
-      {/* Status filter */}
-      <select
-        value={currentStatus}
-        onChange={(e) => updateParams({ status: e.target.value })}
-        className="rounded-xl px-3 py-2 text-sm outline-none"
-        style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.09)",
-          color: "#f2efe9",
-        }}
-      >
-        {statuses.map((s) => (
-          <option key={s} value={s} style={{ background: "#111113" }}>
-            {s === "ALL" ? "All statuses" : s.charAt(0) + s.slice(1).toLowerCase()}
-          </option>
-        ))}
-      </select>
+      {/* Status + sort — side by side on mobile */}
+      <div className="flex gap-3">
+        <select
+          value={currentStatus}
+          onChange={(e) => updateParams({ status: e.target.value })}
+          className="flex-1 sm:flex-none rounded-xl px-3 py-2.5 text-sm outline-none"
+          style={inputStyle}
+        >
+          {statuses.map((s) => (
+            <option key={s} value={s} style={{ background: "#111113" }}>
+              {s === "ALL" ? "All statuses" : s.charAt(0) + s.slice(1).toLowerCase()}
+            </option>
+          ))}
+        </select>
 
-      {/* Sort */}
-      <select
-        value={currentSort}
-        onChange={(e) => updateParams({ sort: e.target.value })}
-        className="rounded-xl px-3 py-2 text-sm outline-none"
-        style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.09)",
-          color: "#f2efe9",
-        }}
-      >
-        {SORT_OPTIONS.map((opt) => (
-          <option key={opt.value} value={opt.value} style={{ background: "#111113" }}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+        <select
+          value={currentSort}
+          onChange={(e) => updateParams({ sort: e.target.value })}
+          className="flex-1 sm:flex-none rounded-xl px-3 py-2.5 text-sm outline-none"
+          style={inputStyle}
+        >
+          {SORT_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value} style={{ background: "#111113" }}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }

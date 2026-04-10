@@ -56,7 +56,6 @@ export function RequestActions({ lead }: Props) {
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!data.ok) throw new Error(data.error ?? "Failed to save");
 
-      // Sync local state to what was saved
       if (overrides.status) setStatus(overrides.status);
       if (overrides.internalNotes !== undefined) setNotes(overrides.internalNotes);
 
@@ -91,7 +90,7 @@ export function RequestActions({ lead }: Props) {
 
   return (
     <div
-      className="rounded-2xl p-6 space-y-5 sticky top-8"
+      className="rounded-2xl p-5 sm:p-6 space-y-5 lg:sticky lg:top-8"
       style={{ background: "rgba(18,18,20,0.85)", border: "1px solid rgba(255,255,255,0.07)" }}
     >
       <h2 className="text-xs font-semibold tracking-widest uppercase" style={{ color: "rgba(242,239,233,0.4)" }}>
@@ -100,8 +99,37 @@ export function RequestActions({ lead }: Props) {
 
       {/* Status picker */}
       <div className="space-y-2">
-        <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.5)" }}>Status</label>
-        <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.5)" }}>
+          Status
+        </label>
+
+        {/* Mobile: grid of status buttons */}
+        <div className="grid grid-cols-2 gap-1.5 lg:hidden">
+          {STATUSES.map((s) => {
+            const active = status === s;
+            return (
+              <button
+                key={s}
+                onClick={() => setStatus(s)}
+                className="flex items-center gap-2 px-3 py-3 rounded-xl text-xs font-semibold transition-all whitespace-nowrap"
+                style={{
+                  background: active ? "rgba(214,178,94,0.08)" : "rgba(255,255,255,0.025)",
+                  border: `1px solid ${active ? (STATUS_COLORS[s] ?? "#d6b25e") + "55" : "rgba(255,255,255,0.06)"}`,
+                  color: active ? (STATUS_COLORS[s] ?? "#f2efe9") : "rgba(242,239,233,0.45)",
+                }}
+              >
+                <span
+                  className="w-2 h-2 rounded-full shrink-0"
+                  style={{ background: STATUS_COLORS[s] ?? "#888" }}
+                />
+                {s.charAt(0) + s.slice(1).toLowerCase()}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Desktop: vertical stack */}
+        <div className="hidden lg:flex flex-col gap-1.5">
           {STATUSES.map((s) => {
             const active = status === s;
             return (
@@ -134,9 +162,9 @@ export function RequestActions({ lead }: Props) {
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          rows={4}
+          rows={3}
           placeholder="Private notes — not visible to client…"
-          className="w-full rounded-xl px-3 py-2.5 text-sm outline-none resize-none"
+          className="w-full rounded-xl px-3 py-3 text-sm outline-none resize-none"
           style={{
             background: "rgba(255,255,255,0.03)",
             border: "1px solid rgba(255,255,255,0.07)",
@@ -153,7 +181,7 @@ export function RequestActions({ lead }: Props) {
       <button
         onClick={() => saveWith()}
         disabled={saving}
-        className="w-full py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-60"
+        className="w-full py-3.5 rounded-xl text-sm font-bold transition-all disabled:opacity-60"
         style={{
           background: saved
             ? "rgba(34,197,94,0.15)"
@@ -172,7 +200,7 @@ export function RequestActions({ lead }: Props) {
             if (confirm("Restore this request to New?")) saveWith({ status: "NEW" });
           }}
           disabled={saving}
-          className="w-full py-2 rounded-xl text-xs font-medium transition disabled:opacity-50"
+          className="w-full py-2.5 rounded-xl text-xs font-medium transition disabled:opacity-50"
           style={{
             background: "rgba(34,197,94,0.06)",
             border: "1px solid rgba(34,197,94,0.18)",
@@ -187,7 +215,7 @@ export function RequestActions({ lead }: Props) {
             if (confirm("Archive this request?")) saveWith({ status: "ARCHIVED" });
           }}
           disabled={saving}
-          className="w-full py-2 rounded-xl text-xs font-medium transition disabled:opacity-50"
+          className="w-full py-2.5 rounded-xl text-xs font-medium transition disabled:opacity-50"
           style={{
             background: "transparent",
             border: "1px solid rgba(239,68,68,0.15)",
@@ -203,7 +231,7 @@ export function RequestActions({ lead }: Props) {
         <button
           onClick={handleDelete}
           disabled={deleting || saving}
-          className="w-full py-2 rounded-xl text-xs font-medium transition disabled:opacity-40"
+          className="w-full py-2.5 rounded-xl text-xs font-medium transition disabled:opacity-40"
           style={{
             background: "transparent",
             border: "1px solid rgba(239,68,68,0.1)",

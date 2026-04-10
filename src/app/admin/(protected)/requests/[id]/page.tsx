@@ -83,8 +83,19 @@ export default async function RequestDetailPage({ params }: PageProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        {/* Left column */}
-        <div className="lg:col-span-3 space-y-5">
+        {/* Manage panel — first on mobile, right column on desktop */}
+        <div className="lg:col-span-2 lg:order-2">
+          <RequestActions
+            lead={{
+              id: lead.id,
+              status: lead.status,
+              internalNotes: lead.internalNotes ?? "",
+            }}
+          />
+        </div>
+
+        {/* Main content — second on mobile, left column on desktop */}
+        <div className="lg:col-span-3 lg:order-1 space-y-5">
 
           {/* Client & event info */}
           <div
@@ -205,17 +216,6 @@ export default async function RequestDetailPage({ params }: PageProps) {
               </div>
             )}
           </div>
-        </div>
-
-        {/* Right column — manage panel */}
-        <div className="lg:col-span-2">
-          <RequestActions
-            lead={{
-              id: lead.id,
-              status: lead.status,
-              internalNotes: lead.internalNotes ?? "",
-            }}
-          />
         </div>
       </div>
     </div>
