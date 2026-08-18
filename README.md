@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Zikofranco
 
-## Getting Started
+Website and back office for the Zikofranco music project —
+[zikofranco.com](https://zikofranco.com).
 
-First, run the development server:
+**Stack:** Next.js 16, React, TypeScript, Tailwind, Resend
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Structure
+
+The app is split with Next.js route groups, so the public site and the admin area have
+separate layouts and separate auth without separate deployments:
+
+```
+src/app/(public)/          shows, media, epk, merch, booking
+src/app/admin/login/       sign-in, outside the protected layout
+src/app/admin/(protected)/ dashboard, content, shows, merch, requests
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Putting `login` outside `(protected)` is deliberate: the protected layout can then assume a
+session exists instead of every page re-checking, and there is no route that half-authenticates.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## What it does
 
-## Learn More
+| Area | Purpose |
+|---|---|
+| Shows, media, EPK | Public face of the project |
+| Merch | Store front |
+| Booking | Enquiries, delivered by email through Resend |
+| Admin dashboard | Overview of requests and content |
+| Admin content / shows / merch | Editable without a deploy |
+| Admin requests | Incoming booking and contact enquiries |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Booking and contact both go out through Resend rather than a mailto link, so the address is
+never exposed in markup and a failed send is visible server-side instead of silently lost.
 
-## Deploy on Vercel
+The admin area is content management, not a CMS: it edits exactly the fields the site
+renders, which keeps the shapes in sync and avoids a schema nobody maintains.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Running it
+
+```bash
+npm install
+npm run dev
+```
+
+Environment variables are not committed; the app expects a Resend key from the deployment
+environment.
+
+---
+
+## License
+
+None. Published as a portfolio piece: the source is here to be read, not reused.
+All rights reserved.
