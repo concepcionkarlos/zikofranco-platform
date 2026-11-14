@@ -1,20 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { links } from "@/content/links";
+import { SmartImage } from "@/components/ui/SmartImage";
 import { getLocale, getMessages, createT } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
 const COLLECTION_BANNER = "/assets/photos/07BFABBD-A564-4226-9FF8-F3A3ED575DDE.PNG";
 
+export const metadata = {
+  title: "Merch",
+  description: "Official ZikoFranco merch — Drop 01. Limited quantities, straight from Miami.",
+  alternates: { canonical: "/merch" },
+};
+
 async function getMerchItems() {
-  return prisma.merchItem.findMany({
-    where: { isArchived: false, isVisible: true },
-    orderBy: { createdAt: "asc" },
-  });
+  try {
+    return await prisma.merchItem.findMany({
+      where: { isArchived: false, isVisible: true },
+      orderBy: { createdAt: "asc" },
+    });
+  } catch (err) {
+    console.error("Merch load error:", err);
+    return [];
+  }
 }
 
-type MerchItem = Awaited<ReturnType<typeof getMerchItems>>[number];
+type MerchItem = Awaited<ReturnType<typeof prisma.merchItem.findMany>>[number];
 
 export default async function MerchPage() {
   const [items, locale] = await Promise.all([getMerchItems(), getLocale()]);
@@ -45,7 +58,7 @@ export default async function MerchPage() {
             <h2 className="text-white font-extrabold text-2xl md:text-3xl leading-tight">{t("preview.heading")}</h2>
             <p className="text-white/50 text-xs mt-1">{t("preview.items")}</p>
           </div>
-          <span className="text-[9px] tracking-[0.25em] uppercase text-white/30 font-semibold hidden sm:block">{t("preview.tag")}</span>
+          <span className="text-[9px] tracking-[0.25em] uppercase text-white/50 font-semibold hidden sm:block">{t("preview.tag")}</span>
         </div>
       </div>
 
@@ -67,7 +80,7 @@ export default async function MerchPage() {
           <p className="vintage-muted text-sm max-w-sm">{t("cta.body")}</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center">
-          <a href="https://www.instagram.com/zikopoly" target="_blank" rel="noopener noreferrer"
+          <a href={links.instagram} target="_blank" rel="noopener noreferrer"
             className="btn-gold px-7 py-3 text-sm font-semibold rounded-xl">{t("cta.instagram")}</a>
           <Link href="/booking" className="btn-outline px-7 py-3 text-sm font-semibold rounded-xl">{t("cta.custom")}</Link>
         </div>
@@ -111,9 +124,8 @@ function ProductCard({ item, className = "", titleSize = "lg", soldOutLabel }: {
         </span>
       )}
       {item.image ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={item.image} alt={item.name}
-          className="absolute inset-0 w-full h-full object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]" />
+        <SmartImage src={item.image} alt={item.name} sizes="(min-width: 768px) 50vw, 100vw"
+          className="object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]" />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-5xl text-white/10">◎</span>

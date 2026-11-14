@@ -1,7 +1,13 @@
 import { getLocale, getMessages, createT } from "@/lib/i18n";
-import { BookingForm } from "./BookingForm";
+import { BookingForm, type BookingT } from "./BookingForm";
 
 export const dynamic = "force-dynamic";
+
+export const metadata = {
+  title: "Book the Band",
+  description: "Request a quote for ZikoFranco — Miami's bilingual rock, funk & Latin party band for weddings, corporate events and private parties.",
+  alternates: { canonical: "/booking" },
+};
 
 export default async function BookingPage() {
   const locale = await getLocale();
@@ -12,14 +18,16 @@ export default async function BookingPage() {
     label: t("label"),
     heading: t("heading"),
     subtitle: t("subtitle"),
-    fields: t.raw("fields") as { fullName: string; email: string; phone: string; eventType: string; budgetRange: string; message: string },
-    placeholders: t.raw("placeholders") as { fullName: string; email: string; phone: string; budgetRange: string; message: string },
-    eventTypes: t.raw("eventTypes") as { select: string; private: string; corporate: string; festival: string; venue: string; wedding: string; other: string },
+    fields: t.raw("fields") as BookingT["fields"],
+    placeholders: t.raw("placeholders") as BookingT["placeholders"],
+    eventTypes: t.raw("eventTypes") as BookingT["eventTypes"],
+    formats: t.raw("formats") as BookingT["formats"],
+    budgets: t.raw("budgets") as BookingT["budgets"],
     submit: t("submit"),
     sending: t("sending"),
     respond: t("respond"),
     success: t.raw("success") as { heading: string; text: string; another: string },
-    errors: t.raw("errors") as { generic: string; network: string },
+    errors: t.raw("errors") as BookingT["errors"],
   };
 
   return <BookingForm t={translations} />;

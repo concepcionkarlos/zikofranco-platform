@@ -3,111 +3,177 @@
  * POST /api/leads
  *
  * Qué hace:
- * - Recibe lead del formulario
- * - Valida campos mínimos
+ * - Recibe lead del formulario de booking
+ * - Filtra bots (honeypot + tiempo mínimo de llenado + rate limit por IP)
+ * - Valida campos y longitudes
  * - Guarda el lead en Neon usando Prisma
- * - Envía notificación por email a Zikofranco@gmail.com
+ * - Envía notificación a la banda y auto-respuesta al cliente (después de responder)
  */
 
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/db";
 import { Resend } from "resend";
+import { links } from "@/content/links";
 
 type LeadPayload = {
   fullName: string;
   email: string;
   phone?: string;
   eventType: string;
+  eventDate?: string;
+  location?: string;
+  guestCount?: string;
+  showFormat?: string;
   budgetRange?: string;
   message?: string;
+  website?: string; // honeypot — real users never fill this
+  startedAt?: number; // ms timestamp when the form was rendered
 };
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const NOTIFY_TO = "Zikofranco@gmail.com";
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const MIN_FILL_MS = 3000;
+
+// Best-effort per-instance rate limit (Fluid Compute reuses instances).
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_MAX = 5;
+const hits = new Map<string, number[]>();
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) hits.clear();
+  return recent.length > RATE_MAX;
+}
+
+function clean(value: unknown, max: number): string {
+  return typeof value === "string" ? value.trim().slice(0, max) : "";
+}
 
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as Partial<LeadPayload>;
 
-    if (!body.fullName || !body.email || !body.eventType) {
+    // Bots: pretend success so they don't retry, but store nothing.
+    const tooFast = typeof body.startedAt === "number" && Date.now() - body.startedAt < MIN_FILL_MS;
+    if (clean(body.website, 200) || tooFast) {
+      return NextResponse.json({ ok: true });
+    }
+
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    if (rateLimited(ip)) {
       return NextResponse.json(
-        {
-          ok: false,
-          error: "Missing required fields: fullName, email, eventType",
-        },
-        { status: 400 },
+        { ok: false, error: "Too many requests. Please try again later." },
+        { status: 429 },
       );
     }
 
+    const fullName = clean(body.fullName, 120);
+    const email = clean(body.email, 200).toLowerCase();
+    const eventType = clean(body.eventType, 60);
+    const phone = clean(body.phone, 40);
+    const eventDate = clean(body.eventDate, 20);
+    const location = clean(body.location, 160);
+    const guestCount = clean(body.guestCount, 20);
+    const showFormat = clean(body.showFormat, 60);
+    const budgetRange = clean(body.budgetRange, 60);
+    const message = clean(body.message, 4000);
+
+    if (!fullName || !email || !eventType) {
+      return NextResponse.json(
+        { ok: false, error: "Missing required fields: fullName, email, eventType" },
+        { status: 400 },
+      );
+    }
+    if (!EMAIL_RE.test(email)) {
+      return NextResponse.json({ ok: false, error: "Please enter a valid email." }, { status: 400 });
+    }
+
+    // Event details are stored at the top of the message so they show up in the admin
+    // without needing a database migration.
+    const details = [
+      eventDate && `Event date: ${eventDate}`,
+      location && `Location: ${location}`,
+      guestCount && `Guests: ${guestCount}`,
+      showFormat && `Format: ${showFormat}`,
+    ].filter(Boolean) as string[];
+    const fullMessage = [details.join("\n"), message].filter(Boolean).join("\n\n") || null;
+
     const lead = await prisma.lead.create({
       data: {
-        fullName: body.fullName.trim(),
-        email: body.email.trim(),
-        phone: body.phone?.trim() || null,
-        eventType: body.eventType.trim(),
-        budgetRange: body.budgetRange?.trim() || null,
-        message: body.message?.trim() || null,
+        fullName,
+        email,
+        phone: phone || null,
+        eventType,
+        budgetRange: budgetRange || null,
+        message: fullMessage,
         status: "NEW",
       },
     });
 
-    // Send emails — fire and forget (don't fail the request if email fails)
     if (process.env.RESEND_API_KEY) {
-      // 1. Notify Ziko
-      resend.emails
-        .send({
-          from: "ZikoFranco Booking <booking@zikofranco.com>",
-          to: "Zikofranco@gmail.com",
-          subject: `New Booking Request — ${lead.eventType}`,
-          text: [
-            `New booking request received on zikofranco.com`,
-            ``,
-            `Name:    ${lead.fullName}`,
-            `Email:   ${lead.email}`,
-            `Phone:   ${lead.phone ?? "—"}`,
-            `Event:   ${lead.eventType}`,
-            `Budget:  ${lead.budgetRange ?? "—"}`,
-            ``,
-            `Message:`,
-            lead.message ?? "—",
-          ].join("\n"),
-        })
-        .catch((err) => console.error("Notification email error:", err));
+      const resend = new Resend(process.env.RESEND_API_KEY);
 
-      // 2. Auto-reply to client
-      resend.emails
-        .send({
-          from: "ZikoFranco <booking@zikofranco.com>",
-          to: lead.email,
-          subject: "We got your booking request — ZikoFranco",
-          text: [
-            `Hi ${lead.fullName},`,
-            ``,
-            `Thanks for reaching out! We received your booking request and will get back to you within 24–48 hours.`,
-            ``,
-            `Here's a summary of what you sent:`,
-            `  Event type: ${lead.eventType}`,
-            `  Budget:     ${lead.budgetRange ?? "—"}`,
-            ``,
-            `In the meantime, listen to our music:`,
-            `  Spotify → https://open.spotify.com/artist/zikofranco`,
-            `  Instagram → https://www.instagram.com/zikofranco`,
-            ``,
-            `— Ziko & the team`,
-            `zikofranco.com`,
-          ].join("\n"),
-        })
-        .catch((err) => console.error("Auto-reply email error:", err));
+      // Runs after the response is sent, but the function stays alive until it finishes.
+      after(async () => {
+        const results = await Promise.allSettled([
+          resend.emails.send({
+            from: "ZikoFranco Booking <booking@zikofranco.com>",
+            to: NOTIFY_TO,
+            replyTo: lead.email,
+            subject: `New Booking Request — ${lead.eventType}${eventDate ? ` · ${eventDate}` : ""}`,
+            text: [
+              `New booking request received on zikofranco.com`,
+              ``,
+              `Name:     ${lead.fullName}`,
+              `Email:    ${lead.email}`,
+              `Phone:    ${lead.phone ?? "—"}`,
+              `Event:    ${lead.eventType}`,
+              `Date:     ${eventDate || "—"}`,
+              `Location: ${location || "—"}`,
+              `Guests:   ${guestCount || "—"}`,
+              `Format:   ${showFormat || "—"}`,
+              `Budget:   ${lead.budgetRange ?? "—"}`,
+              ``,
+              `Message:`,
+              message || "—",
+            ].join("\n"),
+          }),
+          resend.emails.send({
+            from: "ZikoFranco <booking@zikofranco.com>",
+            to: lead.email,
+            replyTo: NOTIFY_TO,
+            subject: "We got your booking request — ZikoFranco",
+            text: [
+              `Hi ${lead.fullName},`,
+              ``,
+              `Thanks for reaching out! We received your booking request and will get back to you within 24–48 hours with availability and pricing.`,
+              ``,
+              `In the meantime, check out our music:`,
+              `  Spotify → ${links.spotify}`,
+              `  Instagram → ${links.instagram}`,
+              ``,
+              `— Ziko & the band`,
+              `zikofranco.com`,
+            ].join("\n"),
+          }),
+        ]);
+        results.forEach((r) => {
+          if (r.status === "rejected") console.error("Lead email error:", r.reason);
+        });
+      });
     }
 
-    return NextResponse.json({
-      ok: true,
-      message: "Lead saved successfully",
-      leadId: lead.id,
-    });
+    return NextResponse.json({ ok: true, leadId: lead.id });
   } catch (err) {
     console.error("❌ Lead save error:", err);
     return NextResponse.json(
-      { ok: false, error: "Server error saving lead" },
+      {
+        ok: false,
+        error: `We couldn't send your request right now. Please email us at ${NOTIFY_TO}.`,
+      },
       { status: 500 },
     );
   }

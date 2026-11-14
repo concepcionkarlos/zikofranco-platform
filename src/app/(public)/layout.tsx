@@ -8,6 +8,7 @@ export default async function PublicLayout({ children }: { children: React.React
   const t = createT(messages, "header");
 
   const nav = {
+    show: t("show"),
     shows: t("shows"),
     media: t("media"),
     merch: t("merch"),

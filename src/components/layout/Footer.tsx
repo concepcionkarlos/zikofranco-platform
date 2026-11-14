@@ -16,19 +16,19 @@ export async function Footer() {
             <BrandName />
           </div>
           <p className="text-white/40 text-xs tracking-widest uppercase">
-            Miami, FL &nbsp;·&nbsp; Rock &amp; Funk
+            Miami, FL &nbsp;·&nbsp; Rock · Funk · Latin
           </p>
         </div>
 
         <SocialLinks />
 
         <div className="flex flex-col items-end gap-1">
-          <p className="text-white/30 text-xs">
+          <p className="text-white/50 text-xs">
             © {new Date().getFullYear()} ZikoFranco. {t("rights")}
           </p>
           <Link
             href="/admin"
-            className="text-white/30 text-[11px] hover:text-white/60 transition-colors tracking-wide"
+            className="text-white/50 text-[11px] hover:text-white/60 transition-colors tracking-wide"
           >
             Admin ↗
           </Link>

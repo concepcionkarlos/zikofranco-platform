@@ -1,6 +1,15 @@
 import Link from "next/link";
 import { links } from "@/content/links";
+import { SmartImage } from "@/components/ui/SmartImage";
 import { prisma } from "@/lib/db";
+import { getLocale, getMessages, createT } from "@/lib/i18n";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Electronic Press Kit",
+  description: "ZikoFranco EPK — bio, press photo, technical rider and booking info for promoters, venues and event planners.",
+  alternates: { canonical: "/epk" },
+};
 
 export const revalidate = 60; // revalidate every minute
 
@@ -13,11 +22,11 @@ const DEFAULTS: Record<string, string> = {
   epk_press_photo: "/assets/photos/7058E651-F966-492A-B4CB-7CC9ABF47D72.jpeg",
   epk_press_photo_caption: "Press Photo — Hi-res available on request",
   epk_band_format:
-    "Trio, quartet, or full band\nFormat based on venue & needs\nAlways features rock guitars\nConfirm lineup at booking",
+    "Power trio + pro backing tracks\nZiko — lead vocals\nJCConcepcion — lead guitar\nLive drums · click & cues in-ear",
   epk_stage_req:
-    "Min. 20×16 ft stage\nFull PA system required\nBand uses in-ears — no wedges needed\nBackline available",
+    "Min. 16×12 ft stage\nFull PA system required (or add ours)\nBand uses in-ears — no wedges needed\nSeparate outputs for click/cues (never to PA)\nBackline available",
   epk_set_details:
-    "30 / 60 / 90 min sets\nFull setlist on request\nSoundcheck: 60 min\nLoad-in: 90 min",
+    "Full show: 3 × 50-min sets (3 hours)\n1 or 2 sets also available\n42-song setlist + reserves\nSoundcheck: 60 min · Load-in: 90 min",
   epk_contact_email: "Zikofranco@gmail.com",
 };
 
@@ -48,7 +57,8 @@ function parseParagraphs(text: string): string[] {
 }
 
 export default async function EPKPage() {
-  const c = await getEPKContent();
+  const [c, locale] = await Promise.all([getEPKContent(), getLocale()]);
+  const t = createT(await getMessages(locale), "epk");
 
   const bioParagraphs = parseParagraphs(c.epk_bio);
   const bandFormat = parseLines(c.epk_band_format);
@@ -56,15 +66,15 @@ export default async function EPKPage() {
   const setDetails = parseLines(c.epk_set_details);
 
   const stats = [
-    { label: "Genre", value: c.epk_genre },
-    { label: "Origin", value: c.epk_origin },
-    { label: "Languages", value: c.epk_languages },
+    { label: t("genre"), value: c.epk_genre },
+    { label: t("origin"), value: c.epk_origin },
+    { label: t("languages"), value: c.epk_languages },
   ];
 
   const riderSections = [
-    { title: "Band Format", items: bandFormat },
-    { title: "Stage Requirements", items: stageReq },
-    { title: "Set Details", items: setDetails },
+    { title: t("bandFormat"), items: bandFormat },
+    { title: t("stageReq"), items: stageReq },
+    { title: t("setDetails"), items: setDetails },
   ];
 
   return (
@@ -72,13 +82,13 @@ export default async function EPKPage() {
       {/* Header */}
       <div className="space-y-1">
         <p className="text-[10px] tracking-[0.2em] uppercase text-gold font-semibold">
-          Press &amp; Promoters
+          {t("label")}
         </p>
         <h1 className="text-3xl font-extrabold tracking-tight text-white">
-          Electronic Press Kit
+          {t("heading")}
         </h1>
         <p className="vintage-muted text-sm">
-          Everything you need to book, feature, or promote ZikoFranco.
+          {t("subtitle")}
         </p>
       </div>
 
@@ -86,7 +96,7 @@ export default async function EPKPage() {
       <div className="grid md:grid-cols-5 gap-5">
         <div className="vintage-card p-7 md:col-span-3 space-y-4">
           <p className="text-[10px] tracking-[0.18em] uppercase text-gold font-semibold">
-            Artist Bio
+            {t("bio")}
           </p>
           <h2 className="text-lg font-bold text-white">ZikoFranco</h2>
           <div className="space-y-3 vintage-muted text-sm leading-relaxed">
@@ -98,7 +108,7 @@ export default async function EPKPage() {
           <div className="grid grid-cols-3 gap-4 text-center">
             {stats.map(({ label, value }) => (
               <div key={label}>
-                <p className="text-[10px] tracking-widest uppercase text-white/30">{label}</p>
+                <p className="text-[10px] tracking-widest uppercase text-white/50">{label}</p>
                 <p className="text-white font-semibold text-sm mt-0.5">{value}</p>
               </div>
             ))}
@@ -107,12 +117,7 @@ export default async function EPKPage() {
 
         {/* Press photo */}
         <div className="md:col-span-2 relative rounded-2xl overflow-hidden min-h-[320px] bg-black/30">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={c.epk_press_photo}
-            alt="ZikoFranco press photo"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+          <SmartImage src={c.epk_press_photo} alt={t("pressPhoto")} sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           {c.epk_press_photo_caption && (
             <p className="absolute bottom-4 left-4 text-[10px] tracking-widest uppercase text-white/50">
@@ -125,7 +130,7 @@ export default async function EPKPage() {
       {/* Technical Rider */}
       <div className="vintage-card p-7 space-y-4">
         <p className="text-[10px] tracking-[0.18em] uppercase text-gold font-semibold">
-          Technical Rider
+          {t("rider")}
         </p>
         <div className="grid sm:grid-cols-3 gap-6">
           {riderSections.map(({ title, items }) => (
@@ -142,6 +147,9 @@ export default async function EPKPage() {
             </div>
           ))}
         </div>
+        <Link href="/show" className="inline-block text-sm font-semibold hover:opacity-70 transition-opacity" style={{ color: "#d6b25e" }}>
+          {t("showLink")}
+        </Link>
       </div>
 
       {/* Streaming + Social */}
@@ -159,7 +167,7 @@ export default async function EPKPage() {
             rel="noopener noreferrer"
             className="vintage-card p-5 flex flex-col gap-1 hover:border-gold/20 transition-colors"
           >
-            <p className="text-[10px] tracking-widest uppercase text-white/30">{platform}</p>
+            <p className="text-[10px] tracking-widest uppercase text-white/50">{platform}</p>
             <p className="text-gold font-semibold text-sm">{handle}</p>
           </a>
         ))}
@@ -168,27 +176,27 @@ export default async function EPKPage() {
       {/* Contact / Download CTA */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="vintage-card p-6 space-y-3">
-          <p className="text-white font-semibold">Booking &amp; Press Inquiries</p>
+          <p className="text-white font-semibold">{t("inquiries")}</p>
           <p className="vintage-muted text-sm">
-            For booking requests, interviews, and press features — use the form or email directly.
+            {t("inquiriesBody")}
           </p>
           <Link
             href="/booking"
             className="btn-gold inline-flex px-6 py-2.5 text-sm font-semibold rounded-xl"
           >
-            Send Booking Request
+            {t("sendRequest")}
           </Link>
         </div>
         <div className="vintage-card p-6 space-y-3">
-          <p className="text-white font-semibold">Hi-Res Photos &amp; Logos</p>
+          <p className="text-white font-semibold">{t("assets")}</p>
           <p className="vintage-muted text-sm">
-            Press photos, logos in SVG/PNG, and band artwork available upon request.
+            {t("assetsBody")}
           </p>
           <a
             href={`mailto:${c.epk_contact_email}`}
             className="btn-outline inline-flex px-6 py-2.5 text-sm font-semibold rounded-xl"
           >
-            Request Press Pack
+            {t("requestPack")}
           </a>
         </div>
       </div>

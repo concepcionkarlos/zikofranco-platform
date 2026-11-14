@@ -1,6 +1,6 @@
 /**
  * src/proxy.ts
- * 1. Protects all /admin/* routes — redirects unauthenticated users to /admin/login.
+ * 1. Protects all /admin/* pages (redirect to login) and /api/admin/* endpoints (401).
  * 2. Detects preferred language from Accept-Language on first visit (public routes only).
  */
 
@@ -13,6 +13,18 @@ const DEFAULT_LOCALE = "en";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // ── Admin API auth (everything except login/logout) ─────────────────────
+  if (pathname.startsWith("/api/admin")) {
+    if (pathname === "/api/admin/login" || pathname === "/api/admin/logout") {
+      return NextResponse.next();
+    }
+    const token = request.cookies.get(TOKEN_COOKIE)?.value;
+    if (!token || !(await verifyToken(token))) {
+      return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
+    }
+    return NextResponse.next();
+  }
 
   // ── Admin auth ──────────────────────────────────────────────────────────
   if (pathname.startsWith("/admin")) {
@@ -53,6 +65,7 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/admin/:path*",
-    "/((?!_next|api|favicon\\.ico|assets).*)",
+    "/api/admin/:path*",
+    "/((?!_next|api|favicon\\.ico|assets|robots\\.txt|sitemap\\.xml).*)",
   ],
 };

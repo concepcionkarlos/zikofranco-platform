@@ -1,16 +1,28 @@
 import { prisma } from "@/lib/db";
+import { SmartImage } from "@/components/ui/SmartImage";
 import { getLocale, getMessages, createT } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: "Photos & Media",
+  description: "Live photos, press shots and single releases from ZikoFranco.",
+  alternates: { canonical: "/media" },
+};
+
 async function getMediaItems() {
-  return prisma.mediaItem.findMany({
-    where: { isVisible: true },
-    orderBy: [{ isFeatured: "desc" }, { createdAt: "asc" }],
-  });
+  try {
+    return await prisma.mediaItem.findMany({
+      where: { isVisible: true },
+      orderBy: [{ isFeatured: "desc" }, { createdAt: "asc" }],
+    });
+  } catch (err) {
+    console.error("Media load error:", err);
+    return [];
+  }
 }
 
-type MediaItem = Awaited<ReturnType<typeof getMediaItems>>[number];
+type MediaItem = Awaited<ReturnType<typeof prisma.mediaItem.findMany>>[number];
 
 export default async function MediaPage() {
   const [items, locale] = await Promise.all([getMediaItems(), getLocale()]);
@@ -83,9 +95,8 @@ function PhotoCard({ photo, className = "", featuredLabel, videoLabel }: {
   }
   return (
     <div className={`relative overflow-hidden rounded-2xl group cursor-pointer ${className}`}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={photo.url} alt={photo.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
+      <SmartImage src={photo.url} alt={photo.title} sizes="(min-width: 768px) 60vw, 100vw"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-1 group-hover:translate-y-0 transition-transform duration-300">

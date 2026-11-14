@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { LocaleSwitcher } from "@/components/ui/LocaleSwitcher";
 
 interface NavLabels {
+  show: string;
   shows: string;
   media: string;
   merch: string;
@@ -34,6 +35,7 @@ export function Header({ locale, nav }: HeaderProps) {
   }, []);
 
   const NAV_LINKS = [
+    { href: "/show", label: nav.show },
     { href: "/shows", label: nav.shows },
     { href: "/media", label: nav.media },
     { href: "/merch", label: nav.merch },

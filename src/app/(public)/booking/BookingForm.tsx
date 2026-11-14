@@ -1,14 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type FormState = {
   fullName: string;
   email: string;
   phone: string;
   eventType: string;
+  eventDate: string;
+  location: string;
+  guestCount: string;
+  showFormat: string;
   budgetRange: string;
   message: string;
+  website: string; // honeypot
 };
 
 const initialState: FormState = {
@@ -16,8 +21,13 @@ const initialState: FormState = {
   email: "",
   phone: "",
   eventType: "",
+  eventDate: "",
+  location: "",
+  guestCount: "",
+  showFormat: "",
   budgetRange: "",
   message: "",
+  website: "",
 };
 
 const inputStyle: React.CSSProperties = {
@@ -37,29 +47,34 @@ const inputFocusStyle: React.CSSProperties = {
   border: "1px solid rgba(214,178,94,0.45)",
 };
 
-function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
+function Field({ id, label, required, children }: { id: string; label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-semibold tracking-wide uppercase" style={{ color: "rgba(242,239,233,0.4)" }}>
-        {label}{required && <span style={{ color: "#d6b25e" }}> *</span>}
+      <label htmlFor={id} className="text-xs font-semibold tracking-wide uppercase" style={{ color: "rgba(242,239,233,0.6)" }}>
+        {label}{required && <span style={{ color: "#d6b25e" }} aria-hidden> *</span>}
       </label>
       {children}
     </div>
   );
 }
 
-interface BookingT {
+export interface BookingT {
   label: string;
   heading: string;
   subtitle: string;
-  fields: { fullName: string; email: string; phone: string; eventType: string; budgetRange: string; message: string };
-  placeholders: { fullName: string; email: string; phone: string; budgetRange: string; message: string };
+  fields: {
+    fullName: string; email: string; phone: string; eventType: string; eventDate: string;
+    location: string; guestCount: string; showFormat: string; budgetRange: string; message: string;
+  };
+  placeholders: { fullName: string; email: string; phone: string; location: string; guestCount: string; message: string };
   eventTypes: { select: string; private: string; corporate: string; festival: string; venue: string; wedding: string; other: string };
+  formats: { select: string; one: string; two: string; full: string; unsure: string };
+  budgets: { select: string; b1: string; b2: string; b3: string; b4: string; b5: string; unsure: string };
   submit: string;
   sending: string;
   respond: string;
   success: { heading: string; text: string; another: string };
-  errors: { generic: string; network: string };
+  errors: { generic: string; network: string; email: string };
 }
 
 export function BookingForm({ t }: { t: BookingT }) {
@@ -67,6 +82,11 @@ export function BookingForm({ t }: { t: BookingT }) {
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState<string | null>(null);
   const [status, setStatus] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const startedAt = useRef<number>(0);
+
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
 
   function onChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -88,9 +108,15 @@ export function BookingForm({ t }: { t: BookingT }) {
           fullName: form.fullName.trim(),
           email: form.email.trim(),
           phone: form.phone.trim(),
-          eventType: form.eventType.trim(),
-          budgetRange: form.budgetRange.trim(),
+          eventType: form.eventType,
+          eventDate: form.eventDate,
+          location: form.location.trim(),
+          guestCount: form.guestCount.trim(),
+          showFormat: form.showFormat,
+          budgetRange: form.budgetRange,
           message: form.message.trim(),
+          website: form.website,
+          startedAt: startedAt.current,
         }),
       });
       const data = await res.json();
@@ -116,12 +142,12 @@ export function BookingForm({ t }: { t: BookingT }) {
         <h1 className="text-3xl font-extrabold tracking-tight" style={{ color: "#f2efe9" }}>
           {t.heading}
         </h1>
-        <p className="text-sm mt-2" style={{ color: "rgba(242,239,233,0.45)" }}>{t.subtitle}</p>
+        <p className="text-sm mt-2" style={{ color: "rgba(242,239,233,0.6)" }}>{t.subtitle}</p>
       </div>
 
       <div className="rounded-2xl p-7" style={{ background: "rgba(18,18,20,0.8)", border: "1px solid rgba(255,255,255,0.07)" }}>
         {status?.type === "success" ? (
-          <div className="py-10 text-center space-y-3">
+          <div className="py-10 text-center space-y-3" role="status" aria-live="polite">
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center mx-auto"
               style={{ background: "rgba(214,178,94,0.1)", border: "1px solid rgba(214,178,94,0.2)" }}
@@ -141,62 +167,102 @@ export function BookingForm({ t }: { t: BookingT }) {
             </button>
           </div>
         ) : (
-          <form onSubmit={onSubmit} className="space-y-5">
+          <form onSubmit={onSubmit} className="space-y-5 relative">
+            {/* Honeypot — hidden from people, bots fill it in */}
+            <div aria-hidden className="absolute -left-[9999px] w-px h-px overflow-hidden">
+              <label htmlFor="website">Website</label>
+              <input id="website" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={onChange} />
+            </div>
+
             <div className="grid md:grid-cols-2 gap-5">
-              <Field label={t.fields.fullName} required>
-                <input name="fullName" value={form.fullName} onChange={onChange}
-                  onFocus={() => setFocused("fullName")} onBlur={() => setFocused(null)}
+              <Field id="fullName" label={t.fields.fullName} required>
+                <input id="fullName" name="fullName" value={form.fullName} onChange={onChange} autoComplete="name"
+                  onFocus={() => setFocused("fullName")} onBlur={() => setFocused(null)} maxLength={120}
                   required style={getInputStyle("fullName")} placeholder={t.placeholders.fullName} />
               </Field>
 
-              <Field label={t.fields.email} required>
-                <input name="email" type="email" value={form.email} onChange={onChange}
-                  onFocus={() => setFocused("email")} onBlur={() => setFocused(null)}
+              <Field id="email" label={t.fields.email} required>
+                <input id="email" name="email" type="email" value={form.email} onChange={onChange} autoComplete="email"
+                  onFocus={() => setFocused("email")} onBlur={() => setFocused(null)} maxLength={200}
                   required style={getInputStyle("email")} placeholder={t.placeholders.email} />
               </Field>
 
-              <Field label={t.fields.phone}>
-                <input name="phone" value={form.phone} onChange={onChange}
-                  onFocus={() => setFocused("phone")} onBlur={() => setFocused(null)}
+              <Field id="phone" label={t.fields.phone}>
+                <input id="phone" name="phone" type="tel" value={form.phone} onChange={onChange} autoComplete="tel"
+                  onFocus={() => setFocused("phone")} onBlur={() => setFocused(null)} maxLength={40}
                   style={getInputStyle("phone")} placeholder={t.placeholders.phone} />
               </Field>
 
-              <Field label={t.fields.eventType} required>
-                <div className="relative">
-                  <select name="eventType" value={form.eventType} onChange={onChange}
-                    onFocus={() => setFocused("eventType")} onBlur={() => setFocused(null)}
-                    required style={{ ...getInputStyle("eventType"), appearance: "none" as const, paddingRight: "36px", cursor: "pointer" }}>
-                    <option value="" style={{ background: "#0c0c0e" }}>{t.eventTypes.select}</option>
-                    <option value="Private Event" style={{ background: "#0c0c0e" }}>{t.eventTypes.private}</option>
-                    <option value="Corporate Event" style={{ background: "#0c0c0e" }}>{t.eventTypes.corporate}</option>
-                    <option value="Festival" style={{ background: "#0c0c0e" }}>{t.eventTypes.festival}</option>
-                    <option value="Venue Show" style={{ background: "#0c0c0e" }}>{t.eventTypes.venue}</option>
-                    <option value="Wedding" style={{ background: "#0c0c0e" }}>{t.eventTypes.wedding}</option>
-                    <option value="Other" style={{ background: "#0c0c0e" }}>{t.eventTypes.other}</option>
-                  </select>
-                  <svg className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" width="14" height="14"
-                    viewBox="0 0 24 24" fill="none" stroke="rgba(242,239,233,0.3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </div>
+              <Field id="eventType" label={t.fields.eventType} required>
+                <Select id="eventType" value={form.eventType} onChange={onChange} required
+                  style={getInputStyle("eventType")} onFocus={() => setFocused("eventType")} onBlur={() => setFocused(null)}
+                  options={[
+                    ["", t.eventTypes.select],
+                    ["Wedding", t.eventTypes.wedding],
+                    ["Private Event", t.eventTypes.private],
+                    ["Corporate Event", t.eventTypes.corporate],
+                    ["Festival", t.eventTypes.festival],
+                    ["Venue Show", t.eventTypes.venue],
+                    ["Other", t.eventTypes.other],
+                  ]} />
               </Field>
 
-              <Field label={t.fields.budgetRange}>
-                <input name="budgetRange" value={form.budgetRange} onChange={onChange}
-                  onFocus={() => setFocused("budgetRange")} onBlur={() => setFocused(null)}
-                  style={getInputStyle("budgetRange")} placeholder={t.placeholders.budgetRange} className="md:col-span-2" />
+              <Field id="eventDate" label={t.fields.eventDate}>
+                <input id="eventDate" name="eventDate" type="date" value={form.eventDate} onChange={onChange}
+                  onFocus={() => setFocused("eventDate")} onBlur={() => setFocused(null)}
+                  style={{ ...getInputStyle("eventDate"), colorScheme: "dark" }} />
               </Field>
+
+              <Field id="location" label={t.fields.location}>
+                <input id="location" name="location" value={form.location} onChange={onChange} maxLength={160}
+                  onFocus={() => setFocused("location")} onBlur={() => setFocused(null)}
+                  style={getInputStyle("location")} placeholder={t.placeholders.location} />
+              </Field>
+
+              <Field id="guestCount" label={t.fields.guestCount}>
+                <input id="guestCount" name="guestCount" inputMode="numeric" value={form.guestCount} onChange={onChange} maxLength={20}
+                  onFocus={() => setFocused("guestCount")} onBlur={() => setFocused(null)}
+                  style={getInputStyle("guestCount")} placeholder={t.placeholders.guestCount} />
+              </Field>
+
+              <Field id="showFormat" label={t.fields.showFormat}>
+                <Select id="showFormat" value={form.showFormat} onChange={onChange}
+                  style={getInputStyle("showFormat")} onFocus={() => setFocused("showFormat")} onBlur={() => setFocused(null)}
+                  options={[
+                    ["", t.formats.select],
+                    ["1 Set (50 min)", t.formats.one],
+                    ["2 Sets (~2 hours)", t.formats.two],
+                    ["Full Show (3 hours)", t.formats.full],
+                    ["Not sure", t.formats.unsure],
+                  ]} />
+              </Field>
+
+              <div className="md:col-span-2">
+                <Field id="budgetRange" label={t.fields.budgetRange}>
+                  <Select id="budgetRange" value={form.budgetRange} onChange={onChange}
+                    style={getInputStyle("budgetRange")} onFocus={() => setFocused("budgetRange")} onBlur={() => setFocused(null)}
+                    options={[
+                      ["", t.budgets.select],
+                      ["Under $1,500", t.budgets.b1],
+                      ["$1,500 – $3,000", t.budgets.b2],
+                      ["$3,000 – $5,000", t.budgets.b3],
+                      ["$5,000 – $8,000", t.budgets.b4],
+                      ["$8,000+", t.budgets.b5],
+                      ["Not sure", t.budgets.unsure],
+                    ]} />
+                </Field>
+              </div>
             </div>
 
-            <Field label={t.fields.message}>
-              <textarea name="message" value={form.message} onChange={onChange}
+            <Field id="message" label={t.fields.message}>
+              <textarea id="message" name="message" value={form.message} onChange={onChange} maxLength={4000}
                 onFocus={() => setFocused("message")} onBlur={() => setFocused(null)}
                 rows={5} style={{ ...getInputStyle("message"), resize: "none" }}
                 placeholder={t.placeholders.message} />
             </Field>
 
             {status?.type === "error" && (
-              <div className="rounded-xl px-4 py-3 text-sm"
+              <div role="alert" className="rounded-xl px-4 py-3 text-sm"
                 style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.18)", color: "#f87171" }}>
                 {status.text}
               </div>
@@ -218,11 +284,37 @@ export function BookingForm({ t }: { t: BookingT }) {
                   </span>
                 ) : t.submit}
               </button>
-              <p className="text-xs mt-3" style={{ color: "rgba(242,239,233,0.25)" }}>{t.respond}</p>
+              <p className="text-xs mt-3" style={{ color: "rgba(242,239,233,0.5)" }}>{t.respond}</p>
             </div>
           </form>
         )}
       </div>
     </section>
+  );
+}
+
+function Select({ id, value, onChange, options, style, required, onFocus, onBlur }: {
+  id: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: [string, string][];
+  style: React.CSSProperties;
+  required?: boolean;
+  onFocus: () => void;
+  onBlur: () => void;
+}) {
+  return (
+    <div className="relative">
+      <select id={id} name={id} value={value} onChange={onChange} required={required} onFocus={onFocus} onBlur={onBlur}
+        style={{ ...style, appearance: "none", paddingRight: "36px", cursor: "pointer" }}>
+        {options.map(([v, label]) => (
+          <option key={v} value={v} style={{ background: "#0c0c0e" }}>{label}</option>
+        ))}
+      </select>
+      <svg className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" width="14" height="14"
+        viewBox="0 0 24 24" fill="none" stroke="rgba(242,239,233,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    </div>
   );
 }

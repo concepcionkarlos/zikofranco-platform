@@ -3,6 +3,7 @@ import { Logo } from "@/components/branding/Logo";
 import { BrandName } from "@/components/branding/BrandName";
 import { links, platformLinks } from "@/content/links";
 import { Reveal } from "@/components/ui/Reveal";
+import { BandLineup } from "@/components/band/BandLineup";
 import { prisma } from "@/lib/db";
 import { getLocale, getMessages, createT } from "@/lib/i18n";
 
@@ -24,6 +25,14 @@ export default async function Home() {
   const [spotifyEmbedUrl, locale] = await Promise.all([getSpotifyEmbedUrl(), getLocale()]);
   const messages = await getMessages(locale);
   const t = createT(messages, "home");
+  const tb = createT(messages, "band");
+  const band = {
+    label: tb("label"),
+    heading: tb("heading"),
+    body: tb("body"),
+    members: tb.raw("members") as { name: string; role: string }[],
+    tracks: tb("tracks"),
+  };
 
   const stats = [
     { value: "200+", label: t("stats.events") },
@@ -56,10 +65,9 @@ export default async function Home() {
           <Link href="/booking" className="btn-oxblood px-8 py-3.5 font-semibold text-sm tracking-wide rounded-xl">
             {t("bookShow")}
           </Link>
-          <a href={links.spotify} target="_blank" rel="noopener noreferrer"
-            className="btn-outline px-8 py-3.5 font-semibold text-sm tracking-wide rounded-xl">
-            {t("listenSpotify")}
-          </a>
+          <Link href="/show" className="btn-outline px-8 py-3.5 font-semibold text-sm tracking-wide rounded-xl">
+            {t("seeShow")}
+          </Link>
         </div>
         <div className="mt-14 sm:mt-16 vintage-divider" />
       </section>
@@ -71,10 +79,15 @@ export default async function Home() {
             <div key={label} className="text-center py-6 sm:py-7 rounded-2xl"
               style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.06)" }}>
               <div className="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style={{ color: "#d6b25e" }}>{value}</div>
-              <div className="text-[10px] mt-2 uppercase tracking-widest" style={{ color: "rgba(242,239,233,0.35)" }}>{label}</div>
+              <div className="text-[10px] mt-2 uppercase tracking-widest" style={{ color: "rgba(242,239,233,0.55)" }}>{label}</div>
             </div>
           ))}
         </div>
+      </Reveal>
+
+      {/* ── THE BAND ── */}
+      <Reveal className="vintage-container pb-16 sm:pb-20">
+        <BandLineup {...band} />
       </Reveal>
 
       {/* ── BIO + LISTEN ── */}
@@ -89,7 +102,7 @@ export default async function Home() {
               <Link href="/epk" className="text-sm font-semibold hover:opacity-70 transition-opacity" style={{ color: "#d6b25e" }}>
                 {t("about.pressKit")}
               </Link>
-              <Link href="/shows" className="text-xs hover:opacity-70 transition-opacity" style={{ color: "rgba(242,239,233,0.35)" }}>
+              <Link href="/shows" className="text-xs hover:opacity-70 transition-opacity" style={{ color: "rgba(242,239,233,0.55)" }}>
                 {t("about.upcoming")}
               </Link>
             </div>
@@ -148,7 +161,7 @@ export default async function Home() {
               <p className="text-[10px] tracking-[0.22em] uppercase font-semibold" style={{ color: "#d6b25e" }}>{t("testimonials.label")}</p>
               <h2 className="text-lg sm:text-xl font-bold mt-1 tracking-tight">{t("testimonials.heading")}</h2>
             </div>
-            <Link href="/booking" className="text-xs hidden md:block hover:opacity-70 transition-opacity" style={{ color: "rgba(242,239,233,0.35)" }}>
+            <Link href="/booking" className="text-xs hidden md:block hover:opacity-70 transition-opacity" style={{ color: "rgba(242,239,233,0.55)" }}>
               {t("testimonials.bookNow")}
             </Link>
           </div>
@@ -157,11 +170,11 @@ export default async function Home() {
               <Reveal key={name} delay={i * 80}>
                 <div className="flex flex-col gap-4 p-5 sm:p-6 rounded-2xl h-full"
                   style={{ background: "rgba(15,15,17,0.7)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                  <span className="text-3xl leading-none" style={{ color: "rgba(214,178,94,0.5)", fontFamily: "Georgia, serif" }}>"</span>
+                  <span className="text-3xl leading-none" style={{ color: "rgba(214,178,94,0.5)", fontFamily: "Georgia, serif" }}>&ldquo;</span>
                   <p className="text-sm leading-relaxed flex-1" style={{ color: "rgba(242,239,233,0.65)" }}>{quote}</p>
                   <div className="pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
                     <p className="text-sm font-semibold" style={{ color: "#f2efe9" }}>{name}</p>
-                    <p className="text-xs mt-0.5" style={{ color: "rgba(242,239,233,0.28)" }}>{event}</p>
+                    <p className="text-xs mt-0.5" style={{ color: "rgba(242,239,233,0.55)" }}>{event}</p>
                   </div>
                 </div>
               </Reveal>
@@ -180,7 +193,7 @@ export default async function Home() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mt-3 mb-4 tracking-tight relative leading-tight">{t("cta.heading")}</h2>
           <p className="text-sm max-w-sm mx-auto leading-relaxed mb-8 relative" style={{ color: "rgba(242,239,233,0.5)" }}>{t("cta.body")}</p>
           <Link href="/booking" className="btn-gold inline-flex px-10 py-3.5 text-sm font-bold rounded-xl relative">{t("cta.button")}</Link>
-          <p className="text-xs mt-5 relative" style={{ color: "rgba(242,239,233,0.25)" }}>{t("cta.respond")}</p>
+          <p className="text-xs mt-5 relative" style={{ color: "rgba(242,239,233,0.55)" }}>{t("cta.respond")}</p>
         </div>
       </Reveal>
     </>

@@ -4,14 +4,15 @@
     "media": "Media",
     "merch": "Merch",
     "epk": "EPK",
-    "bookNow": "Book Now"
+    "bookNow": "Book Now",
+    "show": "The Show"
   },
   "footer": {
     "rights": "All rights reserved."
   },
   "home": {
-    "tagline": "Miami, FL · Rock · Funk · Live Shows",
-    "heroText": "Modern rock power fused with funk-forward groove and a Santana-inspired edge — built for big stages and unforgettable nights.",
+    "tagline": "Miami, FL · Rock · Funk · Latin · Live Shows",
+    "heroText": "Miami's bilingual party band. Rock, funk, Latin and sing-along hits in one non-stop live show — built for weddings, corporate events and unforgettable nights.",
     "bookShow": "Book a Show",
     "listenSpotify": "Listen on Spotify",
     "stats": {
@@ -22,8 +23,8 @@
     },
     "about": {
       "label": "About the Band",
-      "heading": "A Miami rock band built for big stages",
-      "body": "ZikoFranco is the live rock band project fronted by Zikopoly — the Miami-based artist and creative force behind the sound. Modern rock power meets funk-forward groove and a Santana-inspired edge, reimagining covers with a unique identity while building toward original music.",
+      "heading": "A Miami band built to fill the dance floor",
+      "body": "ZikoFranco is a power trio — Ziko on vocals, JCConcepcion on lead guitar and a live drummer — backed by professional tracks for a full-band sound. Modern rock power meets funk-forward groove and a Santana-inspired Latin edge, arranged into seamless medleys that keep every crowd moving, in English and Spanish.",
       "pressKit": "Press Kit →",
       "upcoming": "Upcoming shows →"
     },
@@ -61,7 +62,8 @@
       "body": "Private events, corporate shows, festivals, weddings — we bring the energy every time. Let's talk.",
       "button": "Request a Quote",
       "respond": "We respond within 24–48 hours"
-    }
+    },
+    "seeShow": "See the 3-Hour Show"
   },
   "shows": {
     "label": "Live Schedule",
@@ -99,14 +101,19 @@
       "phone": "Phone",
       "eventType": "Event Type",
       "budgetRange": "Budget Range",
-      "message": "Message"
+      "message": "Message",
+      "eventDate": "Event Date",
+      "location": "Venue / City",
+      "guestCount": "Number of Guests",
+      "showFormat": "Show Format"
     },
     "placeholders": {
       "fullName": "Your full name",
       "email": "you@email.com",
       "phone": "+1 555 123 4567",
-      "budgetRange": "$2,000 – $5,000",
-      "message": "Tell us the date, location, and what you need."
+      "message": "Anything else? Must-play songs, special moments, timing…",
+      "location": "e.g. Coral Gables, FL",
+      "guestCount": "e.g. 150"
     },
     "eventTypes": {
       "select": "Select one",
@@ -127,8 +134,26 @@
     },
     "errors": {
       "generic": "Something went wrong.",
-      "network": "Network error. Please try again."
-    }
+      "network": "Network error. Please try again.",
+      "email": "Please enter a valid email."
+    },
+    "formats": {
+      "select": "Select one",
+      "one": "1 Set · 50 min",
+      "two": "2 Sets · ~2 hours",
+      "full": "Full Show · 3 hours (3 sets)",
+      "unsure": "Not sure yet"
+    },
+    "budgets": {
+      "select": "Select a range",
+      "b1": "Under $1,500",
+      "b2": "$1,500 – $3,000",
+      "b3": "$3,000 – $5,000",
+      "b4": "$5,000 – $8,000",
+      "b5": "$8,000+",
+      "unsure": "Not sure yet"
+    },
+    "optional": "optional"
   },
   "media": {
     "label": "Visual Gallery",
@@ -166,5 +191,110 @@
       "instagram": "Follow @zikopoly",
       "custom": "Custom Orders"
     }
+  },
+  "show": {
+    "label": "The Experience",
+    "heading": "The Miami Live Show",
+    "subtitle": "Three hours of rock, funk, Latin rock, reggae and party. 42 songs arranged to flow as one continuous show — no dead air, no playlist feel.",
+    "pillars": [
+      {
+        "title": "Non-stop flow",
+        "body": "Medleys, live transitions and dramatic cuts keep the dance floor full from the first note to the last chorus."
+      },
+      {
+        "title": "Bilingual crowd",
+        "body": "English and Spanish hits back to back — built for Miami's mixed audiences."
+      },
+      {
+        "title": "Big sound, compact setup",
+        "body": "A power trio plus professional backing tracks: the sound of a full band with the footprint and budget of a trio."
+      }
+    ],
+    "scheduleLabel": "Sample Night",
+    "scheduleHeading": "3 sets · 150 minutes of music",
+    "break": "Break · 15 min",
+    "sets": {
+      "set1": {
+        "title": "Set 1 — Funk, Pop & Dance",
+        "body": "Opens with feel-good grooves and builds into disco-funk and a festive finish."
+      },
+      "set2": {
+        "title": "Set 2 — Miami Latin & Sing-Along",
+        "body": "Reggae to kick off, a non-stop Santana block, a Latin celebration and big sing-along anthems."
+      },
+      "set3": {
+        "title": "Set 3 — Rock Party Finale",
+        "body": "Iconic riffs, classic rock, an emotional U2 moment and a final climb to The Killers, Guns N' Roses and Bon Jovi."
+      }
+    },
+    "songs": "songs",
+    "showSetlist": "See full setlist",
+    "reserveLabel": "Also in our repertoire",
+    "formatsLabel": "Formats",
+    "formatsHeading": "Pick the show that fits your event",
+    "formats": [
+      {
+        "title": "Party Set",
+        "time": "1 set · 50 min",
+        "body": "Cocktail hours, receptions, birthdays and corporate mixers."
+      },
+      {
+        "title": "Two-Set Celebration",
+        "time": "2 sets · ~2 hours",
+        "body": "Our most popular choice for private parties and corporate events."
+      },
+      {
+        "title": "Full Miami Live Show",
+        "time": "3 sets · 3 hours",
+        "body": "The complete experience — perfect for weddings and big celebrations."
+      }
+    ],
+    "lineup": "Power trio — Ziko on vocals, JCConcepcion on lead guitar and a live drummer — backed by pro tracks for a full-band sound.",
+    "cta": {
+      "heading": "Let's build your night",
+      "body": "Tell us the date, the venue and the vibe. We'll send availability and a quote within 24–48 hours.",
+      "button": "Request a Quote"
+    }
+  },
+  "epk": {
+    "label": "Press & Promoters",
+    "heading": "Electronic Press Kit",
+    "subtitle": "Everything you need to book, feature, or promote ZikoFranco.",
+    "bio": "Artist Bio",
+    "genre": "Genre",
+    "origin": "Origin",
+    "languages": "Languages",
+    "pressPhoto": "ZikoFranco press photo",
+    "rider": "Technical Rider",
+    "bandFormat": "Band Format",
+    "stageReq": "Stage Requirements",
+    "setDetails": "Set Details",
+    "inquiries": "Booking & Press Inquiries",
+    "inquiriesBody": "For booking requests, interviews, and press features — use the form or email directly.",
+    "sendRequest": "Send Booking Request",
+    "assets": "Hi-Res Photos & Logos",
+    "assetsBody": "Press photos, logos in SVG/PNG, and band artwork available upon request.",
+    "requestPack": "Request Press Pack",
+    "showLink": "See the full 3-hour show & setlist →"
+  },
+  "band": {
+    "label": "The Band",
+    "heading": "A power trio with a full-band sound",
+    "body": "Three musicians on stage, professional backing tracks under them: the punch of a big band with the footprint of a trio.",
+    "members": [
+      {
+        "name": "Ziko",
+        "role": "Lead Vocals"
+      },
+      {
+        "name": "JCConcepcion",
+        "role": "Lead Guitar"
+      },
+      {
+        "name": "Live Drums",
+        "role": "Drums & Groove"
+      }
+    ],
+    "tracks": "+ Pro backing tracks, click & in-ear cues"
   }
 }

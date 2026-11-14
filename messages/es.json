@@ -4,14 +4,15 @@
     "media": "Media",
     "merch": "Merch",
     "epk": "EPK",
-    "bookNow": "Reservar"
+    "bookNow": "Reservar",
+    "show": "El Show"
   },
   "footer": {
     "rights": "Todos los derechos reservados."
   },
   "home": {
-    "tagline": "Miami, FL · Rock · Funk · Shows en Vivo",
-    "heroText": "Potencia del rock moderno fusionada con groove funk y un toque latino inspirado en Santana — hecha para grandes escenarios y noches inolvidables.",
+    "tagline": "Miami, FL · Rock · Funk · Latino · Shows en Vivo",
+    "heroText": "La banda de fiesta bilingüe de Miami. Rock, funk, latino y himnos para cantar en un show en vivo sin pausas — para bodas, eventos corporativos y noches inolvidables.",
     "bookShow": "Reservar un Show",
     "listenSpotify": "Escuchar en Spotify",
     "stats": {
@@ -22,8 +23,8 @@
     },
     "about": {
       "label": "Sobre la Banda",
-      "heading": "Una banda de rock de Miami para grandes escenarios",
-      "body": "ZikoFranco es el proyecto de rock en vivo liderado por Zikopoly — el artista y fuerza creativa detrás del sonido, con base en Miami. Potencia del rock moderno combinada con groove funk y un toque latino inspirado en Santana, reimaginando covers con una identidad única mientras construye hacia música original.",
+      "heading": "Una banda de Miami hecha para llenar la pista",
+      "body": "ZikoFranco es un power trio — Ziko en la voz, JCConcepcion en la guitarra líder y batería en vivo — con pistas profesionales para un sonido de banda completa. Potencia de rock moderno, groove funk y un toque latino al estilo Santana, en medleys continuos que mantienen a todos bailando, en inglés y en español.",
       "pressKit": "Press Kit →",
       "upcoming": "Próximos shows →"
     },
@@ -61,7 +62,8 @@
       "body": "Eventos privados, shows corporativos, festivales, bodas — ponemos la energía en cada ocasión. Hablemos.",
       "button": "Solicitar Cotización",
       "respond": "Respondemos en 24–48 horas"
-    }
+    },
+    "seeShow": "Ver el Show de 3 Horas"
   },
   "shows": {
     "label": "Agenda en Vivo",
@@ -99,14 +101,19 @@
       "phone": "Teléfono",
       "eventType": "Tipo de Evento",
       "budgetRange": "Rango de Presupuesto",
-      "message": "Mensaje"
+      "message": "Mensaje",
+      "eventDate": "Fecha del Evento",
+      "location": "Lugar / Ciudad",
+      "guestCount": "Número de Invitados",
+      "showFormat": "Formato del Show"
     },
     "placeholders": {
       "fullName": "Tu nombre completo",
       "email": "tu@email.com",
       "phone": "+1 555 123 4567",
-      "budgetRange": "$2,000 – $5,000",
-      "message": "Cuéntanos la fecha, lugar y lo que necesitas."
+      "message": "¿Algo más? Canciones imprescindibles, momentos especiales, horarios…",
+      "location": "ej. Coral Gables, FL",
+      "guestCount": "ej. 150"
     },
     "eventTypes": {
       "select": "Selecciona uno",
@@ -127,8 +134,26 @@
     },
     "errors": {
       "generic": "Algo salió mal.",
-      "network": "Error de red. Por favor intenta de nuevo."
-    }
+      "network": "Error de red. Por favor intenta de nuevo.",
+      "email": "Por favor ingresa un correo válido."
+    },
+    "formats": {
+      "select": "Selecciona uno",
+      "one": "1 Set · 50 min",
+      "two": "2 Sets · ~2 horas",
+      "full": "Show Completo · 3 horas (3 sets)",
+      "unsure": "Aún no sé"
+    },
+    "budgets": {
+      "select": "Selecciona un rango",
+      "b1": "Menos de $1,500",
+      "b2": "$1,500 – $3,000",
+      "b3": "$3,000 – $5,000",
+      "b4": "$5,000 – $8,000",
+      "b5": "$8,000+",
+      "unsure": "Aún no sé"
+    },
+    "optional": "opcional"
   },
   "media": {
     "label": "Galería Visual",
@@ -166,5 +191,110 @@
       "instagram": "Seguir @zikopoly",
       "custom": "Pedidos Personalizados"
     }
+  },
+  "show": {
+    "label": "La Experiencia",
+    "heading": "El Miami Live Show",
+    "subtitle": "Tres horas de rock, funk, rock latino, reggae y fiesta. 42 canciones organizadas para sonar como un solo espectáculo continuo — sin silencios, sin sensación de playlist.",
+    "pillars": [
+      {
+        "title": "Fluye sin parar",
+        "body": "Medleys, transiciones en vivo y cortes dramáticos mantienen la pista llena desde la primera nota hasta el último coro."
+      },
+      {
+        "title": "Público bilingüe",
+        "body": "Éxitos en inglés y español, uno tras otro — hecho para el público mixto de Miami."
+      },
+      {
+        "title": "Sonido grande, montaje compacto",
+        "body": "Un power trio con pistas profesionales: el sonido de una banda completa con el espacio y presupuesto de un trío."
+      }
+    ],
+    "scheduleLabel": "Una Noche Tipo",
+    "scheduleHeading": "3 sets · 150 minutos de música",
+    "break": "Descanso · 15 min",
+    "sets": {
+      "set1": {
+        "title": "Set 1 — Funk, Pop & Dance",
+        "body": "Abre con grooves bailables y sube hacia disco-funk y un cierre festivo."
+      },
+      "set2": {
+        "title": "Set 2 — Miami Latin & Sing-Along",
+        "body": "Reggae para arrancar, un bloque Santana sin pausas, celebración latina y grandes himnos para cantar."
+      },
+      "set3": {
+        "title": "Set 3 — Rock Party Finale",
+        "body": "Riffs icónicos, rock clásico, un momento emotivo con U2 y una escalada final hacia The Killers, Guns N' Roses y Bon Jovi."
+      }
+    },
+    "songs": "canciones",
+    "showSetlist": "Ver setlist completo",
+    "reserveLabel": "También en nuestro repertorio",
+    "formatsLabel": "Formatos",
+    "formatsHeading": "Elige el show para tu evento",
+    "formats": [
+      {
+        "title": "Party Set",
+        "time": "1 set · 50 min",
+        "body": "Cócteles, recepciones, cumpleaños y eventos corporativos."
+      },
+      {
+        "title": "Celebración de Dos Sets",
+        "time": "2 sets · ~2 horas",
+        "body": "La opción más popular para fiestas privadas y eventos corporativos."
+      },
+      {
+        "title": "Miami Live Show Completo",
+        "time": "3 sets · 3 horas",
+        "body": "La experiencia completa — ideal para bodas y grandes celebraciones."
+      }
+    ],
+    "lineup": "Power trio — Ziko en la voz, JCConcepcion en la guitarra líder y batería en vivo — con pistas profesionales para un sonido de banda completa.",
+    "cta": {
+      "heading": "Armemos tu noche",
+      "body": "Cuéntanos la fecha, el lugar y el ambiente. Te enviamos disponibilidad y cotización en 24–48 horas.",
+      "button": "Solicitar Cotización"
+    }
+  },
+  "epk": {
+    "label": "Prensa y Promotores",
+    "heading": "Kit de Prensa (EPK)",
+    "subtitle": "Todo lo que necesitas para contratar, presentar o promocionar a ZikoFranco.",
+    "bio": "Biografía",
+    "genre": "Género",
+    "origin": "Origen",
+    "languages": "Idiomas",
+    "pressPhoto": "Foto de prensa de ZikoFranco",
+    "rider": "Rider Técnico",
+    "bandFormat": "Formato de la Banda",
+    "stageReq": "Requisitos de Escenario",
+    "setDetails": "Detalles del Set",
+    "inquiries": "Booking y Prensa",
+    "inquiriesBody": "Para contrataciones, entrevistas y prensa — usa el formulario o escríbenos directo.",
+    "sendRequest": "Enviar Solicitud",
+    "assets": "Fotos en Alta y Logos",
+    "assetsBody": "Fotos de prensa, logos en SVG/PNG y arte de la banda disponibles a pedido.",
+    "requestPack": "Pedir Press Kit",
+    "showLink": "Ver el show de 3 horas y el setlist →"
+  },
+  "band": {
+    "label": "La Banda",
+    "heading": "Un power trio con sonido de banda completa",
+    "body": "Tres músicos en tarima y pistas profesionales de respaldo: la potencia de una banda grande con el montaje de un trío.",
+    "members": [
+      {
+        "name": "Ziko",
+        "role": "Voz Principal"
+      },
+      {
+        "name": "JCConcepcion",
+        "role": "Guitarra Líder"
+      },
+      {
+        "name": "Batería en Vivo",
+        "role": "Batería y Groove"
+      }
+    ],
+    "tracks": "+ Pistas profesionales, click y cues en in-ear"
   }
 }
