@@ -9,7 +9,9 @@
     "home": "Inicio",
     "skip": "Saltar al contenido",
     "backToTop": "Volver arriba",
-    "booking": "Reservas"
+    "booking": "Reservas",
+    "weddings": "Bodas",
+    "corporate": "Eventos Corporativos"
   },
   "footer": {
     "rights": "Todos los derechos reservados.",
@@ -281,7 +283,8 @@
     "assets": "Fotos en Alta y Logos",
     "assetsBody": "Fotos de prensa, logos en SVG/PNG y arte de la banda disponibles a pedido.",
     "requestPack": "Pedir Press Kit",
-    "showLink": "Ver el show de 3 horas y el setlist →"
+    "showLink": "Ver el show de 3 horas y el setlist →",
+    "downloadPdf": "Descargar EPK (PDF)"
   },
   "band": {
     "label": "La Banda",
@@ -302,5 +305,101 @@
       }
     ],
     "tracks": "+ Pistas profesionales, click y cues en in-ear"
+  },
+  "faq": {
+    "label": "Preguntas Frecuentes",
+    "heading": "Lo que nos preguntan los organizadores",
+    "items": [
+      {
+        "q": "¿Cuánto cuesta contratar a ZikoFranco?",
+        "a": "El precio depende de la fecha, cuánta música en vivo quieras y el lugar. Envíanos una solicitud con los detalles de tu evento y te respondemos en 24–48 horas con disponibilidad y una cotización clara."
+      },
+      {
+        "q": "¿Cuánto tiempo tocan?",
+        "a": "Ofrecemos un Party Set de 50 minutos, una Celebración de Dos Sets (unas 2 horas con descanso) y nuestro Miami Live Show completo: tres sets de 50 minutos en 3 horas."
+      },
+      {
+        "q": "¿Quiénes forman la banda?",
+        "a": "ZikoFranco es un power trio — Ziko en la voz, JCConcepcion en la guitarra líder y batería en vivo — con pistas profesionales: sonido de banda completa con un montaje compacto."
+      },
+      {
+        "q": "¿Tocan en español?",
+        "a": "Sí. Somos totalmente bilingües y mezclamos éxitos en inglés y español, de Bruno Mars y Bon Jovi a Santana y Celia Cruz, para que todos los invitados se sientan parte."
+      },
+      {
+        "q": "¿Podemos pedir canciones?",
+        "a": "¡Claro! Mándanos tu lista de canciones imprescindibles y las que no quieres. Con tiempo podemos preparar una canción especial para el primer baile, una entrada u otro momento importante."
+      },
+      {
+        "q": "¿Qué necesitan del lugar?",
+        "a": "Un área para tocar y acceso a corriente. Cuéntanos si el lugar tiene sistema de sonido (PA) cuando pidas tu cotización y planificamos el montaje juntos."
+      },
+      {
+        "q": "¿Dónde tocan?",
+        "a": "Estamos en Miami y tocamos en todo el sur de Florida — Miami-Dade, Broward y Palm Beach. Viajes más lejos, a pedido."
+      },
+      {
+        "q": "¿Cómo reservamos la fecha?",
+        "a": "Cuando apruebas la cotización, un depósito asegura tu fecha. Confirmamos todo por escrito para que sepas exactamente qué esperar."
+      }
+    ]
+  },
+  "weddings": {
+    "label": "Banda para Bodas en Miami",
+    "heading": "Una banda en vivo que mantiene la pista de tu boda llena",
+    "subtitle": "Rock, funk, latino y himnos para cantar, en inglés y español, en un show sin pausas — la energía de un concierto con el cuidado que tu día merece.",
+    "whyHeading": "Por qué las parejas eligen ZikoFranco",
+    "points": [
+      {
+        "title": "Bailan todas las generaciones",
+        "body": "Bruno Mars y Whitney Houston para la pista, Santana y Celia Cruz para la familia, Bon Jovi y The Killers para el gran final."
+      },
+      {
+        "title": "Hecho para familias bilingües",
+        "body": "Inglés y español, uno tras otro — perfecto para bodas en Miami donde las dos familias tienen que sentirse en casa."
+      },
+      {
+        "title": "Tus momentos, tus canciones",
+        "body": "Mándanos una canción especial para el primer baile o la entrada, y tu lista de imprescindibles y prohibidas. Armamos la noche alrededor de ustedes."
+      },
+      {
+        "title": "Sin silencios",
+        "body": "Medleys y transiciones en vivo mantienen la energía toda la noche, desde el cóctel hasta el último coro."
+      }
+    ],
+    "formatHeading": "Recomendado para bodas",
+    "formatTitle": "Miami Live Show Completo · 3 horas",
+    "formatBody": "Tres sets de 50 minutos: Funk, Pop & Dance → Miami Latin & Sing-Along → Rock Party Finale. Formatos más cortos para ceremonias o cócteles.",
+    "setlistLink": "Ver el setlist completo →",
+    "cta": "Consulta disponibilidad para tu fecha"
+  },
+  "corporate": {
+    "label": "Banda para Eventos Corporativos · Miami",
+    "heading": "Entretenimiento en vivo que pone a tu equipo a bailar",
+    "subtitle": "Una banda de fiesta bilingüe y profesional para galas, fiestas de fin de año, lanzamientos y celebraciones de empresa en el sur de Florida.",
+    "whyHeading": "Por qué nos contratan los organizadores",
+    "points": [
+      {
+        "title": "Profesionales y confiables",
+        "body": "In-ears, click y cues mantienen el sonido limpio y el volumen controlado — buena música que igual deja conversar a los invitados."
+      },
+      {
+        "title": "Se adapta a tu agenda",
+        "body": "Desde un set de 50 minutos durante el cóctel hasta un show de 3 horas, armamos los tiempos alrededor de discursos, cena y premiaciones."
+      },
+      {
+        "title": "Equipos internacionales",
+        "body": "Repertorio bilingüe inglés/español que conecta con el público diverso de Miami y los clientes que visitan."
+      },
+      {
+        "title": "Montaje compacto",
+        "body": "Un power trio con pistas profesionales da sonido de banda completa sin necesitar un escenario grande."
+      }
+    ],
+    "formatHeading": "Popular para eventos corporativos",
+    "formatTitle": "Celebración de Dos Sets · ~2 horas",
+    "formatBody": "Dos sets de 50 minutos alrededor de la cena y los discursos — o el Miami Live Show completo para galas y fiestas de fin de año.",
+    "setlistLink": "Ver el setlist completo →",
+    "cta": "Pide una cotización corporativa"
   }
 }

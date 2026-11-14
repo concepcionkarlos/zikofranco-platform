@@ -16,6 +16,8 @@ export async function Footer() {
     { href: "/media", label: h("media") },
     { href: "/merch", label: h("merch") },
     { href: "/epk", label: h("epk") },
+    { href: "/weddings", label: h("weddings") },
+    { href: "/corporate-events", label: h("corporate") },
     { href: "/booking", label: h("booking") },
   ];
 

@@ -14,6 +14,7 @@ import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/db";
 import { Resend } from "resend";
 import { links } from "@/content/links";
+import { CLIENT_AUTOREPLY, EMAIL_FROM, NOTIFY_FROM, NOTIFY_TO, PUBLIC_EMAIL } from "@/lib/email";
 
 type LeadPayload = {
   fullName: string;
@@ -30,7 +31,6 @@ type LeadPayload = {
   startedAt?: number; // ms timestamp when the form was rendered
 };
 
-const NOTIFY_TO = "Zikofranco@gmail.com";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const MIN_FILL_MS = 3000;
 
@@ -118,9 +118,9 @@ export async function POST(req: Request) {
 
       // Runs after the response is sent, but the function stays alive until it finishes.
       after(async () => {
-        const results = await Promise.allSettled([
+        const sends = [
           resend.emails.send({
-            from: "ZikoFranco Booking <booking@zikofranco.com>",
+            from: NOTIFY_FROM,
             to: NOTIFY_TO,
             replyTo: lead.email,
             subject: `New Booking Request — ${lead.eventType}${eventDate ? ` · ${eventDate}` : ""}`,
@@ -141,10 +141,12 @@ export async function POST(req: Request) {
               message || "—",
             ].join("\n"),
           }),
-          resend.emails.send({
-            from: "ZikoFranco <booking@zikofranco.com>",
+        ];
+        if (CLIENT_AUTOREPLY) {
+          sends.push(resend.emails.send({
+            from: EMAIL_FROM,
             to: lead.email,
-            replyTo: NOTIFY_TO,
+            replyTo: PUBLIC_EMAIL,
             subject: "We got your booking request — ZikoFranco",
             text: [
               `Hi ${lead.fullName},`,
@@ -158,10 +160,13 @@ export async function POST(req: Request) {
               `— Ziko & the band`,
               `zikofranco.com`,
             ].join("\n"),
-          }),
-        ]);
+          }));
+        }
+        // Resend returns { error } instead of throwing, so check both.
+        const results = await Promise.allSettled(sends);
         results.forEach((r) => {
           if (r.status === "rejected") console.error("Lead email error:", r.reason);
+          else if (r.value.error) console.error("Lead email error:", r.value.error);
         });
       });
     }
@@ -172,7 +177,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         ok: false,
-        error: `We couldn't send your request right now. Please email us at ${NOTIFY_TO}.`,
+        error: `We couldn't send your request right now. Please email us at ${PUBLIC_EMAIL}.`,
       },
       { status: 500 },
     );

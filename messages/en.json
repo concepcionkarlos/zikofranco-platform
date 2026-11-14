@@ -9,7 +9,9 @@
     "home": "Home",
     "skip": "Skip to content",
     "backToTop": "Back to top",
-    "booking": "Booking"
+    "booking": "Booking",
+    "weddings": "Weddings",
+    "corporate": "Corporate Events"
   },
   "footer": {
     "rights": "All rights reserved.",
@@ -281,7 +283,8 @@
     "assets": "Hi-Res Photos & Logos",
     "assetsBody": "Press photos, logos in SVG/PNG, and band artwork available upon request.",
     "requestPack": "Request Press Pack",
-    "showLink": "See the full 3-hour show & setlist →"
+    "showLink": "See the full 3-hour show & setlist →",
+    "downloadPdf": "Download EPK (PDF)"
   },
   "band": {
     "label": "The Band",
@@ -302,5 +305,101 @@
       }
     ],
     "tracks": "+ Pro backing tracks, click & in-ear cues"
+  },
+  "faq": {
+    "label": "FAQ",
+    "heading": "Questions planners ask us",
+    "items": [
+      {
+        "q": "How much does it cost to book ZikoFranco?",
+        "a": "Pricing depends on the date, how much live music you want and the location. Send a quick request with your event details and we'll reply within 24–48 hours with availability and a clear quote."
+      },
+      {
+        "q": "How long do you play?",
+        "a": "We offer a 50-minute Party Set, a Two-Set Celebration (about 2 hours with a break) and our signature Full Miami Live Show: three 50-minute sets over 3 hours."
+      },
+      {
+        "q": "Who is in the band?",
+        "a": "ZikoFranco is a power trio — Ziko on lead vocals, JCConcepcion on lead guitar and a live drummer — backed by professional tracks, so you get a full-band sound with a compact setup."
+      },
+      {
+        "q": "Do you play in Spanish?",
+        "a": "Yes. We're fully bilingual and mix English and Spanish hits, from Bruno Mars and Bon Jovi to Santana and Celia Cruz, so every guest feels included."
+      },
+      {
+        "q": "Can we request songs?",
+        "a": "Absolutely. Send us your must-play and do-not-play lists. With enough notice we can prepare a special song for a first dance, an entrance or another big moment."
+      },
+      {
+        "q": "What do you need from the venue?",
+        "a": "A performance area and access to power. Tell us whether the venue has a sound system (PA) when you request a quote and we'll plan the setup together."
+      },
+      {
+        "q": "Where do you perform?",
+        "a": "We're based in Miami and play across South Florida — Miami-Dade, Broward and Palm Beach. Travel beyond that is available on request."
+      },
+      {
+        "q": "How do we reserve our date?",
+        "a": "Once you approve your quote, a deposit secures the date. We confirm everything in writing so you know exactly what to expect."
+      }
+    ]
+  },
+  "weddings": {
+    "label": "Miami Wedding Band",
+    "heading": "A live band that keeps your wedding dance floor full",
+    "subtitle": "Bilingual rock, funk, Latin and sing-along hits in one non-stop show — the energy of a concert with the care your day deserves.",
+    "whyHeading": "Why couples choose ZikoFranco",
+    "points": [
+      {
+        "title": "Every generation dances",
+        "body": "Bruno Mars and Whitney Houston for the dance floor, Santana and Celia Cruz for the family, Bon Jovi and The Killers for the big finish."
+      },
+      {
+        "title": "Made for bilingual families",
+        "body": "English and Spanish, back to back — perfect for Miami weddings where both sides of the family need to feel at home."
+      },
+      {
+        "title": "Your moments, your songs",
+        "body": "Send us a special song for your first dance or entrance and your must-play and do-not-play lists. We build the night around you."
+      },
+      {
+        "title": "No dead air",
+        "body": "Medleys and live transitions keep the energy up all night, from cocktail hour to the last chorus."
+      }
+    ],
+    "formatHeading": "Recommended for weddings",
+    "formatTitle": "Full Miami Live Show · 3 hours",
+    "formatBody": "Three 50-minute sets: Funk, Pop & Dance → Miami Latin & Sing-Along → Rock Party Finale. Shorter formats available for ceremonies or cocktail hours.",
+    "setlistLink": "See the full setlist →",
+    "cta": "Check our availability for your date"
+  },
+  "corporate": {
+    "label": "Corporate Event Band · Miami",
+    "heading": "Live entertainment that gets your team on its feet",
+    "subtitle": "A polished, bilingual party band for galas, holiday parties, product launches and company celebrations across South Florida.",
+    "whyHeading": "Why event planners book us",
+    "points": [
+      {
+        "title": "Professional and reliable",
+        "body": "In-ear monitors, click and cues keep the sound clean and the volume controlled — great music that still lets guests talk."
+      },
+      {
+        "title": "Fits your agenda",
+        "body": "From a 50-minute set during cocktails to a full 3-hour show, we build the timing around speeches, dinner and awards."
+      },
+      {
+        "title": "International teams welcome",
+        "body": "Bilingual English/Spanish repertoire that connects with Miami's diverse workforce and visiting clients."
+      },
+      {
+        "title": "Compact footprint",
+        "body": "A power trio with pro backing tracks delivers a full-band sound without needing a big stage."
+      }
+    ],
+    "formatHeading": "Popular for corporate events",
+    "formatTitle": "Two-Set Celebration · ~2 hours",
+    "formatBody": "Two 50-minute sets around dinner and speeches — or the Full Miami Live Show for galas and holiday parties.",
+    "setlistLink": "See the full setlist →",
+    "cta": "Request a corporate quote"
   }
 }

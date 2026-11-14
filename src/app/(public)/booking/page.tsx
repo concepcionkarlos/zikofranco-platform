@@ -1,5 +1,6 @@
 import { getLocale, getMessages, createT } from "@/lib/i18n";
 import { BookingForm, type BookingT } from "./BookingForm";
+import { Faq } from "@/components/marketing/Faq";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +10,11 @@ export const metadata = {
   alternates: { canonical: "/booking" },
 };
 
-export default async function BookingPage() {
+const EVENT_TYPES = ["Wedding", "Private Event", "Corporate Event", "Festival", "Venue Show", "Other"];
+
+export default async function BookingPage({ searchParams }: { searchParams: Promise<{ event?: string }> }) {
+  const { event } = await searchParams;
+  const initialEventType = event && EVENT_TYPES.includes(event) ? event : "";
   const locale = await getLocale();
   const messages = await getMessages(locale);
   const t = createT(messages, "booking");
@@ -30,5 +35,14 @@ export default async function BookingPage() {
     errors: t.raw("errors") as BookingT["errors"],
   };
 
-  return <BookingForm t={translations} />;
+  const tf = createT(messages, "faq");
+
+  return (
+    <div className="space-y-20">
+      <BookingForm t={translations} initialEventType={initialEventType} />
+      <div className="max-w-2xl mx-auto">
+        <Faq label={tf("label")} heading={tf("heading")} items={tf.raw("items") as { q: string; a: string }[]} />
+      </div>
+    </div>
+  );
 }

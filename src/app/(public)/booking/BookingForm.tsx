@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { track } from "@vercel/analytics";
 
 type FormState = {
   fullName: string;
@@ -77,8 +78,8 @@ export interface BookingT {
   errors: { generic: string; network: string; email: string };
 }
 
-export function BookingForm({ t }: { t: BookingT }) {
-  const [form, setForm] = useState<FormState>(initialState);
+export function BookingForm({ t, initialEventType = "" }: { t: BookingT; initialEventType?: string }) {
+  const [form, setForm] = useState<FormState>({ ...initialState, eventType: initialEventType });
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState<string | null>(null);
   const [status, setStatus] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -124,6 +125,11 @@ export function BookingForm({ t }: { t: BookingT }) {
         setStatus({ type: "error", text: data.error ?? t.errors.generic });
         return;
       }
+      track("booking_submitted", {
+        eventType: form.eventType || "unknown",
+        showFormat: form.showFormat || "unknown",
+        budget: form.budgetRange || "unknown",
+      });
       setStatus({ type: "success", text: t.success.text });
       setForm(initialState);
     } catch {

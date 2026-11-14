@@ -90,6 +90,16 @@ export default async function EPKPage() {
         <p className="vintage-muted text-sm">
           {t("subtitle")}
         </p>
+        <a
+          href="/ZikoFranco-EPK.pdf"
+          download
+          className="btn-gold inline-flex items-center gap-2 mt-4 px-5 py-2.5 text-sm font-semibold rounded-xl"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14" />
+          </svg>
+          {t("downloadPdf")}
+        </a>
       </div>
 
       {/* Bio + Photo */}

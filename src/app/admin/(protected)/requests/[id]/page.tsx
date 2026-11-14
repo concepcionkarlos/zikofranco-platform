@@ -18,6 +18,7 @@ const ACTIVITY_ICONS: Record<string, string> = {
   STATUS_CHANGE: "⇄",
   NOTE_ADDED: "✎",
   EMAIL_SENT: "✉",
+  EMAIL_RECEIVED: "↩",
   CREATED: "✦",
 };
 
@@ -32,11 +33,17 @@ export default async function RequestDetailPage({ params }: PageProps) {
     where: { id },
     include: {
       activities: { orderBy: { createdAt: "desc" } },
-      emailLogs: { orderBy: { sentAt: "desc" } },
+      emailLogs: { orderBy: { sentAt: "asc" } },
     },
   });
 
   if (!lead) notFound();
+
+  // Opening the request marks client replies as read.
+  const unread = lead.emailLogs.filter((l) => l.direction === "INBOUND" && !l.readAt).map((l) => l.id);
+  if (unread.length) {
+    await prisma.emailLog.updateMany({ where: { id: { in: unread } }, data: { readAt: new Date() } });
+  }
 
   const sc = STATUS_COLORS[lead.status] ?? STATUS_COLORS.NEW;
 
@@ -137,49 +144,65 @@ export default async function RequestDetailPage({ params }: PageProps) {
             )}
           </div>
 
-          {/* Email reply form */}
-          <EmailForm
-            leadId={lead.id}
-            clientEmail={lead.email}
-            clientName={lead.fullName}
-            currentStatus={lead.status}
-          />
-
-          {/* Sent emails log */}
+          {/* Conversation (sent + received) */}
           {lead.emailLogs.length > 0 && (
             <div
               className="rounded-2xl p-6 space-y-4"
               style={{ background: "rgba(18,18,20,0.85)", border: "1px solid rgba(255,255,255,0.07)" }}
             >
               <h2 className="text-[10px] font-semibold tracking-widest uppercase" style={{ color: "rgba(242,239,233,0.35)" }}>
-                Sent Emails ({lead.emailLogs.length})
+                Conversation ({lead.emailLogs.length})
               </h2>
               <div className="space-y-3">
-                {lead.emailLogs.map((log) => (
-                  <details
-                    key={log.id}
-                    className="rounded-xl cursor-pointer"
-                    style={{ border: "1px solid rgba(255,255,255,0.06)" }}
-                  >
-                    <summary className="px-4 py-3 text-sm flex items-center justify-between list-none">
-                      <span style={{ color: "rgba(242,239,233,0.75)" }}>{log.subject}</span>
-                      <span className="text-xs ml-4 shrink-0" style={{ color: "rgba(242,239,233,0.3)" }}>
-                        {new Date(log.sentAt).toLocaleDateString("en-US", {
-                          month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
-                        })}
-                      </span>
-                    </summary>
-                    <div
-                      className="px-4 pb-4 text-xs leading-relaxed whitespace-pre-wrap"
-                      style={{ color: "rgba(242,239,233,0.5)", borderTop: "1px solid rgba(255,255,255,0.05)" }}
-                    >
-                      <div className="pt-3">{log.body}</div>
+                {lead.emailLogs.map((log) => {
+                  const inbound = log.direction === "INBOUND";
+                  const isNew = unread.includes(log.id);
+                  return (
+                    <div key={log.id} className={`flex ${inbound ? "justify-start" : "justify-end"}`}>
+                      <details
+                        open={isNew || log.id === lead.emailLogs[lead.emailLogs.length - 1].id}
+                        className="rounded-xl w-full sm:w-[88%]"
+                        style={{
+                          background: inbound ? "rgba(255,255,255,0.035)" : "rgba(214,178,94,0.06)",
+                          border: `1px solid ${isNew ? "rgba(214,178,94,0.5)" : inbound ? "rgba(255,255,255,0.07)" : "rgba(214,178,94,0.15)"}`,
+                        }}
+                      >
+                        <summary className="px-4 py-3 text-sm flex items-center justify-between gap-3 list-none cursor-pointer">
+                          <span className="min-w-0">
+                            <span className="block text-[10px] font-semibold tracking-widest uppercase"
+                              style={{ color: inbound ? "#60a5fa" : "#d6b25e" }}>
+                              {inbound ? `↩ ${lead.fullName}` : "✉ You"}{isNew ? " · NEW" : ""}
+                            </span>
+                            <span className="block truncate mt-0.5" style={{ color: "rgba(242,239,233,0.8)" }}>{log.subject}</span>
+                          </span>
+                          <span className="text-xs shrink-0" style={{ color: "rgba(242,239,233,0.35)" }}>
+                            {new Date(log.sentAt).toLocaleString("en-US", {
+                              month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "America/New_York",
+                            })}
+                          </span>
+                        </summary>
+                        <div
+                          className="px-4 pb-4 text-sm leading-relaxed whitespace-pre-wrap"
+                          style={{ color: "rgba(242,239,233,0.7)", borderTop: "1px solid rgba(255,255,255,0.05)" }}
+                        >
+                          <div className="pt-3">{log.body}</div>
+                        </div>
+                      </details>
                     </div>
-                  </details>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
+
+          {/* Email reply form */}
+          <EmailForm
+            leadId={lead.id}
+            clientEmail={lead.email}
+            clientName={lead.fullName}
+            eventType={lead.eventType}
+            currentStatus={lead.status}
+          />
 
           {/* Activity log */}
           <div

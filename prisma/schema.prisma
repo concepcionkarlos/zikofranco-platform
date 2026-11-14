@@ -58,14 +58,19 @@ model LeadActivity {
 }
 
 model EmailLog {
-  id      String @id @default(cuid())
-  leadId  String
-  lead    Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  subject String
-  body    String
-  sentAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  direction String   @default("OUTBOUND") // OUTBOUND (sent from admin) | INBOUND (client reply)
+  fromEmail String?
+  subject   String
+  body      String
+  resendId  String?  @unique // Resend email id — dedupes webhook retries
+  readAt    DateTime? // inbound only: null = unread in the admin
+  sentAt    DateTime @default(now())
 
   @@index([leadId])
+  @@index([direction, readAt])
 }
 
 // ─── Shows ───────────────────────────────────────────────────────────────────

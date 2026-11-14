@@ -57,6 +57,7 @@ export default async function RequestsPage({ searchParams }: PageProps) {
         budgetRange: true,
         status: true,
         createdAt: true,
+        _count: { select: { emailLogs: { where: { direction: "INBOUND", readAt: null } } } },
       },
     }),
     prisma.lead.count({ where }),
@@ -114,6 +115,12 @@ export default async function RequestsPage({ searchParams }: PageProps) {
                   <div className="min-w-0 flex-1">
                     <div className="font-semibold text-sm truncate" style={{ color: "#f2efe9" }}>
                       {lead.fullName}
+                      {lead._count.emailLogs > 0 && (
+                        <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold align-middle"
+                          style={{ background: "rgba(214,178,94,0.18)", color: "#d6b25e" }}>
+                          ✉ {lead._count.emailLogs} new
+                        </span>
+                      )}
                     </div>
                     <div className="text-xs mt-0.5 truncate" style={{ color: "rgba(242,239,233,0.42)" }}>
                       {lead.email}
@@ -166,7 +173,15 @@ export default async function RequestsPage({ searchParams }: PageProps) {
                       }}
                     >
                       <td className="px-5 py-3.5">
-                        <div className="font-medium" style={{ color: "#f2efe9" }}>{lead.fullName}</div>
+                        <div className="font-medium" style={{ color: "#f2efe9" }}>
+                          <Link href={`/admin/requests/${lead.id}`} className="hover:underline">{lead.fullName}</Link>
+                          {lead._count.emailLogs > 0 && (
+                        <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold align-middle"
+                          style={{ background: "rgba(214,178,94,0.18)", color: "#d6b25e" }}>
+                          ✉ {lead._count.emailLogs} new
+                        </span>
+                      )}
+                        </div>
                         <div className="text-xs mt-0.5" style={{ color: "rgba(242,239,233,0.4)" }}>{lead.email}</div>
                         {lead.phone && (
                           <div className="text-xs" style={{ color: "rgba(242,239,233,0.3)" }}>{lead.phone}</div>

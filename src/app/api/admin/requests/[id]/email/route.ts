@@ -15,6 +15,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { Resend } from "resend";
 import { LeadStatus } from "@prisma/client";
+import { EMAIL_FROM, REPLY_TO, extractAddress } from "@/lib/email";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -54,12 +55,20 @@ export async function POST(
     }
 
     // ── Send email first — only mutate DB on success ──────────────────────────
-    await resend.emails.send({
-      from: "ZikoFranco <booking@zikofranco.com>",
+    const { data: sent, error: sendError } = await resend.emails.send({
+      from: EMAIL_FROM,
       to: lead.email,
+      replyTo: REPLY_TO,
       subject: subject.trim(),
       text: body.trim(),
     });
+    if (sendError) {
+      console.error("Admin email rejected by Resend:", sendError);
+      return NextResponse.json(
+        { ok: false, error: `Email not sent: ${sendError.message}` },
+        { status: 502 },
+      );
+    }
 
     // ── Determine status promotion ────────────────────────────────────────────
     const currentStatus = lead.status as LeadStatus;
@@ -86,8 +95,11 @@ export async function POST(
       prisma.emailLog.create({
         data: {
           leadId: id,
+          direction: "OUTBOUND",
+          fromEmail: extractAddress(EMAIL_FROM),
           subject: subject.trim(),
           body: body.trim(),
+          resendId: sent?.id ?? null,
         },
       }),
 

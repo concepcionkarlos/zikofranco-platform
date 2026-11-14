@@ -4,6 +4,7 @@ import { getLocale, getMessages, createT } from "@/lib/i18n";
 import { SHOW_SETS, RESERVE_SONGS } from "@/content/show";
 import { Reveal } from "@/components/ui/Reveal";
 import { BandLineup } from "@/components/band/BandLineup";
+import { Faq } from "@/components/marketing/Faq";
 
 export const metadata: Metadata = {
   title: "The 3-Hour Miami Live Show",
@@ -27,6 +28,7 @@ export default async function ShowPage() {
   const pillars = t.raw("pillars") as Pillar[];
   const formats = t.raw("formats") as Format[];
   const tb = createT(messages, "band");
+  const tf = createT(messages, "faq");
 
   return (
     <section className="space-y-16">
@@ -127,6 +129,11 @@ export default async function ShowPage() {
             ))}
           </div>
         </div>
+      </Reveal>
+
+      {/* FAQ */}
+      <Reveal>
+        <Faq label={tf("label")} heading={tf("heading")} items={tf.raw("items") as { q: string; a: string }[]} />
       </Reveal>
 
       {/* CTA */}

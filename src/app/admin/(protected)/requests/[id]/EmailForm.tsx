@@ -2,15 +2,17 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { QUOTE_TEMPLATES } from "@/content/quoteTemplates";
 
 interface Props {
   leadId: string;
   clientEmail: string;
   clientName: string;
+  eventType?: string;
   currentStatus: string;
 }
 
-export function EmailForm({ leadId, clientEmail, clientName, currentStatus }: Props) {
+export function EmailForm({ leadId, clientEmail, clientName, eventType = "event", currentStatus }: Props) {
   const router = useRouter();
   const [subject, setSubject] = useState(`Following up on your booking request — ZikoFranco`);
   const [body, setBody] = useState(
@@ -20,6 +22,18 @@ export function EmailForm({ leadId, clientEmail, clientName, currentStatus }: Pr
   const [sent, setSent] = useState(false);
   const [promoted, setPromoted] = useState(false); // true when status was bumped
   const [error, setError] = useState("");
+  const [templateId, setTemplateId] = useState<string | null>(null);
+
+  function applyTemplate(id: string) {
+    const tpl = QUOTE_TEMPLATES.find((t) => t.id === id);
+    if (!tpl) return;
+    const ctx = { name: clientName, eventType };
+    setSubject(tpl.subject(ctx));
+    setBody(tpl.body(ctx));
+    setTemplateId(id);
+  }
+
+  const hasPlaceholder = /\[PRICE\]|\[1 set/.test(body);
 
   async function handleSend() {
     if (!subject.trim() || !body.trim()) return;
@@ -77,6 +91,27 @@ export function EmailForm({ leadId, clientEmail, clientName, currentStatus }: Pr
         </span>
       </div>
 
+      <div className="space-y-2">
+        <p className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.5)" }}>Quick templates</p>
+        <div className="flex flex-wrap gap-2">
+          {QUOTE_TEMPLATES.map((tpl) => (
+            <button
+              key={tpl.id}
+              type="button"
+              onClick={() => applyTemplate(tpl.id)}
+              className="text-xs px-3 py-1.5 rounded-lg transition"
+              style={{
+                background: templateId === tpl.id ? "rgba(214,178,94,0.15)" : "rgba(255,255,255,0.04)",
+                border: `1px solid ${templateId === tpl.id ? "rgba(214,178,94,0.4)" : "rgba(255,255,255,0.08)"}`,
+                color: templateId === tpl.id ? "#d6b25e" : "rgba(242,239,233,0.7)",
+              }}
+            >
+              {tpl.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="space-y-1.5">
         <label className="text-xs font-medium" style={{ color: "rgba(242,239,233,0.5)" }}>
           Subject
@@ -101,7 +136,7 @@ export function EmailForm({ leadId, clientEmail, clientName, currentStatus }: Pr
         <textarea
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          rows={7}
+          rows={templateId ? 16 : 7}
           className="w-full rounded-xl px-3 py-2.5 text-sm outline-none resize-none font-mono"
           style={{
             background: "rgba(255,255,255,0.04)",
@@ -110,6 +145,15 @@ export function EmailForm({ leadId, clientEmail, clientName, currentStatus }: Pr
           }}
         />
       </div>
+
+      {hasPlaceholder && (
+        <p
+          className="text-xs px-3 py-2 rounded-lg"
+          style={{ background: "rgba(214,178,94,0.08)", border: "1px solid rgba(214,178,94,0.2)", color: "#d6b25e" }}
+        >
+          Replace the [PRICE] / [bracketed] placeholders before sending.
+        </p>
+      )}
 
       {error && (
         <p className="text-xs" style={{ color: "#f87171" }}>
@@ -134,7 +178,7 @@ export function EmailForm({ leadId, clientEmail, clientName, currentStatus }: Pr
       <div className="flex items-center gap-3">
         <button
           onClick={handleSend}
-          disabled={sending || !subject.trim() || !body.trim()}
+          disabled={sending || !subject.trim() || !body.trim() || hasPlaceholder}
           className="px-5 py-2.5 rounded-xl text-sm font-semibold transition disabled:opacity-60"
           style={{
             background: sent
