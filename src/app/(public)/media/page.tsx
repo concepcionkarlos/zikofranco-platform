@@ -96,7 +96,7 @@ function PhotoCard({ photo, className = "", featuredLabel, videoLabel }: {
   return (
     <div className={`relative overflow-hidden rounded-2xl group cursor-pointer ${className}`}>
       <SmartImage src={photo.url} alt={photo.title} sizes="(min-width: 768px) 60vw, 100vw"
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
+        className="object-cover object-[center_20%] transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
