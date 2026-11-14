@@ -4,7 +4,7 @@ type Member = { name: string; role: string };
 
 const PHOTOS: (string | null)[] = [
   "/assets/photos/7058E651-F966-492A-B4CB-7CC9ABF47D72.jpeg", // Ziko
-  "/assets/photos/jc-concepcion.jpg", // JCConcepcion
+  "/assets/photos/jc-concepcion-live.jpg", // JCConcepcion
   null, // Drummer — photo coming after the band shoot
 ];
 
