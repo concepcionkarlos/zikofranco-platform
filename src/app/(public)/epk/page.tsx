@@ -158,7 +158,7 @@ export default async function EPKPage() {
           { platform: "Spotify", handle: "@zikofranco", href: links.spotify },
           { platform: "Apple Music", handle: "ZikoFranco", href: links.appleMusic },
           { platform: "YouTube", handle: "@zikofranco", href: links.youtube },
-          { platform: "Instagram", handle: "@zikopoly", href: links.instagram },
+          { platform: "Instagram", handle: "@zikofrancorockband", href: links.instagram },
         ].map(({ platform, handle, href }) => (
           <a
             key={platform}

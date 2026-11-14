@@ -7,7 +7,7 @@ export const links = {
   appleMusic: "https://music.apple.com/us/artist/zikopoly/1733674076?l=es-MX",
   youtube: "https://www.youtube.com/@zikofranco6572",
   soundcloud: "https://on.soundcloud.com/JtML242w1RrNaqUWBO",
-  instagram: "https://www.instagram.com/zikopoly",
+  instagram: "https://www.instagram.com/zikofrancorockband",
 } as const;
 
 export const platformLinks = [
