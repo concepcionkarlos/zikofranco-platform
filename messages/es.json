@@ -5,10 +5,16 @@
     "merch": "Merch",
     "epk": "EPK",
     "bookNow": "Reservar",
-    "show": "El Show"
+    "show": "El Show",
+    "home": "Inicio",
+    "skip": "Saltar al contenido",
+    "backToTop": "Volver arriba",
+    "booking": "Reservas"
   },
   "footer": {
-    "rights": "Todos los derechos reservados."
+    "rights": "Todos los derechos reservados.",
+    "explore": "Explorar",
+    "tagline": "La banda de fiesta bilingüe de Miami — rock, funk y latino, en vivo."
   },
   "home": {
     "tagline": "Miami, FL · Rock · Funk · Latino · Shows en Vivo",

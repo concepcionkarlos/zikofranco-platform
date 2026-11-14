@@ -5,10 +5,16 @@
     "merch": "Merch",
     "epk": "EPK",
     "bookNow": "Book Now",
-    "show": "The Show"
+    "show": "The Show",
+    "home": "Home",
+    "skip": "Skip to content",
+    "backToTop": "Back to top",
+    "booking": "Booking"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "explore": "Explore",
+    "tagline": "Miami's bilingual party band — rock, funk & Latin, live."
   },
   "home": {
     "tagline": "Miami, FL · Rock · Funk · Latin · Live Shows",
