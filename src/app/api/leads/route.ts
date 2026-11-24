@@ -63,10 +63,10 @@ function cleanLine(value: unknown, max: number): string {
 export async function POST(req: Request) {
   try {
     // Vercel BotID: invisible challenge set up in instrumentation-client.ts.
+    // Fail-soft: a bot verdict doesn't reject the request (a misjudged real client would be lost);
+    // the lead is stored flagged, with no auto-reply and no notification email.
     const verdict = await checkBotId();
-    if (verdict.isBot && !verdict.isVerifiedBot) {
-      return NextResponse.json({ ok: false, error: "Request blocked." }, { status: 403 });
-    }
+    const botSuspected = verdict.isBot && !verdict.isVerifiedBot;
 
     const body = (await req.json()) as Partial<LeadPayload>;
 
@@ -123,6 +123,10 @@ export async function POST(req: Request) {
       screening.flagged = true;
       screening.reasons.push("Contained hidden/invisible characters (removed)");
     }
+    if (botSuspected) {
+      screening.flagged = true;
+      screening.reasons.unshift("BotID: automated browser / bot detected");
+    }
 
     const lead = await prisma.lead.create({
       data: {
@@ -138,7 +142,8 @@ export async function POST(req: Request) {
       },
     });
 
-    if (process.env.RESEND_API_KEY) {
+    // Bot-detected submissions stay silent: visible in the admin only.
+    if (process.env.RESEND_API_KEY && !botSuspected) {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
       // Runs after the response is sent, but the function stays alive until it finishes.
