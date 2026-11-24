@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { RequestActions } from "./RequestActions";
 import { EmailForm } from "./EmailForm";
+import { FlagBanner } from "./FlagBanner";
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   NEW: { bg: "rgba(59,130,246,0.15)", color: "#60a5fa" },
@@ -103,6 +104,10 @@ export default async function RequestDetailPage({ params }: PageProps) {
 
         {/* Main content — second on mobile, left column on desktop */}
         <div className="lg:col-span-3 lg:order-1 space-y-5">
+
+          {lead.flagged && (
+            <FlagBanner leadId={lead.id} reasons={lead.flagReasons ?? "Flagged"} status={lead.status} />
+          )}
 
           {/* Client & event info */}
           <div

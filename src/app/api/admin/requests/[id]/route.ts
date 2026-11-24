@@ -58,6 +58,7 @@ export async function PATCH(
     const body = (await req.json()) as {
       status?: string;
       internalNotes?: string;
+      flagged?: boolean;
     };
 
     const existing = await prisma.lead.findUnique({ where: { id } });
@@ -68,7 +69,7 @@ export async function PATCH(
       );
     }
 
-    const updateData: { status?: LeadStatus; internalNotes?: string } = {};
+    const updateData: { status?: LeadStatus; internalNotes?: string; flagged?: boolean } = {};
     const activities: { type: string; content: string }[] = [];
 
     if (body.status && VALID_STATUSES.has(body.status)) {
@@ -87,6 +88,14 @@ export async function PATCH(
       if (body.internalNotes !== existing.internalNotes) {
         activities.push({ type: "NOTE_ADDED", content: "Internal notes updated" });
       }
+    }
+
+    if (typeof body.flagged === "boolean" && body.flagged !== existing.flagged) {
+      updateData.flagged = body.flagged;
+      activities.push({
+        type: "NOTE_ADDED",
+        content: body.flagged ? "Marked as spam/suspicious" : "Marked as not spam (flag cleared)",
+      });
     }
 
     const [lead] = await prisma.$transaction([

@@ -31,6 +31,8 @@ model Lead {
   message       String?
   status        LeadStatus @default(NEW)
   internalNotes String?
+  flagged       Boolean    @default(false) // spam or prompt-injection signals (see lib/screening.ts)
+  flagReasons   String?
 
   activities LeadActivity[]
   emailLogs  EmailLog[]

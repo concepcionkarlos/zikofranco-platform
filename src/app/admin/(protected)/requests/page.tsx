@@ -57,6 +57,7 @@ export default async function RequestsPage({ searchParams }: PageProps) {
         budgetRange: true,
         status: true,
         createdAt: true,
+        flagged: true,
         _count: { select: { emailLogs: { where: { direction: "INBOUND", readAt: null } } } },
       },
     }),
@@ -115,6 +116,12 @@ export default async function RequestsPage({ searchParams }: PageProps) {
                   <div className="min-w-0 flex-1">
                     <div className="font-semibold text-sm truncate" style={{ color: "#f2efe9" }}>
                       {lead.fullName}
+                      {lead.flagged && (
+                        <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold align-middle"
+                          style={{ background: "rgba(239,68,68,0.15)", color: "#f87171" }}>
+                          ⚠ spam?
+                        </span>
+                      )}
                       {lead._count.emailLogs > 0 && (
                         <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold align-middle"
                           style={{ background: "rgba(214,178,94,0.18)", color: "#d6b25e" }}>
@@ -175,7 +182,13 @@ export default async function RequestsPage({ searchParams }: PageProps) {
                       <td className="px-5 py-3.5">
                         <div className="font-medium" style={{ color: "#f2efe9" }}>
                           <Link href={`/admin/requests/${lead.id}`} className="hover:underline">{lead.fullName}</Link>
-                          {lead._count.emailLogs > 0 && (
+                          {lead.flagged && (
+                        <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold align-middle"
+                          style={{ background: "rgba(239,68,68,0.15)", color: "#f87171" }}>
+                          ⚠ spam?
+                        </span>
+                      )}
+                      {lead._count.emailLogs > 0 && (
                         <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold align-middle"
                           style={{ background: "rgba(214,178,94,0.18)", color: "#d6b25e" }}>
                           ✉ {lead._count.emailLogs} new

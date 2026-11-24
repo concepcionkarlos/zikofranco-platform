@@ -17,6 +17,7 @@
     "@prisma/client": "^5.16.2",
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.3.3",
+    "botid": "^1.5.13",
     "next": "^16.2.1",
     "next-intl": "^4.9.0",
     "react": "^18.3.1",

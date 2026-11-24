@@ -6,6 +6,7 @@
 import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { createToken, TOKEN_COOKIE } from "@/lib/auth";
+import { checkBotId } from "botid/server";
 
 // Best-effort brute-force throttle per instance: 10 failed attempts per 15 min per IP.
 const WINDOW_MS = 15 * 60 * 1000;
@@ -26,6 +27,11 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 export async function POST(req: Request) {
+  const verdict = await checkBotId();
+  if (verdict.isBot) {
+    return NextResponse.json({ ok: false, error: "Request blocked." }, { status: 403 });
+  }
+
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (recentFails(ip).length >= MAX_FAILS) {
     return NextResponse.json(
